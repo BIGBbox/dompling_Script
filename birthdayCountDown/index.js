@@ -12,32 +12,22 @@ TODO:
 [task]
 0 9 * * * calendar.js
 */
-const $ = API("calendar"); 
+const $ = API("calendar", true);
 
 var dataSource = [
   {
-    username: "小可爱", // 姓名
-    avatar:
-      "https://lh3.googleusercontent.com/ogw/ADGmqu-JXQrFaTmT8_3Tnf4kWZuApVzhNWrbit41qS6D=s83-c-mohttp://pic.netbian.com/uploads/allimg/190323/235101-15533562612e76.jpg", // 头像图片默认显示第一张图片
+    username: "恒屁屁", // 姓名
+    avatar: "", // 头像图片默认显示第一张图片
     birthday: "1995-6-1",
-    nongli: true, // 农历生日
-    isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
-  },
-  {
-    username: "小可爱2", // 姓名
-     birthday: "1995-6-1",
-    nongli: true, // 农历生日
-    isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
-  },
-  {
-    username: "小可爱3", // 姓名
-    birthday: "1995-6-1",
+    physiologicalDefault: "2020-8-20", // 最近一次来周期时间
+    physiologicalCycle: 25, // 下一次周期
     nongli: true, // 农历生日
     isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
   },
 ];
 
 var verify = true;
+var isPhysiological = true;
 for (var i = 0; i < dataSource.length; i++) {
   var data = dataSource[i];
   if (!data.birthday || !data.username) {
@@ -49,33 +39,81 @@ for (var i = 0; i < dataSource.length; i++) {
     );
     break;
   }
+  if (!data.physiologicalDefault || !data.physiologicalCycle) {
+    isPhysiological = false;
+  }
 }
 
 if (verify) {
- var calendar= new Calendar(dataSource);
- var birthdayNotify = function () {
-   var birthdayMessage = `\n`;
-   for (var i = 0; i < dataSource.length; i++) {
-     var data = dataSource[i];
-     var birthday = data.birthday.split("-");
-     var birthdayText = calendar.birthday({
-       username: data.username,
-       year: birthday[0],
-       month: birthday[1],
-       day: birthday[2],
-       birthday: data.birthday,
-       nongli: data.nongli,
-       isLeapMonth: data.isLeapMonth,
-     });
-     birthdayMessage += birthdayText + "\n\n";
-   }
-   $.log(birthdayMessage);
-   $.notify("📆生日提醒", "", birthdayMessage, {
-     "media-url": dataSource[0].avatar,
-   });
- };
- 
- birthdayNotify();
+  var calendar = new Calendar(dataSource);
+  var birthdayNotify = function () {
+    var birthdayMessage = `\n`;
+    for (var i = 0; i < dataSource.length; i++) {
+      var data = dataSource[i];
+      var birthday = data.birthday.split("-");
+
+      var birthdayText = calendar.birthday({
+        year: birthday[0],
+        month: birthday[1],
+        day: birthday[2],
+        isLeapMonth: data.isLeapMonth,
+      });
+
+      birthdayMessage += `
+[${data.username}]\n
+    🐣破壳日(${data.nongli ? "农历" : "公历"}📆)：${data.birthday}
+    ${birthdayText}
+    ${getPhysiological(data.physiologicalDefault, data.physiologicalCycle, i)}
+      `;
+    }
+    $.log(birthdayMessage);
+    $.notify("📆生日提醒", "", birthdayMessage, {
+      "media-url": dataSource[0].avatar,
+    });
+    return birthdayMessage;
+  };
+  birthdayNotify();
+}
+
+function getPhysiological(d, r, i) {
+  var i_day = $.read("physiologicalDefault_" + i);
+  var _default = d,
+    range = r;
+  if (i_day) {
+    _default = i_day;
+  } else {
+    $.write(_default, "physiologicalDefault_" + i);
+  }
+  var initDay = _default.split("-");
+  var _physiological = {
+    cYear: parseInt(initDay[0]),
+    cMonth: parseInt(initDay[1]),
+    cDay: parseInt(initDay[2]),
+  };
+  $.log(_physiological);
+  var _pdays = calendar.daysBetween(_physiological);
+  if (_pdays <= 0) {
+    var nexMont = new Date(
+      parseInt(initDay[0]),
+      parseInt(initDay[1]) - 1,
+      parseInt(initDay[2]) + parseInt(range)
+    );
+    var nextYear = nexMont.getFullYear();
+    var nextMonth = nexMont.getMonth() + 1;
+    var nextDay = nexMont.getDate();
+
+    var nextPday = `${nextYear}-${nextMonth}-${nextDay}`;
+
+    _physiological = {
+      cYear: nextYear,
+      cMonth: nextMonth,
+      cDay: nextDay,
+    };
+
+    _pdays = calendar.daysBetween(_physiological);
+    $.write(nextPday, "physiologicalDefault_" + i);
+  }
+  return `🆘生理期：${_pdays} 天  📆：${_default}`;
 }
 
 function Calendar(data) {
@@ -879,11 +917,11 @@ function Calendar(data) {
     var date;
     var now = new Date();
     if (nongli) {
-      var now_d = this.solar2lunar(
-        now.getFullYear(),
-        now.getMonth() + 1,
-        now.getDate()
-      );
+      var nowYear = now.getFullYear(),
+        nowMonth = now.getMonth(),
+        nowDay = now.getDate();
+
+      var now_d = this.solar2lunar(nowYear, nowMonth + 1, nowDay);
       var now_year = now_d.lYear;
       date = this.birthBylunar(now_year, m, d, isLeapMonth);
       if (this.daysBetween(date) <= 0) {
@@ -899,14 +937,11 @@ function Calendar(data) {
       }
     }
     var result = [date.cYear, date.cMonth, date.cDay, this.daysBetween(date)];
-    return `[${config.username}]\n
-    🐣破壳日(${
-      config.nongli ? "农历" : "公历"
-    }📆)：${config.birthday}\n
-    🎂下一个生日：${result[0]}-${result[1]}-${
-      result[2]
-    }\n
-    💖倒计天数：${result[3]} 天`;
+
+    return `
+    🎂下个生日：${result[0]}-${result[1]}-${result[2]}\n
+    💖生日倒计：${result[3]} 天
+    `;
   };
   this.birthBylunar = function (y, m, d, isLeapMonth) {
     if (isLeapMonth && this.leapMonth(y) == m) {
@@ -925,5 +960,222 @@ function Calendar(data) {
 
 // prettier-ignore
 /*********************************** API *************************************/
-function ENV(){const e="undefined"!=typeof $task,t="undefined"!=typeof $loon,s="undefined"!=typeof $httpClient&&!this.isLoon,o="function"==typeof require&&"undefined"!=typeof $jsbox;return{isQX:e,isLoon:t,isSurge:s,isNode:"function"==typeof require&&!o,isJSBox:o,isRequest:"undefined"!=typeof $request,isScriptable:"undefined"!=typeof importModule}}function HTTP(e,t={}){const{isQX:s,isLoon:o,isSurge:i,isScriptable:n,isNode:r}=ENV();const u={};return["GET","POST","PUT","DELETE","HEAD","OPTIONS","PATCH"].forEach(h=>u[h.toLowerCase()]=(u=>(function(u,h){(h="string"==typeof h?{url:h}:h).url=e?e+h.url:h.url;const c=(h={...t,...h}).timeout,d={onRequest:()=>{},onResponse:e=>e,onTimeout:()=>{},...h.events};let l,a;if(d.onRequest(u,h),s)l=$task.fetch({method:u,...h});else if(o||i||r)l=new Promise((e,t)=>{(r?require("request"):$httpClient)[u.toLowerCase()](h,(s,o,i)=>{s?t(s):e({statusCode:o.status||o.statusCode,headers:o.headers,body:i})})});else if(n){const e=new Request(h.url);e.method=u,e.headers=h.headers,e.body=h.body,l=new Promise((t,s)=>{e.loadString().then(s=>{t({statusCode:e.response.statusCode,headers:e.response.headers,body:s})}).catch(e=>s(e))})}const f=c?new Promise((e,t)=>{a=setTimeout(()=>(d.onTimeout(),t(`${u} URL: ${h.url} exceeds the timeout ${c} ms`)),c)}):null;return(f?Promise.race([f,l]).then(e=>(clearTimeout(a),e)):l).then(e=>d.onResponse(e))})(h,u))),u}function API(e="untitled",t=!1){const{isQX:s,isLoon:o,isSurge:i,isNode:n,isJSBox:r}=ENV();return new class{constructor(e,t){this.name=e,this.debug=t,this.http=HTTP(),this.env=ENV(),this.node=(()=>{if(n){return{fs:require("fs")}}return null})(),this.initCache();Promise.prototype.delay=function(e){return this.then(function(t){return((e,t)=>new Promise(function(s){setTimeout(s.bind(null,t),e)}))(e,t)})}}initCache(){if(s&&(this.cache=JSON.parse($prefs.valueForKey(this.name)||"{}")),(o||i)&&(this.cache=JSON.parse($persistentStore.read(this.name)||"{}")),n){let e="root.json";this.node.fs.existsSync(e)||this.node.fs.writeFileSync(e,JSON.stringify({}),{flag:"wx"},e=>console.log(e)),this.root={},e=`${this.name}.json`,this.node.fs.existsSync(e)?this.cache=JSON.parse(this.node.fs.readFileSync(`${this.name}.json`)):(this.node.fs.writeFileSync(e,JSON.stringify({}),{flag:"wx"},e=>console.log(e)),this.cache={})}}persistCache(){const e=JSON.stringify(this.cache);s&&$prefs.setValueForKey(e,this.name),(o||i)&&$persistentStore.write(e,this.name),n&&(this.node.fs.writeFileSync(`${this.name}.json`,e,{flag:"w"},e=>console.log(e)),this.node.fs.writeFileSync("root.json",JSON.stringify(this.root),{flag:"w"},e=>console.log(e)))}write(e,t){this.log(`SET ${t}`),-1!==t.indexOf("#")?(t=t.substr(1),i&o&&$persistentStore.write(e,t),s&&$prefs.setValueForKey(e,t),n&&(this.root[t]=e)):this.cache[t]=e,this.persistCache()}read(e){return this.log(`READ ${e}`),-1===e.indexOf("#")?this.cache[e]:(e=e.substr(1),i&o?$persistentStore.read(e):s?$prefs.valueForKey(e):n?this.root[e]:void 0)}delete(e){this.log(`DELETE ${e}`),-1!==e.indexOf("#")?(e=e.substr(1),i&o&&$persistentStore.write(null,e),s&&$prefs.removeValueForKey(e),n&&delete this.root[e]):delete this.cache[e],this.persistCache()}notify(e,t="",u="",h={}){const c=h["open-url"],d=h["media-url"],l=u+(c?`\n点击跳转: ${c}`:"")+(d?`\n多媒体: ${d}`:"");if(s&&$notify(e,t,u,h),i&&$notification.post(e,t,l),o&&$notification.post(e,t,u,c),n)if(r){require("push").schedule({title:e,body:(t?t+"\n":"")+l})}else console.log(`${e}\n${t}\n${l}\n\n`)}log(e){this.debug&&console.log(e)}info(e){console.log(e)}error(e){console.log("ERROR: "+e)}wait(e){return new Promise(t=>setTimeout(t,e))}done(e={}){s||o||i?$done(e):n&&!r&&"undefined"!=typeof $context&&($context.headers=e.headers,$context.statusCode=e.statusCode,$context.body=e.body)}}(e,t)}
+function ENV(){const e="undefined"!=typeof $task,t="undefined"!=typeof $loon,s="undefined"!=typeof $httpClient&&!this.isLoon,o="function"==typeof require&&"undefined"!=typeof $jsbox;return{isQX:e,isLoon:t,isSurge:s,isNode:"function"==typeof require&&!o,isJSBox:o,isRequest:"undefined"!=typeof $request,isScriptable:"undefined"!=typeof importModule}}
+function HTTP(e, t = {}) {
+  const { isQX: s, isLoon: o, isSurge: i, isScriptable: n, isNode: r } = ENV();
+  const u = {};
+  return (
+    ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"].forEach(
+      (h) =>
+        (u[h.toLowerCase()] = (u) =>
+          (function (u, h) {
+            (h = "string" == typeof h ? { url: h } : h).url = e
+              ? e + h.url
+              : h.url;
+            const c = (h = { ...t, ...h }).timeout,
+              d = {
+                onRequest: () => {},
+                onResponse: (e) => e,
+                onTimeout: () => {},
+                ...h.events,
+              };
+            let l, a;
+            if ((d.onRequest(u, h), s)) l = $task.fetch({ method: u, ...h });
+            else if (o || i || r)
+              l = new Promise((e, t) => {
+                (r ? require("request") : $httpClient)[u.toLowerCase()](
+                  h,
+                  (s, o, i) => {
+                    s
+                      ? t(s)
+                      : e({
+                          statusCode: o.status || o.statusCode,
+                          headers: o.headers,
+                          body: i,
+                        });
+                  }
+                );
+              });
+            else if (n) {
+              const e = new Request(h.url);
+              (e.method = u),
+                (e.headers = h.headers),
+                (e.body = h.body),
+                (l = new Promise((t, s) => {
+                  e.loadString()
+                    .then((s) => {
+                      t({
+                        statusCode: e.response.statusCode,
+                        headers: e.response.headers,
+                        body: s,
+                      });
+                    })
+                    .catch((e) => s(e));
+                }));
+            }
+            const f = c
+              ? new Promise((e, t) => {
+                  a = setTimeout(
+                    () => (
+                      d.onTimeout(),
+                      t(`${u} URL: ${h.url} exceeds the timeout ${c} ms`)
+                    ),
+                    c
+                  );
+                })
+              : null;
+            return (f
+              ? Promise.race([f, l]).then((e) => (clearTimeout(a), e))
+              : l
+            ).then((e) => d.onResponse(e));
+          })(h, u))
+    ),
+    u
+  );
+}
+function API(e = "untitled", t = !1) {
+  const { isQX: s, isLoon: o, isSurge: i, isNode: n, isJSBox: r } = ENV();
+  return new (class {
+    constructor(e, t) {
+      (this.name = e),
+        (this.debug = t),
+        (this.http = HTTP()),
+        (this.env = ENV()),
+        (this.node = (() => {
+          if (n) {
+            return { fs: require("fs") };
+          }
+          return null;
+        })()),
+        this.initCache();
+      Promise.prototype.delay = function (e) {
+        return this.then(function (t) {
+          return ((e, t) =>
+            new Promise(function (s) {
+              setTimeout(s.bind(null, t), e);
+            }))(e, t);
+        });
+      };
+    }
+    initCache() {
+      if (
+        (s && (this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}")),
+        (o || i) &&
+          (this.cache = JSON.parse($persistentStore.read(this.name) || "{}")),
+        n)
+      ) {
+        let e = "root.json";
+        this.node.fs.existsSync(e) ||
+          this.node.fs.writeFileSync(
+            e,
+            JSON.stringify({}),
+            { flag: "wx" },
+            (e) => console.log(e)
+          ),
+          (this.root = {}),
+          (e = `${this.name}.json`),
+          this.node.fs.existsSync(e)
+            ? (this.cache = JSON.parse(
+                this.node.fs.readFileSync(`${this.name}.json`)
+              ))
+            : (this.node.fs.writeFileSync(
+                e,
+                JSON.stringify({}),
+                { flag: "wx" },
+                (e) => console.log(e)
+              ),
+              (this.cache = {}));
+      }
+    }
+    persistCache() {
+      const e = JSON.stringify(this.cache);
+      s && $prefs.setValueForKey(e, this.name),
+        (o || i) && $persistentStore.write(e, this.name),
+        n &&
+          (this.node.fs.writeFileSync(
+            `${this.name}.json`,
+            e,
+            { flag: "w" },
+            (e) => console.log(e)
+          ),
+          this.node.fs.writeFileSync(
+            "root.json",
+            JSON.stringify(this.root),
+            { flag: "w" },
+            (e) => console.log(e)
+          ));
+    }
+    write(e, t) {
+      this.log(`SET ${t}`),
+        -1 !== t.indexOf("#")
+          ? ((t = t.substr(1)),
+            i & o && $persistentStore.write(e, t),
+            s && $prefs.setValueForKey(e, t),
+            n && (this.root[t] = e))
+          : (this.cache[t] = e),
+        this.persistCache();
+    }
+    read(e) {
+      return (
+        this.log(`READ ${e}`),
+        -1 === e.indexOf("#")
+          ? this.cache[e]
+          : ((e = e.substr(1)),
+            i & o
+              ? $persistentStore.read(e)
+              : s
+              ? $prefs.valueForKey(e)
+              : n
+              ? this.root[e]
+              : void 0)
+      );
+    }
+    delete(e) {
+      this.log(`DELETE ${e}`),
+        -1 !== e.indexOf("#")
+          ? ((e = e.substr(1)),
+            i & o && $persistentStore.write(null, e),
+            s && $prefs.removeValueForKey(e),
+            n && delete this.root[e])
+          : delete this.cache[e],
+        this.persistCache();
+    }
+    notify(e, t = "", u = "", h = {}) {
+      const c = h["open-url"],
+        d = h["media-url"],
+        l = u + (c ? `\n点击跳转: ${c}` : "") + (d ? `\n多媒体: ${d}` : "");
+      if (
+        (s && $notify(e, t, u, h),
+        i && $notification.post(e, t, l),
+        o && $notification.post(e, t, u, c),
+        n)
+      )
+        if (r) {
+          require("push").schedule({ title: e, body: (t ? t + "\n" : "") + l });
+        } else console.log(`${e}\n${t}\n${l}\n\n`);
+    }
+    log(e) {
+      this.debug && console.log(e);
+    }
+    info(e) {
+      console.log(e);
+    }
+    error(e) {
+      console.log("ERROR: " + e);
+    }
+    wait(e) {
+      return new Promise((t) => setTimeout(t, e));
+    }
+    done(e = {}) {
+      s || o || i
+        ? $done(e)
+        : n &&
+          !r &&
+          "undefined" != typeof $context &&
+          (($context.headers = e.headers),
+          ($context.statusCode = e.statusCode),
+          ($context.body = e.body));
+    }
+  })(e, t);
+}
 /*****************************************************************************/
