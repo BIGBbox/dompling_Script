@@ -910,7 +910,7 @@ function Calendar(data) {
     🎂下一个生日：${result[0]}-${result[1]}-${
       result[2]
     }\n
-    💖倒计天数：${result[3]}`;
+    💖倒计天数：${result[3]} 天`;
   };
   this.birthBylunar = function (y, m, d, isLeapMonth) {
     if (isLeapMonth && this.leapMonth(y) == m) {
