@@ -17,7 +17,7 @@ const $ = API("calendar", true);
 var dataSource = [
   {
     username: "恒屁屁", // 姓名
-    avatar: "", // 头像图片默认显示第一张图片
+    avatar: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2252995695,1967820885&fm=26&gp=0.jpg", // 头像图片默认显示第一张图片
     birthday: "1995-6-1",
     physiologicalDefault: "2020-8-20", // 最近一次来周期时间
     physiologicalCycle: 25, // 下一次周期
