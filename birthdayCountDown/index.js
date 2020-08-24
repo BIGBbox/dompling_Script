@@ -18,7 +18,7 @@ var dataSource = [
   {
     username: "小可爱", // 姓名
     avatar:
-      "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2252995695,1967820885&fm=26&gp=0.jpg", // 头像图片默认显示第一张图片
+      "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598291420876&di=ca30e4680add93da1ac5d33625a43cdc&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170519%2F991eabfea5d846c2923a1c3f73d080b2_th.jpg", // 头像图片默认显示第一张图片
     birthday: "1995-6-1",
     physiologicalDefault: "2020-8-20", // 最近一次来周期时间
     physiologicalCycle: 25, // 下一次周期
