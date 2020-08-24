@@ -18,7 +18,7 @@ var dataSource = [
   {
     username: "小可爱", // 姓名
     avatar:
-      "https://lh3.googleusercontent.com/ogw/ADGmqu-JXQrFaTmT8_3Tnf4kWZuApVzhNWrbit41qS6D=s83-c-mo", // 头像图片
+      "https://lh3.googleusercontent.com/ogw/ADGmqu-JXQrFaTmT8_3Tnf4kWZuApVzhNWrbit41qS6D=s83-c-mohttp://pic.netbian.com/uploads/allimg/190323/235101-15533562612e76.jpg", // 头像图片默认显示第一张图片
     birthday: "1995-6-1",
     nongli: true, // 农历生日
     isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
@@ -57,7 +57,7 @@ if (verify) {
      });
      birthdayMessage += birthdayText + "\n\n";
    }
-   console.log(birthdayMessage);
+   $.log(birthdayMessage);
    $.notify("📆生日提醒", "", birthdayMessage, {
      "media-url": dataSource[0].avatar,
    });
@@ -887,11 +887,14 @@ function Calendar(data) {
       }
     }
     var result = [date.cYear, date.cMonth, date.cDay, this.daysBetween(date)];
-    return `[${config.username}]🐣破壳日(${
-      config.nongli ? "农历📆" : "公历📆"
-    })：${config.birthday}\n🎂下一个生日：${result[0]}-${result[1]}-${
+    return `[${config.username}]\n
+    🐣破壳日(${
+      config.nongli ? "农历" : "公历"
+    }📆)：${config.birthday}\n
+    🎂下一个生日：${result[0]}-${result[1]}-${
       result[2]
-    }\n💖倒计天数：${result[3]}`;
+    }\n
+    💖倒计天数：${result[3]}`;
   };
   this.birthBylunar = function (y, m, d, isLeapMonth) {
     if (isLeapMonth && this.leapMonth(y) == m) {
