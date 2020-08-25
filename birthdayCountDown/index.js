@@ -51,8 +51,6 @@ if (birthday_physiologicalCycle)
 var birthday_nongli = $.read("birthday_nongli");
 if (birthday_nongli) nongli = birthday_nongli;
 
-
-
 const _birthdayConfig = {
   username, // 姓名
   birthday, // 生日日期
