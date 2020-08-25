@@ -27,10 +27,6 @@ var physiologicalDefault = "birthday_physiologicalDefault"; // 最近一次来�
 var physiologicalCycle = "birthday_physiologicalCycle"; // 下一次周期
 var nongli = "birthday_nongli"; // 是否农历生日
 
-if(){
-  
-}
-
 const _birthdayConfig = {
   username, // 姓名
   birthday, // 生日日期
