@@ -2,7 +2,7 @@
 const cookieName = 'ymatou';
 const $ = new API(cookieName, true);
 const cookieVal = $request.headers["Cookie"];
-console.log(request);
+console.log($request);
 if (cookieVal) {
   let cookie = $.write(cookieVal, cookieName);
   if (cookie) {
