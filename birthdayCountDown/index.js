@@ -34,6 +34,7 @@ const $ = API("birthday", true);
 
 var birthday_mediaImg = $.read("mediaImg");
 if (mediaImg) mediaImg = birthday_mediaImg;
+$.log("媒体图片：" + mediaImg);
 
 var birthday_username = $.read("username");
 if (birthday_username) username = birthday_username;
@@ -131,7 +132,7 @@ if (verify) {
     }
       `;
     }
-    $.log(mediaImg);
+   
     $.log(birthdayMessage);
     $.notify("📆生日提醒", "🐣破壳日", birthdayMessage, {
       "media-url": mediaImg,
