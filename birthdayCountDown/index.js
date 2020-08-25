@@ -33,8 +33,9 @@ var nongli = false; // 是否农历生日
 const $ = API("birthday", true);
 
 var birthday_mediaImg = $.read("mediaImg");
-if (birthday_mediaImg) mediaImg = birthday_mediaImg;
+if (!mediaImg) mediaImg = birthday_mediaImg;
 $.log("缓存：" + JSON.stringify($.cache));
+$.log("媒体图片：" + mediaImg);
 
 var birthday_username = $.read("username");
 if (birthday_username) username = birthday_username;
