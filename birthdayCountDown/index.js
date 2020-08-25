@@ -1,6 +1,6 @@
 /**
 生日倒计时 v0.1 alpha
-@author: DUMPLING
+@author: DUMPLING YaYa
 
 TODO:
 - 提醒生日
