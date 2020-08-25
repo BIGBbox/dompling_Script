@@ -32,7 +32,9 @@ var nongli = ""; // 是否农历生日
 
 const $ = API("birthday", true);
 
-var birthdayCache= $.read("birthday");
+var birthdayCache = $.read("birthday");
+
+$.log(birthdayCache);
 
 if (birthdayCache.mediaImg) mediaImg = birthdayCache.mediaImg;
 if (birthdayCache.username) username = birthdayCache.username;
@@ -52,7 +54,6 @@ const _birthdayConfig = {
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 
-$.log(_birthdayConfig);
 
 var dataSource = [_birthdayConfig];
 var verify = true;
