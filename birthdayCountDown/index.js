@@ -24,8 +24,8 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 
 
 var mediaImg = ""; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
-var username = "小可爱"; // 姓名
-var birthday = "1995-6-28"; // 生日日期
+var username = ""; // 姓名
+var birthday = ""; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
 var nongli = false; // 是否农历生日
@@ -49,7 +49,7 @@ var pCycle = $.read("pCycle");
 if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
-if (birthday_nongli) nongli = !!birthday_nongli;
+nongli = !!birthday_nongli;
 
 const _birthdayConfig = {
   username, // 姓名
@@ -60,7 +60,7 @@ const _birthdayConfig = {
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 
-$.log("基础数据：" +_birthdayConfig);
+$.log("基础数据：" + JSON.stringify(_birthdayConfig));
 $.log("媒体图片：" + mediaImg);
 
 var dataSource = [_birthdayConfig];
