@@ -28,7 +28,7 @@ var username = ""; // 姓名
 var birthday = ""; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
-var nongli = ""; // 是否农历生日
+var nongli = false; // 是否农历生日
 
 const $ = API("birthday", true);
 
