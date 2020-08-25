@@ -24,8 +24,8 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 
 
 var mediaImg = ""; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
-var username = " 小可爱"; // 姓名
-var birthday = "1995-6-28"; // 生日日期
+var username = ""; // 姓名
+var birthday = ""; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
 var nongli = false; // 是否农历生日
@@ -33,23 +33,23 @@ var nongli = false; // 是否农历生日
 const $ = API("birthday", true);
 
 var birthday_mediaImg = $.read("mediaImg");
-if (!mediaImg) mediaImg = birthday_mediaImg;
+if (birthday_mediaImg) mediaImg = birthday_mediaImg;
 $.log("缓存：" + JSON.stringify($.cache));
 
 var birthday_username = $.read("username");
-if (!username) username = birthday_username;
+if (birthday_username) username = birthday_username;
 
 var birthday_time = $.read("time");
-if (!birthday) birthday = birthday_time;
+if (birthday_time) birthday = birthday_time;
 
 var pDefault = $.read("pDefault");
-if (!physiologicalDefault) physiologicalDefault = pDefault;
+if (pDefault) physiologicalDefault = pDefault;
 
 var pCycle = $.read("pCycle");
-if (!physiologicalCycle) physiologicalCycle = pCycle;
+if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
-if (!nongli) nongli = !!birthday_nongli;
+if (birthday_nongli) nongli = !!birthday_nongli;
 
 const _birthdayConfig = {
   username, // 姓名
