@@ -8,6 +8,48 @@
     "birthday_physiologicalCycle",
     "birthday_nongli"
   ],
+  "settings": [
+    {
+      "id": "birthday_username",
+      "name": "姓名",
+      "val": null,
+      "type": "text",
+      "autoGrow": false,
+      "rows": 2,
+      "desc": "第一个提示的姓名。"
+    },
+    {
+      "id": "birthday_time",
+      "name": "出生年月",
+      "val": "1995-6-1",
+      "type": "text",
+      "rows": 1,
+      "desc": "出身年月格式为：年-月-日。"
+    },
+    {
+      "id": "birthday_nongli",
+      "name": "农历",
+      "val": true,
+      "type": "boolean",
+      "desc": "是否是农历日期。"
+    },
+    {
+      "id": "birthday_physiologicalDefault",
+      "name": "生理期",
+      "val": "2020-8-20",
+      "type": "text",
+      "rows": 1,
+      "desc": "最近一次生理期时间，非必填。"
+    },
+    {
+      "id": "birthday_physiologicalCycle",
+      "name": "生理期区间",
+      "val": 24,
+      "type": "text",
+      "rows": 1,
+      "desc": "生理期区间，最近一次生理期开始计算。若有问题，请重填生理期。"
+    }
+  ],
   "author": "@domplingYaYa",
   "repo": "https://github.com/dompling/Script/tree/master/birthdayCountDown",
   "icons": [
