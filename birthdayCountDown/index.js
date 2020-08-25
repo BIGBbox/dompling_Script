@@ -34,7 +34,7 @@ const $ = API("birthday", true);
 
 var birthday_mediaImg = $.read("mediaImg");
 if (mediaImg) mediaImg = birthday_mediaImg;
-$.log("媒体图片：" + mediaImg);
+$.log("缓存：" + $.cache);
 
 var birthday_username = $.read("username");
 if (birthday_username) username = birthday_username;
