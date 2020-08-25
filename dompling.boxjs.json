@@ -28,17 +28,17 @@
           "id": "@birthday.nongli",
           "name": "农历",
           "val": true,
-          "type": "boolean",
-          "desc": "是否是农历生日。"
+          "type": "boolean"
         },
         {
           "id": "@birthday.mediaImg",
           "name": "内容媒体图",
-          "val": "https://api.dujin.org/pic/",
+          "val": null,
           "type": "text",
           "autoGrow": false,
           "rows": 2,
-          "desc": "默认取的随机推送图片"
+          "placeholder": "默认取的随机推送图片",
+          "desc": "https://api.dujin.org/pic;必应随机 api 接口"
         },
         {
           "id": "@birthday.username",
@@ -47,31 +47,33 @@
           "type": "text",
           "autoGrow": false,
           "rows": 2,
-          "desc": "第一个提示的姓名。"
+          "placeholder": "必填姓名"
         },
         {
           "id": "@birthday.time",
           "name": "出生年月",
-          "val": "1995-6-1",
+          "val": null,
           "type": "text",
           "rows": 2,
-          "desc": "出身年月格式为：年-月-日。"
+          "placeholder": "必填内容，出身年月格式为：年-月-日。"
         },
         {
           "id": "@birthday.pDefault",
           "name": "生理期",
-          "val": "2020-8-20",
+          "val": null,
           "type": "text",
           "rows": 2,
-          "desc": "最近一次生理期时间，非必填。"
+          "placeholder": "最近一次生理期时间",
+          "desc": "非必填"
         },
         {
           "id": "@birthday.pCycle",
           "name": "生理期区间",
-          "val": 24,
+          "val": null,
           "type": "text",
           "rows": 2,
-          "desc": "生理期区间，最近一次生理期开始计算。若有问题，请重填生理期。"
+          "placeholder": "生理期区间，最近一次生理期开始计算。",
+          "desc": "非必填；计算不准时，请重填生理期。"
         }
       ]
     }
