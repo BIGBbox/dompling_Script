@@ -24,6 +24,13 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/birthdayCountDown/index.js",
       "settings": [
         {
+          "id": "birthday_nongli",
+          "name": "农历",
+          "val": true,
+          "type": "boolean",
+          "desc": "是否是农历生日。"
+        },
+        {
           "id": "birthday_username",
           "name": "姓名",
           "val": null,
@@ -41,18 +48,11 @@
           "desc": "出身年月格式为：年-月-日。"
         },
         {
-          "id": "birthday_nongli",
-          "name": "农历",
-          "val": true,
-          "type": "boolean",
-          "desc": "是否是农历日期。"
-        },
-        {
           "id": "birthday_physiologicalDefault",
           "name": "生理期",
           "val": "2020-8-20",
           "type": "text",
-          "rows": 1,
+          "rows": 2,
           "desc": "最近一次生理期时间，非必填。"
         },
         {
@@ -60,7 +60,7 @@
           "name": "生理期区间",
           "val": 24,
           "type": "text",
-          "rows": 1,
+          "rows": 2,
           "desc": "生理期区间，最近一次生理期开始计算。若有问题，请重填生理期。"
         }
       ]
