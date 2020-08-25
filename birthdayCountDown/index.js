@@ -59,8 +59,6 @@ const _birthdayConfig = {
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 
-$.log(_birthdayConfig);
-
 var dataSource = [_birthdayConfig];
 var verify = true;
 for (var i = 0; i < dataSource.length; i++) {
@@ -108,6 +106,7 @@ if (verify) {
           i
         );
       }
+      $.log(physiologicalDay);
       birthdayMessage += `
 [${data.username}🐣破壳日]
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
