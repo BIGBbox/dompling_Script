@@ -6,11 +6,8 @@ TODO:
 - 提醒生日
 
 配置：
-1 birthdayList 支持多个人，复制一分根据配置填写即可
-2 配置
-根据平台添加如下配置
-[task]
-0 9 * * * calendar.js
+1️⃣birthdayList 支持多个人，复制一分根据配置填写即可
+2️⃣配置cron任务如：0 0 * * *
 */
 const $ = API("calendar", true);
 
