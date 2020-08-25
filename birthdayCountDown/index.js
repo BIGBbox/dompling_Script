@@ -32,18 +32,25 @@ var nongli = ""; // 是否农历生日
 
 const $ = API("birthday", true);
 
-var birthdayCache = $.read("birthday");
+var birthday_mediaImg = $.read("mediaImg");
+if (mediaImg) mediaImg = birthday_mediaImg;
 
-$.log(birthdayCache);
+var birthday_username = $.read("username");
+if (birthday_username) username = birthday_username;
 
-if (birthdayCache.mediaImg) mediaImg = birthdayCache.mediaImg;
-if (birthdayCache.username) username = birthdayCache.username;
-if (birthdayCache.time) birthday = birthdayCache.time;
-if (birthdayCache.physiologicalDefault)
-  physiologicalDefault = birthdayCache.physiologicalDefault;
-if (birthdayCache.physiologicalCycle)
-  physiologicalCycle = birthdayCache.physiologicalCycle;
-if (birthdayCache.nongli) nongli = birthdayCache.nongli;
+var birthday_time = $.read("time");
+if (birthday_time) birthday = birthday_time;
+
+var birthday_physiologicalDefault = $.read("physiologicalDefault");
+if (birthday_physiologicalDefault)
+  physiologicalDefault = birthday_physiologicalDefault;
+
+var birthday_physiologicalCycle = $.read("physiologicalCycle");
+if (birthday_physiologicalCycle)
+  physiologicalCycle = birthday_physiologicalCycle;
+
+var birthday_nongli = $.read("nongli");
+if (birthday_nongli) nongli = birthday_nongli;
 
 const _birthdayConfig = {
   username, // 姓名
@@ -54,6 +61,7 @@ const _birthdayConfig = {
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 
+$.log(_birthdayConfig);
 
 var dataSource = [_birthdayConfig];
 var verify = true;
