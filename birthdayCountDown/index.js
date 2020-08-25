@@ -114,7 +114,7 @@ if (verify) {
         );
       }
       birthdayMessage += `
-[${data.username}]
+[🐣${data.username}🐣]
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
         solarData.IDayCn
       }) （${solarData.ncWeek}）
@@ -140,7 +140,7 @@ if (verify) {
     }
    
     $.log(birthdayMessage);
-    $.notify("📆生日提醒", "🐣破壳日", birthdayMessage, {
+    $.notify("📆生日提醒", "", birthdayMessage, {
       "media-url": mediaImg,
     });
   };
