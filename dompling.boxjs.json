@@ -9,6 +9,7 @@
       "id": "birthday",
       "name": "生日倒计时",
       "keys": [
+        "birthday_mediaImg",
         "birthday_username",
         "birthday_time",
         "birthday_physiologicalDefault",
@@ -29,6 +30,15 @@
           "val": true,
           "type": "boolean",
           "desc": "是否是农历生日。"
+        },
+        {
+          "id": "birthday_mediaImg",
+          "name": "内容媒体图",
+          "val": "https://api.wrdan.com/randimg",
+          "type": "text",
+          "autoGrow": false,
+          "rows": 2,
+          "desc": "默认取的随机推送图片"
         },
         {
           "id": "birthday_username",
