@@ -49,7 +49,7 @@ var pCycle = $.read("pCycle");
 if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
-nongli = !!birthday_nongli;
+if(birthday_nongli==="true") nongli = true;
 
 const _birthdayConfig = {
   username, // 姓名
@@ -99,6 +99,7 @@ if (verify) {
       var nextBirthday = birthdayText[0];
       var solarData;
       if (params.nongli) {
+        console.log('农历');
         solarData = calendar.lunar2solar(
           params.year,
           params.month,
@@ -106,6 +107,7 @@ if (verify) {
           params.isLeapMonth
         );
       } else {
+        console.log('公历');
         solarData = calendar.solar2lunar(params.year, params.month, params.day);
       }
 
