@@ -106,7 +106,7 @@ if (verify) {
           i
         );
       }
-      $.log(physiologicalDay);
+      $.log(data);
       birthdayMessage += `
 [${data.username}🐣破壳日]
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
