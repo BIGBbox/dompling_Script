@@ -33,23 +33,23 @@ var nongli = ""; // 是否农历生日
 const $ = API("birthday", true);
 
 var birthday_mediaImg = $.read("mediaImg");
-if (mediaImg) mediaImg = birthday_mediaImg;
+if (!mediaImg) mediaImg = birthday_mediaImg;
 $.log("缓存：" + JSON.stringify($.cache));
 
 var birthday_username = $.read("username");
-if (birthday_username) username = birthday_username;
+if (!username) username = birthday_username;
 
 var birthday_time = $.read("time");
-if (birthday_time) birthday = birthday_time;
+if (!birthday) birthday = birthday_time;
 
 var pDefault = $.read("pDefault");
-if (pDefault) physiologicalDefault = pDefault;
+if (!physiologicalDefault) physiologicalDefault = pDefault;
 
 var pCycle = $.read("pCycle");
-if (pCycle) physiologicalCycle = pCycle;
+if (!physiologicalCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
-if (birthday_nongli) nongli = birthday_nongli;
+if (!nongli) nongli = birthday_nongli;
 
 const _birthdayConfig = {
   username, // 姓名
