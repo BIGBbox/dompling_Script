@@ -12,8 +12,8 @@
         "@birthday.mediaImg",
         "@birthday.username",
         "@birthday.time",
-        "@birthday.physiologicalDefault",
-        "@birthday.physiologicalCycle",
+        "@birthday.pDefault",
+        "@birthday.pCycle",
         "@birthday.nongli"
       ],
       "icons": [

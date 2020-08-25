@@ -41,13 +41,11 @@ if (birthday_username) username = birthday_username;
 var birthday_time = $.read("time");
 if (birthday_time) birthday = birthday_time;
 
-var birthday_physiologicalDefault = $.read("physiologicalDefault");
-if (birthday_physiologicalDefault)
-  physiologicalDefault = birthday_physiologicalDefault;
+var pDefault = $.read("pDefault");
+if (pDefault) physiologicalDefault = pDefault;
 
-var birthday_physiologicalCycle = $.read("physiologicalCycle");
-if (birthday_physiologicalCycle)
-  physiologicalCycle = birthday_physiologicalCycle;
+var pCycle = $.read("pCycle");
+if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
 if (birthday_nongli) nongli = birthday_nongli;
@@ -111,8 +109,7 @@ if (verify) {
         );
       }
       birthdayMessage += `
-[${data.username}]
-    🐣破壳日：
+[${data.username}🐣破壳日]
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
         solarData.IDayCn
       }) （${solarData.ncWeek}）
