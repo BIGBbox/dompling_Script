@@ -58,6 +58,7 @@ const _birthdayConfig = {
   nongli, // 农历生日
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
+$.log(mediaImg);
 
 var dataSource = [_birthdayConfig];
 var verify = true;
@@ -175,7 +176,8 @@ function getPhysiological(d, r, i) {
   var i_day = $.read("physiologicalDefault_" + i),
     _default = d,
     range = r;
-  if (i_day) {
+  var dateFormat = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+  if (dateFormat.test(i_day)) {
     _default = i_day;
   } else {
     $.write(_default, "physiologicalDefault_" + i);
