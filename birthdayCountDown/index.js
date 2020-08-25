@@ -22,7 +22,7 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 10 0 0 * * * https://raw.githubusercontent.com/dompling/Script/master/birthdayCountDown/index.js
 */
 const $ = API("birthday", true);
-var cacheConfig=$.read("birthday");
+var cacheConfig = $.read("#birthday");
 
 var mediaImg = ""; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
 
