@@ -34,7 +34,7 @@
         {
           "id": "@birthday.mediaImg",
           "name": "内容媒体图",
-          "val": "https://api.wrdan.com/randimg",
+          "val": "https://api.dujin.org/pic/",
           "type": "text",
           "autoGrow": false,
           "rows": 2,
