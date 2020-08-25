@@ -108,17 +108,22 @@ if (verify) {
         );
       }
       birthdayMessage += `
-[${data.username}🐣破壳日]
+[${data.username}]
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
         solarData.IDayCn
       }) （${solarData.ncWeek}）
+
     📆公历：${solarData.cYear}-${solarData.cMonth}-${solarData.cDay}
+
     🐽属相：${solarData.Animal} ${getAnimalZodiacToEmoji(solarData.Animal)}
+
     🌠星座：${solarData.astro} ${getAstroToEmoji(solarData.astro)}
+
     🎂下个生日：${nextBirthday.cYear}-${nextBirthday.cMonth}-${
         nextBirthday.cDay
       }
     💖生日倒计：${birthdayText[1]} 天
+
     ${
       physiologicalDay
         ? `🆘生理期：${physiologicalDay[0]} 天  📆：${physiologicalDay[1]}`
@@ -128,7 +133,7 @@ if (verify) {
     }
     $.log(mediaImg);
     $.log(birthdayMessage);
-    $.notify("📆生日提醒", "", birthdayMessage, {
+    $.notify("📆生日提醒", "🐣破壳日", birthdayMessage, {
       "media-url": mediaImg,
     });
   };
