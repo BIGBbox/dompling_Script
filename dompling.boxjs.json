@@ -1,7 +1,13 @@
 {
   "id": "birthday",
   "name": "生日倒计时",
-  "keys": ["chavy_cookie_ximalaya"],
+  "keys": [
+    "birthday_username",
+    "birthday_time",
+    "birthday_physiologicalDefault",
+    "birthday_physiologicalCycle",
+    "birthday_nongli"
+  ],
   "author": "@domplingYaYa",
   "repo": "https://github.com/dompling/Script/tree/master/birthdayCountDown",
   "icons": [

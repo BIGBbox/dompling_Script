@@ -19,20 +19,29 @@ TODO:
 */
 const $ = API("birthday", true);
 
-var dataSource = [
-  {
-    username: "小可爱", // 姓名
-    avatar: "https://api.wrdan.com/randimg", // 头像图片默认显示第一张图片，随机 bing 应 api 背景
-    birthday: "1995-6-1",
-    physiologicalDefault: "2020-8-20", // 最近一次来周期时间
-    physiologicalCycle: 25, // 下一次周期
-    nongli: true, // 农历生日
-    isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
-  },
-];
+var mediaImg = "https://api.wrdan.com/randimg"; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
 
+var username = "birthday_username"; // 姓名
+var birthday = "birthday_time"; // 生日日期
+var physiologicalDefault = "birthday_physiologicalDefault"; // 最近一次来周期时间
+var physiologicalCycle = "birthday_physiologicalCycle"; // 下一次周期
+var nongli = "birthday_nongli"; // 是否农历生日
+
+if(){
+  
+}
+
+const _birthdayConfig = {
+  username, // 姓名
+  birthday, // 生日日期
+  physiologicalDefault, // 最近一次来周期时间
+  physiologicalCycle, // 下一次周期
+  nongli, // 农历生日
+  isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
+};
+
+var dataSource = [_birthdayConfig];
 var verify = true;
-var isPhysiological = true;
 for (var i = 0; i < dataSource.length; i++) {
   var data = dataSource[i];
   if (!data.birthday || !data.username) {
@@ -43,9 +52,6 @@ for (var i = 0; i < dataSource.length; i++) {
       ""
     );
     break;
-  }
-  if (!data.physiologicalDefault || !data.physiologicalCycle) {
-    isPhysiological = false;
   }
 }
 
@@ -73,11 +79,15 @@ if (verify) {
         params.day,
         params.isLeapMonth
       );
-      var physiologicalDay = getPhysiological(
-        data.physiologicalDefault,
-        data.physiologicalCycle,
-        i
-      );
+      var physiologicalDay = false;
+      if (data.physiologicalDefault && data.physiologicalCycle) {
+        physiologicalDay = getPhysiological(
+          data.physiologicalDefault,
+          data.physiologicalCycle,
+          i
+        );
+      }
+
       $.log(solarData);
       birthdayMessage += `
 [${data.username}]
@@ -92,12 +102,16 @@ if (verify) {
         nextBirthday.cDay
       }
     💖生日倒计：${birthdayText[1]} 天
-    🆘生理期：${physiologicalDay[0]} 天  📆：${physiologicalDay[1]}
+    ${
+      physiologicalDay
+        ? `🆘生理期：${physiologicalDay[0]} 天  📆：${physiologicalDay[1]}`
+        : ""
+    }
       `;
     }
     $.log(birthdayMessage);
     $.notify("📆生日提醒", "", birthdayMessage, {
-      "media-url": dataSource[0].avatar,
+      "media-url": mediaImg,
     });
     return birthdayMessage;
   };
