@@ -31,25 +31,17 @@ var physiologicalCycle = ""; // 下一次周期
 var nongli = ""; // 是否农历生日
 
 const $ = API("birthday", true);
-var birthday_mediaImg = $.read("birthday_mediaImg");
-if (birthday_mediaImg) mediaImg = birthday_mediaImg;
 
-var birthday_username = $.read("birthday_username");
-if (birthday_username) username = birthday_username;
+var birthdayCache= $.read("birthday");
 
-var birthday_time = $.read("birthday_time");
-if (birthday_time) birthday = birthday_time;
-
-var birthday_physiologicalDefault = $.read("birthday_physiologicalDefault");
-if (birthday_physiologicalDefault)
-  physiologicalDefault = birthday_physiologicalDefault;
-
-var birthday_physiologicalCycle = $.read("birthday_physiologicalCycle");
-if (birthday_physiologicalCycle)
-  physiologicalCycle = birthday_physiologicalCycle;
-
-var birthday_nongli = $.read("birthday_nongli");
-if (birthday_nongli) nongli = birthday_nongli;
+if (birthdayCache.mediaImg) mediaImg = birthdayCache.mediaImg;
+if (birthdayCache.username) username = birthdayCache.username;
+if (birthdayCache.time) birthday = birthdayCache.time;
+if (birthdayCache.physiologicalDefault)
+  physiologicalDefault = birthdayCache.physiologicalDefault;
+if (birthdayCache.physiologicalCycle)
+  physiologicalCycle = birthdayCache.physiologicalCycle;
+if (birthdayCache.nongli) nongli = birthdayCache.nongli;
 
 const _birthdayConfig = {
   username, // 姓名

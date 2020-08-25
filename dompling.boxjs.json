@@ -9,12 +9,12 @@
       "id": "birthday",
       "name": "生日倒计时",
       "keys": [
-        "birthday_mediaImg",
-        "birthday_username",
-        "birthday_time",
-        "birthday_physiologicalDefault",
-        "birthday_physiologicalCycle",
-        "birthday_nongli"
+        "@birthday.mediaImg",
+        "@birthday.username",
+        "@birthday.time",
+        "@birthday.physiologicalDefault",
+        "@birthday.physiologicalCycle",
+        "@birthday.nongli"
       ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/birthday.png",
@@ -25,14 +25,14 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/birthdayCountDown/index.js",
       "settings": [
         {
-          "id": "birthday_nongli",
+          "id": "@birthday.nongli",
           "name": "农历",
           "val": true,
           "type": "boolean",
           "desc": "是否是农历生日。"
         },
         {
-          "id": "birthday_mediaImg",
+          "id": "@birthday.mediaImg",
           "name": "内容媒体图",
           "val": "https://api.wrdan.com/randimg",
           "type": "text",
@@ -41,7 +41,7 @@
           "desc": "默认取的随机推送图片"
         },
         {
-          "id": "birthday_username",
+          "id": "@birthday.username",
           "name": "姓名",
           "val": null,
           "type": "text",
@@ -50,7 +50,7 @@
           "desc": "第一个提示的姓名。"
         },
         {
-          "id": "birthday_time",
+          "id": "@birthday.time",
           "name": "出生年月",
           "val": "1995-6-1",
           "type": "text",
@@ -58,7 +58,7 @@
           "desc": "出身年月格式为：年-月-日。"
         },
         {
-          "id": "birthday_physiologicalDefault",
+          "id": "@birthday.physiologicalDefault",
           "name": "生理期",
           "val": "2020-8-20",
           "type": "text",
@@ -66,7 +66,7 @@
           "desc": "最近一次生理期时间，非必填。"
         },
         {
-          "id": "birthday_physiologicalCycle",
+          "id": "@birthday.physiologicalCycle",
           "name": "生理期区间",
           "val": 24,
           "type": "text",
