@@ -138,6 +138,7 @@ if (verify) {
     });
   };
   birthdayNotify();
+  $.done();
 }
 
 function getAstroToEmoji(astro) {
