@@ -2,8 +2,16 @@
 生日倒计时 v0.1 alpha
 @author: DUMPLING YaYa
 
+图标：
+🔘彩色版本: https://raw.githubusercontent.com/Orz-3/task/master/birthday.png
+🔘透明版本: https://raw.githubusercontent.com/Orz-3/mini/master/birthday.png
+
 TODO:
 - 提醒生日
+- 计算属相
+- 计算星座
+- 提醒生理期
+- 生日倒计时
 
 配置：
 1️⃣birthdayList 支持多个人，复制一分根据配置填写即可
