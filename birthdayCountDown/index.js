@@ -59,7 +59,6 @@ const _birthdayConfig = {
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 
-
 var dataSource = [_birthdayConfig];
 var verify = true;
 for (var i = 0; i < dataSource.length; i++) {
@@ -122,6 +121,7 @@ if (verify) {
     🎂下个生日：${nextBirthday.cYear}-${nextBirthday.cMonth}-${
         nextBirthday.cDay
       }
+      
     💖生日倒计：${birthdayText[1]} 天
 
     ${
