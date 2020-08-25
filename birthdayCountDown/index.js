@@ -21,26 +21,37 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 [quanx]
 10 0 0 * * * https://raw.githubusercontent.com/dompling/Script/master/birthdayCountDown/index.js
 */
-const $ = API("birthday", true);
-var cacheConfig = $.read("#birthday");
+
 
 var mediaImg = ""; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
-
-// "birthday_username",
-//         "birthday_time",
-//         "birthday_physiologicalDefault",
-//         "birthday_physiologicalCycle",
-//         "birthday_nongli"
-
-        
 var username = ""; // 姓名
 var birthday = ""; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
 var nongli = ""; // 是否农历生日
 
+const $ = API("birthday", true);
+var birthday_mediaImg = $.read("birthday_mediaImg");
+if (birthday_mediaImg) mediaImg = birthday_mediaImg;
 
-$.log(cacheConfig);
+var birthday_username = $.read("birthday_username");
+if (birthday_username) username = birthday_username;
+
+var birthday_time = $.read("birthday_time");
+if (birthday_time) birthday = birthday_time;
+
+var birthday_physiologicalDefault = $.read("birthday_physiologicalDefault");
+if (birthday_physiologicalDefault)
+  physiologicalDefault = birthday_physiologicalDefault;
+
+var birthday_physiologicalCycle = $.read("birthday_physiologicalCycle");
+if (birthday_physiologicalCycle)
+  physiologicalCycle = birthday_physiologicalCycle;
+
+var birthday_nongli = $.read("birthday_nongli");
+if (birthday_nongli) nongli = birthday_nongli;
+
+
 
 const _birthdayConfig = {
   username, // 姓名
@@ -50,6 +61,8 @@ const _birthdayConfig = {
   nongli, // 农历生日
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
+
+$.log(_birthdayConfig);
 
 var dataSource = [_birthdayConfig];
 var verify = true;
