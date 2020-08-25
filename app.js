@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
     } else {
       var _res = eval(data);
       console.log(_res);
-      res.end("console.log ");
+      res.end("onload ready");
     }
   });
 });
