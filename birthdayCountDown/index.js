@@ -50,7 +50,7 @@ if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
 if(birthday_nongli==="true") nongli = true;
-
+console.log(birthday_nongli);
 const _birthdayConfig = {
   username, // 姓名
   birthday, // 生日日期
