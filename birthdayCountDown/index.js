@@ -65,8 +65,8 @@ if (verify) {
       birthdayMessage += `
 [${data.username}]
     🐣破壳日：
-        📆农历：${solarData.gzYear}(${solarData.cYear})  ${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${solarData.IDayCn}) （${solarData.ncWeek}）
-        📆公历：${solarData.cYear}-${solarData.cMonth}-${solarData.cDay}
+    📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${solarData.IDayCn}) （${solarData.ncWeek}）
+    📆公历：${solarData.cYear}-${solarData.cMonth}-${solarData.cDay}
     🐽属相：${solarData.Animal} ${getAnimalZodiacToEmoji(solarData.Animal)}
     🌠星座：${solarData.astro} ${getAstroToEmoji(solarData.astro)}
     🎂下个生日：${nextBirthday.cYear}-${nextBirthday.cMonth}-${nextBirthday.cDay}
