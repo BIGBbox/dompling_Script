@@ -58,7 +58,7 @@
           "desc": "出身年月格式为：年-月-日。"
         },
         {
-          "id": "@birthday.physiologicalDefault",
+          "id": "@birthday.pDefault",
           "name": "生理期",
           "val": "2020-8-20",
           "type": "text",
@@ -66,7 +66,7 @@
           "desc": "最近一次生理期时间，非必填。"
         },
         {
-          "id": "@birthday.physiologicalCycle",
+          "id": "@birthday.pCycle",
           "name": "生理期区间",
           "val": 24,
           "type": "text",
