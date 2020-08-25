@@ -139,6 +139,8 @@ if (verify) {
   };
   birthdayNotify();
   $.done();
+} else {
+  $.done();
 }
 
 function getAstroToEmoji(astro) {
