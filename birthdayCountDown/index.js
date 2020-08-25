@@ -58,7 +58,7 @@ const _birthdayConfig = {
   nongli, // 农历生日
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
-$.log(mediaImg);
+
 
 var dataSource = [_birthdayConfig];
 var verify = true;
@@ -126,11 +126,11 @@ if (verify) {
     }
       `;
     }
+    $.log(mediaImg);
     $.log(birthdayMessage);
     $.notify("📆生日提醒", "", birthdayMessage, {
       "media-url": mediaImg,
     });
-    return birthdayMessage;
   };
   birthdayNotify();
 }
