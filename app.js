@@ -13,8 +13,7 @@ const server = http.createServer((req, res) => {
     if (err) {
       console.log("index.js loading is failed :" + err);
     } else {
-      var _res = eval(data);
-      console.log(_res);
+      eval(data);
       res.end("onload ready");
     }
   });
