@@ -147,7 +147,7 @@ if (verify) {
     }
     ${
       acquaintance
-        ? `☁️相识天数：${acquaintance} 天  📆：${data.eday}`
+        ? `💏相识天数：${acquaintance} 天  📆：${data.eday}`
         : ""
     }
       `;
