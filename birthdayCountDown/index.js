@@ -150,12 +150,12 @@ if (verify) {
         nextBirthday.cDay
       }
       
-    💖生日倒计：${birthdayText[1] || "0"} 天
+    💖生日倒计：${birthdayText[1] || "0"} 天\n
       `;
       if (physiologicalDay) {
         birthdayMessage += `🆘生理期：${physiologicalDay[0] || ""} 天  📆：${
           physiologicalDay[1] || ""
-        }`;
+        }\n`;
       }
       if (acquaintance) {
         birthdayMessage += `💏相识天数：${acquaintance} 天   📆：${data.eday}`;
