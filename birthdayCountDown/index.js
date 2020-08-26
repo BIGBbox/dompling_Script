@@ -27,7 +27,7 @@ var birthday = ""; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
 var eday = ""; // 相识日期
-var loveWords=false;
+var loveWords = false;
 var nongli = false; // 是否农历生日
 
 const $ = API("birthday", true);
@@ -54,6 +54,9 @@ if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
 if (birthday_nongli === "true") nongli = true;
+
+var _loveWords = $.read("loveWords");
+if (_loveWords === "true") loveWords = true;
 
 const _birthdayConfig = {
   username, // 姓名
