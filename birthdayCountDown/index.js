@@ -27,6 +27,7 @@ var birthday = "1995-6-28"; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
 var eday = "1995-6-28"; // 相识日期
+var loveWords=false;
 var nongli = false; // 是否农历生日
 
 const $ = API("birthday", true);
@@ -82,9 +83,11 @@ if (verify) {
   var calendar = new Calendar(dataSource);
  
   async function birthdayNotify() {
-    const loveWords = await getEveryDaySay().finally((res) => {
-      $.done({ bdoy: res });
-    });
+    if (loveWords) {
+      loveWords = await getEveryDaySay().finally((res) => {
+        $.done({ bdoy: res });
+      });
+    }
     var birthdayMessage = `\n`;
     for (var i = 0; i < dataSource.length; i++) {
       var data = dataSource[i];
@@ -125,7 +128,7 @@ if (verify) {
         );
       }
       birthdayMessage += `
-[🐣${data.username}🐣]：${loveWords}
+[🐣${data.username}🐣]：${loveWords||""}
 
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
         solarData.IDayCn

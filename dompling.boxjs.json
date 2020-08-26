@@ -15,7 +15,8 @@
         "@birthday.pDefault",
         "@birthday.pCycle",
         "@birthday.nongli",
-        "@birthday.eday"
+        "@birthday.eday",
+        "@birthday.loveWords"
       ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/birthday.png",
@@ -28,6 +29,12 @@
         {
           "id": "@birthday.nongli",
           "name": "农历",
+          "val": true,
+          "type": "boolean"
+        },
+        {
+          "id": "@birthday.loveWords",
+          "name": "每日情话",
           "val": true,
           "type": "boolean"
         },
