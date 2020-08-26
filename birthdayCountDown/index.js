@@ -142,7 +142,7 @@ if (verify) {
     const loveWords = await getEveryDaySay().finally((res) => {
       $.done({ bdoy: res });
     });
-    console.log(loveWords);
+    console.log(birthdayMessage, mediaImg);
     $.notify("📆生日提醒", loveWords, birthdayMessage, {
       "media-url": mediaImg,
     });
