@@ -21,7 +21,7 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 [quanx]
 10 0 0 * * * https://raw.githubusercontent.com/dompling/Script/master/birthdayCountDown/index.js
 */
-var mediaImg = "https://api.dujin.org/pic"; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
+var mediaImg = ""; // 头像图片默认显示第一张图片，随机 bing 应 api 背景：https://api.dujin.org/pic
 var username = ""; // 姓名
 var birthday = ""; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
@@ -31,8 +31,6 @@ var loveWords = false;
 var nongli = false; // 是否农历生日
 
 const $ = API("birthday", true);
-const ERR = MYERR();
-
 
 var birthday_mediaImg = $.read("mediaImg");
 if (birthday_mediaImg) mediaImg = birthday_mediaImg;
@@ -159,9 +157,13 @@ if (verify) {
         birthdayMessage += `💏相识天数：${acquaintance} 天   📆：${data.eday}`;
       }
       $.log(birthdayMessage);
-      $.notify("嘿，在干嘛呀？", "", birthdayMessage, {
-        "media-url": mediaImg,
-      });
+      if ($.env.isSurge) {
+        $.notify("嘿，在干嘛呀？", "", birthdayMessage);
+      } else {
+        $.notify("嘿，在干嘛呀？", "", birthdayMessage, {
+          "media-url": mediaImg,
+        });
+      }
     }
     $.done();
   };

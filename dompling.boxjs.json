@@ -39,16 +39,6 @@
           "type": "boolean"
         },
         {
-          "id": "@birthday.mediaImg",
-          "name": "内容媒体图",
-          "val": null,
-          "type": "text",
-          "autoGrow": false,
-          "rows": 2,
-          "placeholder": "默认取的随机推送图片",
-          "desc": "https://api.dujin.org/pic;必应随机 api 接口"
-        },
-        {
           "id": "@birthday.username",
           "name": "姓名",
           "val": null,
@@ -64,6 +54,16 @@
           "type": "text",
           "rows": 2,
           "placeholder": "必填内容，出身年月格式为：年-月-日。"
+        },
+        {
+          "id": "@birthday.mediaImg",
+          "name": "内容媒体图",
+          "val": null,
+          "type": "text",
+          "autoGrow": false,
+          "rows": 2,
+          "placeholder": "默认取的随机推送图片",
+          "desc": "非必填"
         },
         {
           "id": "@birthday.eday",
