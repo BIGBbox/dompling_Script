@@ -21,7 +21,7 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 [quanx]
 10 0 0 * * * https://raw.githubusercontent.com/dompling/Script/master/birthdayCountDown/index.js
 */
-var mediaImg = ""; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
+var mediaImg = "https://api.dujin.org/pic"; // 头像图片默认显示第一张图片，随机 bing 应 api 背景
 var username = "小可爱"; // 姓名
 var birthday = "1995-6-28"; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
@@ -33,8 +33,7 @@ const ERR = MYERR();
 
 
 var birthday_mediaImg = $.read("mediaImg");
-if (!mediaImg) mediaImg = birthday_mediaImg;
-
+if (birthday_mediaImg) mediaImg = birthday_mediaImg;
 
 var birthday_username = $.read("username");
 if (birthday_username) username = birthday_username;
