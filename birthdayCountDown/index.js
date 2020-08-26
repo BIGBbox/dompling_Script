@@ -91,6 +91,7 @@ if (verify) {
     var birthdayMessage = `\n`;
     for (var i = 0; i < dataSource.length; i++) {
       var data = dataSource[i];
+      $.log("数据：" + JSON.stringify(data));
       var birthday = data.birthday.split("-");
 
       var params = {
@@ -150,7 +151,7 @@ if (verify) {
 
     ${acquaintance ? `💏相识天数：${acquaintance} 天   📆：${data.eday}` : ""}
       `;
-      console.log(birthdayMessage, mediaImg);
+      $.log(birthdayMessage);
       $.notify("嘿，在干嘛呀？", "", birthdayMessage, {
         "media-url": mediaImg,
       });
