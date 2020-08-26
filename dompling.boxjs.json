@@ -14,7 +14,8 @@
         "@birthday.time",
         "@birthday.pDefault",
         "@birthday.pCycle",
-        "@birthday.nongli"
+        "@birthday.nongli",
+        "@birthday.eday"
       ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/birthday.png",
@@ -56,6 +57,15 @@
           "type": "text",
           "rows": 2,
           "placeholder": "必填内容，出身年月格式为：年-月-日。"
+        },
+        {
+          "id": "@birthday.eday",
+          "name": "情侣相识日期",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "相识的日期",
+          "desc": "非必填"
         },
         {
           "id": "@birthday.pDefault",

@@ -26,6 +26,7 @@ var username = "小可爱"; // 姓名
 var birthday = "1995-6-28"; // 生日日期
 var physiologicalDefault = ""; // 最近一次来周期时间
 var physiologicalCycle = ""; // 下一次周期
+var eday = "1995-6-28"; // 相识日期
 var nongli = false; // 是否农历生日
 
 const $ = API("birthday", true);
@@ -44,18 +45,22 @@ if (birthday_time) birthday = birthday_time;
 var pDefault = $.read("pDefault");
 if (pDefault) physiologicalDefault = pDefault;
 
+var _eday = $.read("eday");
+if (_eday) eday = _eday;
+
 var pCycle = $.read("pCycle");
 if (pCycle) physiologicalCycle = pCycle;
 
 var birthday_nongli = $.read("nongli");
 if(birthday_nongli==="true") nongli = true;
-console.log(birthday_nongli);
+
 const _birthdayConfig = {
   username, // 姓名
   birthday, // 生日日期
   physiologicalDefault, // 最近一次来周期时间
   physiologicalCycle, // 下一次周期
   nongli, // 农历生日
+  eday,
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 var dataSource = [_birthdayConfig];
@@ -102,6 +107,10 @@ if (verify) {
       } else {
         solarData = calendar.solar2lunar(params.year, params.month, params.day);
       }
+      var acquaintance = false;
+      if (verifyTime(data.eday)) {
+        acquaintance = getEdayNumber(data.eday);
+      }
 
       var physiologicalDay = false;
       if (verifyTime(data.physiologicalDefault) && data.physiologicalCycle) {
@@ -136,13 +145,20 @@ if (verify) {
           }`
         : ""
     }
+    ${
+      acquaintance
+        ? `☁️相识天数：${acquaintance} 天  📆：${data.eday}`
+        : ""
+    }
       `;
     }
+
+
     const loveWords = await getEveryDaySay().finally((res) => {
       $.done({ bdoy: res });
     });
     console.log(birthdayMessage, mediaImg);
-    $.notify("📆生日提醒", loveWords, birthdayMessage, {
+    $.notify(loveWords, "", birthdayMessage, {
       "media-url": mediaImg,
     });
   };
@@ -165,6 +181,17 @@ async function getEveryDaySay() {
       console.log(content);
       return content;
     });
+}
+
+
+function getEdayNumber(date){
+  var initDay = date.split("-");
+  var obj = {
+    cYear: parseInt(initDay[0]),
+    cMonth: parseInt(initDay[1]),
+    cDay: parseInt(initDay[2]),
+  };
+  return Math.abs(calendar.daysBetween(obj));
 }
 
 function getAstroToEmoji(astro) {
