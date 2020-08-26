@@ -80,6 +80,9 @@ for (var i = 0; i < dataSource.length; i++) {
 
 if (verify) {
   var calendar = new Calendar(dataSource);
+  const loveWords = await getEveryDaySay().finally((res) => {
+    $.done({ bdoy: res });
+  });
   async function birthdayNotify() {
     var birthdayMessage = `\n`;
     for (var i = 0; i < dataSource.length; i++) {
@@ -121,7 +124,8 @@ if (verify) {
         );
       }
       birthdayMessage += `
-[🐣${data.username}🐣]
+[🐣${data.username}🐣]：${loveWords}
+
     📆农历：${solarData.gzMonth}(${solarData.IMonthCn})  ${solarData.gzDay} (${
         solarData.IDayCn
       }) （${solarData.ncWeek}）
@@ -138,21 +142,18 @@ if (verify) {
       
     💖生日倒计：${birthdayText[1] || "0"} 天
 
-    ${physiologicalDay? `🆘生理期：${physiologicalDay[0] || ""} 天  📆：${physiologicalDay[1] || ""}`: ""}${acquaintance ? `💏相识天数：${acquaintance} 天   📆：${data.eday}` : ""}
+    ${physiologicalDay? `🆘生理期：${physiologicalDay[0] || ""} 天  📆：${physiologicalDay[1] || ""}`: ""}
+
+    ${acquaintance ? `💏相识天数：${acquaintance} 天   📆：${data.eday}` : ""}
       `;
+      console.log(birthdayMessage, mediaImg);
+      $.notify("嘿，在干嘛呀？", "", birthdayMessage, {
+        "media-url": mediaImg,
+      });
     }
-
-
-    const loveWords = await getEveryDaySay().finally((res) => {
-      $.done({ bdoy: res });
-    });
-    console.log(birthdayMessage, mediaImg);
-    $.notify(loveWords, "", birthdayMessage, {
-      "media-url": mediaImg,
-    });
+    $.done();
   };
   birthdayNotify();
-  $.done();
 } else {
   $.done();
 }
