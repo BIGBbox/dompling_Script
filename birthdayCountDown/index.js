@@ -62,8 +62,8 @@ if (!$.env.isScriptable) {
   if (_loveWords === "true") loveWords = true;
   if (_loveWords === "") loveWords = false;
 } else {
-  const boxJs = await geScriptBoxJsData();
-  console.log(boxJs);
+  // const boxJs = await geScriptBoxJsData();
+  // console.log(boxJs);
 }
 
 
