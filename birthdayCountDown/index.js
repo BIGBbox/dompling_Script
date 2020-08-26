@@ -80,10 +80,11 @@ for (var i = 0; i < dataSource.length; i++) {
 
 if (verify) {
   var calendar = new Calendar(dataSource);
-  const loveWords = await getEveryDaySay().finally((res) => {
-    $.done({ bdoy: res });
-  });
+ 
   async function birthdayNotify() {
+    const loveWords = await getEveryDaySay().finally((res) => {
+      $.done({ bdoy: res });
+    });
     var birthdayMessage = `\n`;
     for (var i = 0; i < dataSource.length; i++) {
       var data = dataSource[i];
