@@ -42,7 +42,11 @@ var birthday_time = $.read("time");
 if (birthday_time) birthday = birthday_time;
 
 var pDefault = $.read("pDefault");
-if (pDefault) physiologicalDefault = pDefault;
+
+if (pDefault) {
+  physiologicalDefault = pDefault;
+}
+
 
 var _eday = $.read("eday");
 if (_eday) eday = _eday;
@@ -241,9 +245,17 @@ function verifyTime(date){
 }
 
 function getPhysiological(d, r, i) {
+  var lastPDefault = $.read("lastPDefault_" + i);
+  if (lastPDefault !== d) {
+    $.write(d, "physiologicalDefault_" + i);
+  }
+  if (!lastPDefault) {
+    $.write(d, "lastPDefault_" + i);
+  }
   var i_day = $.read("physiologicalDefault_" + i),
     _default = d,
     range = r;
+
   if (verifyTime(i_day)) {
     _default = i_day;
   } else {
