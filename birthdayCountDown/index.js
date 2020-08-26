@@ -149,11 +149,15 @@ if (verify) {
       }
       
     💖生日倒计：${birthdayText[1] || "0"} 天
-
-    ${physiologicalDay? `🆘生理期：${physiologicalDay[0] || ""} 天  📆：${physiologicalDay[1] || ""}`: ""}
-
-    ${acquaintance ? `💏相识天数：${acquaintance} 天   📆：${data.eday}` : ""}
       `;
+      if (physiologicalDay) {
+        birthdayMessage += `🆘生理期：${physiologicalDay[0] || ""} 天  📆：${
+          physiologicalDay[1] || ""
+        }`;
+      }
+      if (acquaintance) {
+        birthdayMessage += `💏相识天数：${acquaintance} 天   📆：${data.eday}`;
+      }
       $.log(birthdayMessage);
       $.notify("嘿，在干嘛呀？", "", birthdayMessage, {
         "media-url": mediaImg,
