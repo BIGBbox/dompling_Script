@@ -24,6 +24,10 @@ const accessToken = $.read("accessToken"); // URL的 accessToken
 const deviceId = $.read("deviceId");  // 设备 ID
 const cookie = $.read("cookie"); // 登陆 Cookie
 
+if(cookie){
+  $.notify("👘洋码头", "为获取到cookie",'请获取设备信息和Cookie');
+}
+
 const baseUrl ='https://m.ymatou.com/coin/api/';
 
 const headers = {
