@@ -42,7 +42,6 @@ const commonCofing = {
 !(async () => {
   const signRes = await sign();
   const coinRes = await getCoin();
-  console.log(coinRes);
   let title = "👘洋码头",
     subtitle,
     content;
