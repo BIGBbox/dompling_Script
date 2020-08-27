@@ -6,6 +6,15 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
+      "id": "ymatou",
+      "name": "洋码头",
+      "keys": ["@ymatou.ymatou_cookie"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/oneSay/oneSay.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/oneSay/oneSay.js"
+    },
+    {
       "id": "oneSay",
       "name": "每日一句",
       "keys": ["@oneSay.mediaImg", "@oneSay.username"],
