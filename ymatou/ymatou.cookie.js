@@ -1,11 +1,10 @@
 
-const cookieName = "ymatou_cookie";
-const $ = new API(cookieName, true);
+const cookieName = "cookie";
+const $ = new API("ymatou", true);
 const cookieVal = $request.headers["Cookie"];
 if (cookieVal) {
-  let cookie = $.write(cookieVal, cookieName);
-  let msg = `${cookieName}`;
-  console.log(msg);
+  $.write(cookieVal, cookieName);
+  let msg = "洋码头";
   console.log(cookieVal);
   $.notify(msg, "Cookie写入成功", "详见日志");
 }

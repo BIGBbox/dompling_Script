@@ -8,7 +8,7 @@
     {
       "id": "ymatou",
       "name": "洋码头",
-      "keys": ["@ymatou.ymatou_cookie"],
+      "keys": ["@ymatou.cookie"],
       "icons": [],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/oneSay/oneSay.js",
