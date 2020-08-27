@@ -2,7 +2,7 @@
 const $ = new API("oneSay", true);
 
 !(async ($) => {
-  const username = $.read("username");
+  const username = $.read("username") || "";
   const mediaImg = $.read("mediaImg");
   let obj = await getOneSay();
   let date = new Date();
