@@ -56,15 +56,17 @@ if (!$.env.isScriptable) {
 
   var birthday_nongli = $.read("nongli");
   if (birthday_nongli === "true") nongli = true;
-  if (birthday_nongli === "") nongli = false;
-
+  if (birthday_nongli === "false") nongli = false;
+  
   var _loveWords = $.read("loveWords");
   if (_loveWords === "true") loveWords = true;
-  if (_loveWords === "") loveWords = false;
+  if (_loveWords === "false") loveWords = false;
 } else {
   // const boxJs = await geScriptBoxJsData();
   // console.log(boxJs);
 }
+
+
 
 
 
