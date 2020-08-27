@@ -1,5 +1,91 @@
 
+/**
+ *
+ * hostname = app.ymatou.com
+ *
+ * # Surge
+ * Rewrite: ymatou = type=http-request,pattern=^https:\/\/app\.ymatou\.com\/api\/trading\/scartprodnum,script-path=https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.cookie.js,debug=true
+ * Tasks: ymatou-签到 = type=cron,cronexp=10 0 * * *,script-path=https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.js,wake-system=true
+ *
+ * # QuanX
+ * ^https:\/\/app\.ymatou\.com\/api\/trading\/scartprodnum url script-request-header https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.cookie.js
+ * 10 0 * * * https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.js, tag=洋码头-签到
+ *
+ * # Loon
+ * http-response ^https:\/\/app\.ymatou\.com\/api\/trading\/scartprodnum script-path=https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.cookie.js
+ * cron "10 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.js
+ * 
+ * # 获取方式:进入签到页面获取，手机 APP: 洋码头
+ */
 
+const $ = new API("ymatou", true);
+
+const accessToken = $.read("accessToken"); // URL的 accessToken
+const deviceId = $.read("deviceId");  // 设备 ID
+const cookie = $.read("cookie"); // 登陆 Cookie
+
+const baseUrl ='https://m.ymatou.com/coin/api/';
+
+const headers = {
+  Cookie: cookie,
+  "Content-Type": `application/json`,
+  "User-Agent": "*",
+};
+
+const body = { accessToken, deviceId };
+
+const commonCofing = {
+  headers: headers,
+  body: JSON.stringify(body),
+};
+
+!(async () => {
+  const signRes = await sign();
+  const coinRes = await getCoin();
+  console.log(coinRes);
+  let title = "👘洋码头",
+    subtitle,
+    content;
+  if (signRes.status === 198) {
+    subtitle = signRes.result.message;
+  }
+  if (coinRes.Code === 200) {
+    const { Data } = coinRes;
+    content = `\n💰总硬币：${Data.totalCoin}\n\n💰今日：${Data.curCoin}\n\n💰昨日：${Data.prevCoin}`;
+  }
+  $.notify(title, subtitle, content);
+})()
+  .catch((e) => {
+    console.log(e);
+    $.notify("👘洋码头", "签到失败内容失败",'请重新获取设备信息和Cookie');
+  })
+  .finally(() => {
+    $.done({});
+  });
+
+function sign() {
+  return $.http
+    .post({
+      url: `${baseUrl}postCheckin?accessToken=${accessToken}`,
+      headers: commonCofing.headers,
+      body: commonCofing.body,
+    })
+    .then(({ body }) => {
+      return JSON.parse(body);
+    });
+}
+
+function getCoin() {
+  return $.http
+    .get({
+      url: `${baseUrl}getUserCoin?accessToken=${accessToken}`,
+      headers: commonCofing.headers,
+      body: commonCofing.body,
+    })
+    .then(({ body }) => {
+      return JSON.parse(body);
+    });
+}
 
 // prettier-ignore
 /*********************************** API *************************************/

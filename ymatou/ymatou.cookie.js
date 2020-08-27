@@ -1,9 +1,18 @@
 
+
+//获取 Cookie
 const cookieName = "cookie";
+const accessTokenName = "accessToken";
+const deviceidName = "deviceId";
+
 const $ = new API("ymatou", true);
 const cookieVal = $request.headers["Cookie"];
+const accessToken = $request.headers["ymt-pars"];
+const deviceid = $request.headers["deviceid"];
 if (cookieVal) {
   $.write(cookieVal, cookieName);
+  $.write(accessToken, accessTokenName);
+  $.write(deviceid, deviceidName);
   let msg = "洋码头";
   console.log(cookieVal);
   $.notify(msg, "Cookie写入成功", "详见日志");
