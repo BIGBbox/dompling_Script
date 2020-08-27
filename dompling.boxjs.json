@@ -6,6 +6,36 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
+      "id": "oneSay",
+      "name": "每日一句",
+      "keys": ["@oneSay.mediaImg", "@oneSay.username"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/oneSay/oneSay.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/oneSay/oneSay.js",
+      "settings": [
+        {
+          "id": "@oneSay.username",
+          "name": "姓名",
+          "val": null,
+          "type": "text",
+          "autoGrow": false,
+          "rows": 2,
+          "placeholder": "必填姓名"
+        },
+        {
+          "id": "@oneSay.mediaImg",
+          "name": "内容媒体图",
+          "val": null,
+          "type": "text",
+          "autoGrow": false,
+          "rows": 2,
+          "placeholder": "系统配送图，或者自定义",
+          "desc": "非必填"
+        }
+      ]
+    },
+    {
       "id": "birthday",
       "name": "生日倒计时",
       "keys": [
