@@ -1,6 +1,6 @@
 const $ = importModule("Env");
 const maoyanLink = "https://m.maoyan.com/ajax/movieOnInfoList";
-
+const goupdate = true;
 const defaultColor = [
   "#ffa39e",
   "#ff9c6e",
@@ -69,4 +69,4 @@ const scripts = [
       "https://raw.githubusercontent.com/dompling/Script/master/maoyan.scriptable/maoyan.js",
   },
 ];
-if (goupdate == true) update();
+if (goupdate) update();
