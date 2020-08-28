@@ -19,11 +19,9 @@
  */
 
 const $ = new API("ymatou", true);
-
 const accessToken = $.read("accessToken"); // URL的 accessToken
 const deviceId = $.read("deviceId");  // 设备 ID
 const cookie = $.read("cookie"); // 登陆 Cookie
-
 const baseUrl ='https://m.ymatou.com/coin/api/';
 
 const headers = {
