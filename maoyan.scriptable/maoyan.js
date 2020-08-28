@@ -1,11 +1,19 @@
 const $ = importModule("Env");
 const maoyanLink = "https://m.maoyan.com/ajax/movieOnInfoList";
 
-const defaultColor = ["#ffa39e","#ff9c6e","#ffc069","#ffd666","#5cdbd3","#69c0ff"];
+const defaultColor = [
+  "#ffa39e",
+  "#ff9c6e",
+  "#ffc069",
+  "#ffd666",
+  "#5cdbd3",
+  "#69c0ff",
+];
+
 try {
   const response = await getMaoyan();
   if (response.movieList.length > 0) {
-    createWidget(response);
+    createWidget(response.movieList);
   } else {
     throw new Error("获取内容失败");
   }
@@ -13,25 +21,30 @@ try {
   console.log("异常：" + e);
 }
 
-function createWidget(res) {
-  if (res.status == "ok") {
-    const w = new ListWidget();
-    const bgColor = new LinearGradient();
-    bgColor.colors = [new Color("#1c1c1c"), new Color("#29323c")];
-    bgColor.locations = [0.0, 1.0];
-    w.backgroundGradient = bgColor;
-    w.centerAlignContent();
+function createWidget(data = []) {
+  const w = new ListWidget();
+  const bgColor = new LinearGradient();
+  bgColor.colors = [new Color("#1c1c1c"), new Color("#29323c")];
+  bgColor.locations = [0.0, 1.0];
+  w.backgroundGradient = bgColor;
+  w.centerAlignContent();
 
-    const firstLine = w.addText(`[📣]`);
-    firstLine.textSize = 14;
-    firstLine.textColor = Color.white();
-    firstLine.textOpacity = 0.7;
+  const firstLine = w.addText(`[📣]近期热映电影`);
+  firstLine.textSize = 14;
+  firstLine.textColor = Color.white();
+  firstLine.textOpacity = 0.7;
 
+  data.forEach((item, index) => {
+    renderColorText({
+      text: `${item.nm}-${item.showInfo}(${item.version || "2d"})  出演：${
+        item.star
+      }`,
+      color: defaultColor[index],
+    });
+  });
 
-
-    w.presentMedium();
-    return w;
-  }
+  w.presentMedium();
+  return w;
 }
 
 function renderColorText(data) {
@@ -39,8 +52,6 @@ function renderColorText(data) {
   textObj.textSize = 12;
   textObj.textColor = new Color(data.color);
 }
-
-
 
 //更新代码
 function update() {
@@ -53,9 +64,9 @@ function update() {
 
 const scripts = [
   {
-    moduleName: "RSSMonitor",
+    moduleName: "maoyan",
     url:
-      "https://raw.githubusercontent.com/evilbutcher/Scriptables/master/RSSMonitor.js",
+      "https://raw.githubusercontent.com/dompling/Script/master/maoyan.scriptable/maoyan.js",
   },
 ];
 if (goupdate == true) update();
