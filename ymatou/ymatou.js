@@ -24,10 +24,6 @@ const accessToken = $.read("accessToken"); // URL的 accessToken
 const deviceId = $.read("deviceId");  // 设备 ID
 const cookie = $.read("cookie"); // 登陆 Cookie
 
-if(cookie){
-  $.notify("👘洋码头", "为获取到cookie",'请获取设备信息和Cookie');
-}
-
 const baseUrl ='https://m.ymatou.com/coin/api/';
 
 const headers = {
@@ -44,6 +40,7 @@ const commonCofing = {
 };
 
 !(async () => {
+  if (cookie) throw new Error("请获取设备信息和Cookie");
   const signRes = await sign();
   const coinRes = await getCoin();
   let title = "👘洋码头",
@@ -60,7 +57,7 @@ const commonCofing = {
 })()
   .catch((e) => {
     console.log(e);
-    $.notify("👘洋码头", "签到失败内容失败",'请重新获取设备信息和Cookie');
+    $.notify("👘洋码头", "签到失败内容失败", "请重新获取设备信息和Cookie");
   })
   .finally(() => {
     $.done({});
