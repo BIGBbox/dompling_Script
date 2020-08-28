@@ -15,7 +15,7 @@
  * http-response ^https:\/\/app\.ymatou\.com\/api\/trading\/scartprodnum script-path=https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.cookie.js
  * cron "10 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.js
  * 
- * # 获取方式:进入签到页面获取，手机 APP: 洋码头
+ * # 获取方式:进入签到页面获取，手机 APP: 洋码头->个人中心->右上角签到
  */
 
 const $ = new API("ymatou", true);
@@ -57,7 +57,7 @@ const commonCofing = {
 })()
   .catch((e) => {
     console.log(e);
-    $.notify("👘洋码头", "签到失败内容失败", "请重新获取设备信息和Cookie");
+    $.notify("👘洋码头", "签到失败内容失败", "请获取设备信息和Cookie");
   })
   .finally(() => {
     $.done({});
