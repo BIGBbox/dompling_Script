@@ -16,7 +16,7 @@
     },
     {
       "id": "oneSay",
-      "name": "每日一句",
+      "name": "每天一句",
       "keys": ["@oneSay.mediaImg", "@oneSay.username"],
       "icons": [],
       "author": "@dompling",
@@ -73,7 +73,7 @@
         },
         {
           "id": "@birthday.loveWords",
-          "name": "每日情话",
+          "name": "情话",
           "val": true,
           "type": "boolean"
         },
