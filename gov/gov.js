@@ -37,13 +37,13 @@ const headers = {
   await verfiysign();
   const signRes = await sign();
   if(signRes.errcode===0){
-    $.notify("国家政务服务健康打卡", "", signRes.data.result);
+    $.notify("每日健康打卡", "", signRes.data.result);
   }else{
     throw new Error("打卡失败：" + signRes.errmsg);
   }
 })()
   .catch((e) => {
-    $.notify("国家政务服务健康打卡", "", "❎原因：" + e.message);
+    $.notify("每日健康打卡", "", "❎原因：" + e.message);
   })
   .finally(() => {
     $.done({});
