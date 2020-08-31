@@ -43,7 +43,7 @@ const headers = {
   }
 })()
   .catch((e) => {
-    $.notify("国家政务服务健康打卡", "", "失败原因：" + e.message);
+    $.notify("国家政务服务健康打卡", "", "❎原因：" + e.message);
   })
   .finally(() => {
     $.done({});
