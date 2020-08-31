@@ -9,7 +9,7 @@ const _cityName = "city";
 const did = $request.headers["x-tif-did"];
 const sid = $request.headers["x-tif-sid"];
 const city = $request.headers["x-yss-city-code"];
-
+console.log("头部日志：" + $request);
 if (did && sid) {
   $.write(did, _didName);
   $.write(sid, _sidName);
