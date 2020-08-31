@@ -6,6 +6,15 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
+      "id": "gov",
+      "name": "国家政务服务",
+      "keys": ["@gov.did,@gov.sid,@gov.city"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/gov/gov.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js"
+    },
+    {
       "id": "ymatou",
       "name": "洋码头",
       "keys": ["@ymatou.cookie,@ymatou.accessToken,@ymatou.deviceId"],
