@@ -1,6 +1,8 @@
 
 
 /**
+ *  名称：每日健康打卡
+ *  小程序：国家政务服务
  *  hostname = zwms.gjzwfw.gov.cn
  *  [Rewrite]
  *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/tif\/sys\/session url script-request-header gov.cookie.js

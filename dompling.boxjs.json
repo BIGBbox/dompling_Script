@@ -7,7 +7,7 @@
   "apps": [
     {
       "id": "gov",
-      "name": "国家政务服务",
+      "name": "每日健康打卡",
       "keys": ["@gov.did,@gov.sid,@gov.city"],
       "icons": [],
       "author": "@dompling",
