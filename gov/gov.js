@@ -38,6 +38,7 @@ const headers = {
   const signRes = await sign();
   if(signRes.errcode===0){
     $.notify("每日健康打卡", "", signRes.data.result);
+    $.done();
   }else{
     throw new Error("打卡失败：" + signRes.errmsg);
   }
@@ -46,7 +47,7 @@ const headers = {
     $.notify("每日健康打卡", "", "❎原因：" + e.message);
   })
   .finally(() => {
-    $.done({});
+    $.done();
   });
 
 
