@@ -99,8 +99,10 @@ function sign(body = { request: { model: "Score", action: "signIn" } }) {
   });
 }
 
-
-
+// // 抽奖
+// function getLottery() {
+//   return sign({ request: { model: "Score", action: "luckyLottery" } });
+// }
 
 // prettier-ignore
 /*********************************** API *************************************/
