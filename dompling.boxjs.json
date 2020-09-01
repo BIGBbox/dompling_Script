@@ -15,13 +15,22 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js"
     },
     {
+      "id": "xiaomiyp",
+      "name": "小米有品",
+      "keys": ["@xiaomiyp.cookie"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/xiaomiyp/xiaomiyp.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js"
+    },
+    {
       "id": "ymatou",
       "name": "洋码头",
       "keys": ["@ymatou.cookie,@ymatou.accessToken,@ymatou.deviceId"],
       "icons": [],
       "author": "@dompling",
-      "repo": "https://github.com/dompling/Script/blob/master/oneSay/oneSay.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/oneSay/oneSay.js"
+      "repo": "https://github.com/dompling/Script/blob/master/ymatou/ymatou.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.js"
     },
     {
       "id": "oneSay",

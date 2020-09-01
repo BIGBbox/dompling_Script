@@ -1,101 +1,12 @@
-
-
-/**
- *  名称：每日健康打卡
- *  小程序：国家政务服务
- *  hostname = zwms.gjzwfw.gov.cn
- *  [Rewrite]
- *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/tif\/sys\/session url script-request-header gov.cookie.js
- *  [task]
- *  1 0 * * *  gov.js
- */
-const $ = new API("gov", true);
-
-const rNum = randomString(20);
-const did = $.read('did');
-const sid = $.read("sid");
-const city = $.read("city"); 
-const baseUrl = "https://zwms.gjzwfw.gov.cn/";
-
-const body = {
-  phone: "18408226080",
-  city: "四川省成都市青羊区",
-  xzqhdm: "510105",
-  isContactPatient: "2",
-  symptom: "1",
-  temperature: "36.1",
-};
-
-const headers = {
-  "content-type": `application/json`,
-  "x-tif-did": did,
-  "x-tif-sid": sid,
-  "x-yss-city-code": city
-};
-
-!(async () => {
-  if (!did || !sid) throw new Error("请获取登陆信息或者登陆Cookie"); 
-  await verfiysign();
-  const signRes = await sign();
-  if(signRes.errcode===0){
-    $.notify("每日健康打卡", "", signRes.data.result);
-    $.done();
-  }else{
-    throw new Error("打卡失败：" + signRes.errmsg);
-  }
-})()
-  .catch((e) => {
-    $.notify("每日健康打卡", "", "❎原因：" + e.message);
-  })
-  .finally(() => {
-    $.done();
-  });
-
-
-function randomString(e) {
-  for (
-    var n = e || 16,
-      t = "ABCDEFGHIJKLMNOPQRSTUWXYZabcdefghijklmnopqrstuwxyz0123456789",
-      o = t.length,
-      i = "",
-      s = 0;
-    s < n;
-    s++
-  )
-    i += t.charAt(Math.floor(Math.random() * o));
-  return i;
+//获取 Cookie
+const cookieName = "cookie";
+const $ = new API("xiaomiyp", true);
+const cookieVal = $request.headers["Cookie"];
+if (cookieVal) {
+  $.write(cookieVal, cookieName);
+  $.notify("小米有品", "Cookie写入成功", "详见日志");
 }
-
-function verfiysign() {
-  const url = `${baseUrl}ebus/gss/api/r/health_service/AllHealthQuery?rNum=${rNum}`;
-  const body = {};
-  const params = {
-    url: url,
-    headers: headers,
-    body: JSON.stringify(body),
-  };
-  return $.http.post(params).then(({ body }) => {
-    const response = JSON.parse(body);
-    if (response.data.hasReport) {
-      throw new Error("已打卡");
-    }
-    return response;
-  });
-}
-
-
-function sign() {
-  const url = `${baseUrl}ebus/gss/api/r/health_service/HealthApply?rNum=${rNum}`;
-  const params = {
-    url: url,
-    headers: headers,
-    body: JSON.stringify(body),
-  };
-  return $.http.post(params).then(({ body }) => {
-    const response = JSON.parse(body);
-    return response;
-  });
-}
+$.done({});
 
 // prettier-ignore
 /*********************************** API *************************************/
