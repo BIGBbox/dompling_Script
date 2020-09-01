@@ -4,9 +4,9 @@
  *  小程序：国家政务服务
  *  hostname = zwms.gjzwfw.gov.cn
  *  [Rewrite]
- *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/ebus\/gss\/api\/r\/customercenter\/GetCustomerInfo url script-request-header gov.cookie.js
+ *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/tif\/sys\/session* url script-request-header https://raw.githubusercontent.com/dompling/Script/master/gov/gov.cookie.js
  *  [task]
- *  1 0 * * *  gov.js
+ *  1 0 * * *  https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js
  */
 
 const $ = new API("gov", true);
