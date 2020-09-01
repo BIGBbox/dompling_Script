@@ -68,6 +68,7 @@ function verfiysign() {
   };
   return $.http.post(params).then(({ body }) => {
     const response = JSON.parse(body);
+    console.log(response);
     if (response.errcode === 1002)
       throw new Error(response.errmsg + " 登陆信息过期");
    if (response.data && response.data.yqReports.length > 0) {
@@ -91,6 +92,7 @@ function sign() {
   };
   return $.http.post(params).then(({ body }) => {
     const response = JSON.parse(body);
+    console.log(response);
     return response;
   });
 }
