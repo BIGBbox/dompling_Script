@@ -15,7 +15,7 @@ if (did && sid) {
   $.write(sid, _sidName);
   $.write(city, _cityName);
   let title = "小程序健康打卡";
-  $.notify(title, "Cookie写入成功", "详见日志");
+  $.log(title, "Cookie写入成功", "详见日志");
 }
 
 $.done({});
