@@ -3,9 +3,9 @@
  *
  * hostname = m.xiaomiyoupin.com
  * [Rewrite]
- * ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header xiaomiyp.cookie.js
+ * ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.cookie.js
  * [task]
- * 1 0 * * * xiaomiyp.js
+ * 1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js
  * # 获取方式:进入签到页面获取，https://m.xiaomiyoupin.com:个人中心->我的资产->积分
  */
 
