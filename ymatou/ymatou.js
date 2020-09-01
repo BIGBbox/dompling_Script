@@ -38,7 +38,7 @@ const commonCofing = {
 };
 
 !(async () => {
-  if (cookie) throw new Error("请获取设备信息和Cookie");
+  if (!cookie) throw new Error("请获取设备信息和Cookie");
   const signRes = await sign();
   const coinRes = await getCoin();
   let title = "👘洋码头",
