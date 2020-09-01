@@ -1,14 +1,14 @@
 
-
 /**
  *  名称：每日健康打卡
  *  小程序：国家政务服务
  *  hostname = zwms.gjzwfw.gov.cn
  *  [Rewrite]
- *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/tif\/sys\/session url script-request-header gov.cookie.js
+ *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/ebus\/gss\/api\/r\/customercenter\/GetCustomerInfo url script-request-header gov.cookie.js
  *  [task]
  *  1 0 * * *  gov.js
  */
+
 const $ = new API("gov", true);
 
 const rNum = randomString(20);
