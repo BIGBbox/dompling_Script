@@ -5,5 +5,4 @@
 /.idea
 /.history
 app.js
-oneSay.json
-ymatou.json
+*.json
