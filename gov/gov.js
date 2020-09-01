@@ -16,7 +16,9 @@ const did = $.read("did");
 const sid = $.read("sid");
 const city = $.read("city"); 
 const body = $.read('body');
-
+const date= new Date();
+const today =
+  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 const headers = {
   "content-type": `application/json`,
   "x-tif-did": did,
@@ -68,9 +70,16 @@ function verfiysign() {
   };
   return $.http.post(params).then(({ body }) => {
     const response = JSON.parse(body);
-    console.log(response);
-    if (response.errcode === 1002) throw new Error(response.errmsg + " 失败，未授权");
-    if (response.data.hasReport)  throw new Error("已打卡");
+    if (response.errcode === 1002)
+      throw new Error(response.errmsg + " 登陆信息过期");
+   if (response.data && response.data.yqReports.length > 0) {
+     let isSign = response.data.yqReports[0].date;
+     isSign = isSign
+       .split("-")
+       .map((item) => parseInt(item))
+       .join("-");
+     if (today === isSign) throw new Error("已打卡");
+   }
     return response;
   });
 }
