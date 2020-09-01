@@ -12,7 +12,6 @@ hostname=m.xiaomiyoupin.com
 [rewrite_local]
 ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.cookie.js
 
-
 (2). Loon
 [MITM]
 hostname=m.xiaomiyoupin.com
@@ -55,7 +54,12 @@ const  title = "🍚小米有品";
   let desc =
     (verifyObj.result.signList[0] || {}).descr ||
     "1天1积分，2天2积分，……，5天及以后5积分";
-  count = verifyObj.result.score.data.balance;  
+  count = verifyObj.result.score.data.balance;
+  if (count > 5) {
+    const lottery = await getLottery();
+    $.log(lottery);
+  }
+
   $.notify(title, "", `🕘签到：${msg} (+${point}) 积分：${count} \n📒描述：${desc}`);
   $.done();
 })()
@@ -117,10 +121,10 @@ function sign(body = { request: { model: "Score", action: "signIn" } }) {
   });
 }
 
-// // 抽奖
-// function getLottery() {
-//   return sign({ request: { model: "Score", action: "luckyLottery" } });
-// }
+// 抽奖
+function getLottery() {
+  return sign({ request: { model: "Score", action: "luckyLottery" } });
+}
 
 // prettier-ignore
 /*********************************** API *************************************/
