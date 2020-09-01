@@ -36,7 +36,7 @@ const baseUrl = "https://zwms.gjzwfw.gov.cn/";
 })()
   .catch((e) => {
     console.log(e);
-    // $.notify("每日健康打卡", "", "❎原因：" + e.message);
+    $.notify("每日健康打卡", "", "❎原因：" + e.message);
   })
   .finally(() => {
     $.done();
