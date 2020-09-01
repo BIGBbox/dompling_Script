@@ -19,6 +19,9 @@
         "@gov.body.symptom",
         "@gov.body.temperature"
       ],
+      "desc_html":[
+        "城市的编码可使用<a href=\"https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/areas.json\">数据</a>获取对应的数据Code，并按照此脚本注释进行配置。"
+      ],
       "settings":[
         {
           "id": "@gov.body.phone",
