@@ -1,12 +1,30 @@
 
 /**
- *
- * hostname = m.xiaomiyoupin.com
- * [Rewrite]
- * ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.cookie.js
- * [task]
- * 1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js
- * # 获取方式:进入签到页面获取，https://m.xiaomiyoupin.com:个人中心->我的资产->积分
+ 
+# 获取方式:进入签到页面获取，https://m.xiaomiyoupin.com:个人中心->我的资产->积分
+
+[task_local]
+1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js
+
+(1). Quantumult X
+[MITM]
+hostname=m.xiaomiyoupin.com
+[rewrite_local]
+^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.cookie.js
+
+
+(2). Loon
+[MITM]
+hostname=m.xiaomiyoupin.com
+[Script]
+http-request ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin script-path=https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.cookie.js, require-body=false
+
+(3). Surge
+[MITM]
+hostname=m.xiaomiyoupin.com
+[Script]
+type=http-request, pattern=^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin, script-path=https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.cookie.js, require-body=false
+
  */
 
 const $ = new API("xiaomiyp", true);
