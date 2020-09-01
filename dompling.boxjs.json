@@ -9,9 +9,6 @@
       "id": "gov",
       "name": "每日健康打卡",
       "keys": [
-        "@gov.did",
-        "@gov.sid",
-        "@gov.city",
         "@gov.body.phone",
         "@gov.body.city",
         "@gov.body.xzqhdm",

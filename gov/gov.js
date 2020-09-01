@@ -4,17 +4,15 @@
  *  小程序：国家政务服务
  *  hostname = zwms.gjzwfw.gov.cn
  *  [Rewrite]
- *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/tif\/sys\/session* url script-request-header https://raw.githubusercontent.com/dompling/Script/master/gov/gov.cookie.js
- *  [task]
- *  1 0 * * *  https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js
+ *  ^https:\/\/zwms\.gjzwfw\.gov\.cn\/tif\/sys\/session* url script-request-header https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js
  */
 
 const $ = new API("gov", true);
 
 const rNum = randomString(20);
-const did = $.read("did");
-const sid = $.read("sid");
-const city = $.read("city"); 
+const did = $request.headers["x-tif-did"];
+const sid = $request.headers["x-tif-sid"];
+const city = $request.headers["x-yss-city-code"];
 const body = $.read('body');
 const date= new Date();
 const today =
@@ -38,7 +36,7 @@ const baseUrl = "https://zwms.gjzwfw.gov.cn/";
 })()
   .catch((e) => {
     console.log(e);
-    $.notify("每日健康打卡", "", "❎原因：" + e.message);
+    // $.notify("每日健康打卡", "", "❎原因：" + e.message);
   })
   .finally(() => {
     $.done();
