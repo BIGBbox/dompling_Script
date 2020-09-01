@@ -8,7 +8,73 @@
     {
       "id": "gov",
       "name": "每日健康打卡",
-      "keys": ["@gov.did,@gov.sid,@gov.city"],
+      "keys": [
+        "@gov.did",
+        "@gov.sid",
+        "@gov.city",
+        "@gov.body.phone",
+        "@gov.body.city",
+        "@gov.body.xzqhdm",
+        "@gov.body.isContactPatient",
+        "@gov.body.symptom",
+        "@gov.body.temperature"
+      ],
+      "settings":[
+        {
+          "id": "@gov.body.phone",
+          "name": "手机号",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "联系方式",
+          "desc": "必填"
+        },
+        {
+          "id": "@gov.body.city",
+          "name": "省市区",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "地址",
+          "desc": "必填"
+        },
+        {
+          "id": "@gov.body.xzqhdm",
+          "name": "定位城市编码",
+          "val": "",
+          "type": "text",
+          "rows": 2,
+          "placeholder": "510105",
+          "desc": "必填"
+        },
+        {
+          "id": "@gov.body.symptom",
+          "name": "健康状况",
+          "val": "1",
+          "type": "text",
+          "rows": 2,
+          "placeholder": " 1 没有出现症状",
+          "desc": "必填"
+        },
+        {
+          "id": "@gov.body.isContactPatient",
+          "name": "是否接触新冠",
+          "val": "2",
+          "type": "text",
+          "rows": 2,
+          "placeholder": "2 不确定",
+          "desc": "必填"
+        },
+        {
+          "id": "@gov.body.temperature",
+          "name": "体温",
+          "val": "36.1",
+          "type": "text",
+          "rows": 2,
+          "placeholder": "体温",
+          "desc": "必填"
+        }
+      ],
       "icons": [],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/gov/gov.js",

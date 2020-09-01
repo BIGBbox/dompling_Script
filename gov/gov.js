@@ -15,16 +15,7 @@ const rNum = randomString(20);
 const did = $.read("did");
 const sid = $.read("sid");
 const city = $.read("city"); 
-const baseUrl = "https://zwms.gjzwfw.gov.cn/";
-
-const body = {
-  phone: "18408226080",
-  city: "四川省成都市青羊区",
-  xzqhdm: "510105",
-  isContactPatient: "2",
-  symptom: "1",
-  temperature: "36.1",
-};
+const body = $.read('body');
 
 const headers = {
   "content-type": `application/json`,
@@ -33,18 +24,18 @@ const headers = {
   "x-yss-city-code": city
 };
 
+const baseUrl = "https://zwms.gjzwfw.gov.cn/";
 !(async () => {
-  if (!did || !sid) throw new Error("请获取登陆信息或者登陆Cookie"); 
+  if (!body) throw new Error("请输入基本信息");
+  if (!did || !sid) throw new Error("请获取登陆信息或者登陆Cookie");
   await verfiysign();
   const signRes = await sign();
-  if(signRes.errcode===0){
-    $.notify("每日健康打卡", "", signRes.data.result);
-    $.done();
-  }else{
-    throw new Error("打卡失败：" + signRes.errmsg);
-  }
+  if (signRes.errcode !== 0) throw new Error("打卡失败：" + signRes.errmsg);
+  $.notify("每日健康打卡", "", signRes.data.result);
+  $.done();
 })()
   .catch((e) => {
+    console.log(e);
     $.notify("每日健康打卡", "", "❎原因：" + e.message);
   })
   .finally(() => {
@@ -66,6 +57,7 @@ function randomString(e) {
   return i;
 }
 
+
 function verfiysign() {
   const url = `${baseUrl}ebus/gss/api/r/health_service/AllHealthQuery?rNum=${rNum}`;
   const body = {};
@@ -77,16 +69,11 @@ function verfiysign() {
   return $.http.post(params).then(({ body }) => {
     const response = JSON.parse(body);
     console.log(response);
-    if (response.errcode === 1002) {
-      throw new Error(response.errmsg + " 失败，未授权");
-    }
-    if (response.data.hasReport) {
-      throw new Error("已打卡");
-    }
+    if (response.errcode === 1002) throw new Error(response.errmsg + " 失败，未授权");
+    if (response.data.hasReport)  throw new Error("已打卡");
     return response;
   });
 }
-
 
 function sign() {
   const url = `${baseUrl}ebus/gss/api/r/health_service/HealthApply?rNum=${rNum}`;
