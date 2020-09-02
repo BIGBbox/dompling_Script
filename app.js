@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
   //res.write("response write content.");
 
   //读文件
-  fs.readFile("./youyun/youyun.js", "utf-8", function (err, data) {
+  fs.readFile("./cuuc/cuuc.js", "utf-8", function (err, data) {
     console.log(err, data);
     if (err) {
       console.log("index.js loading is failed :" + err);
