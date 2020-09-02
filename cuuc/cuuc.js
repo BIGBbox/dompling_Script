@@ -28,6 +28,15 @@ const $ = new API("cuuc", true);
 
 console.log($.cache);
 const cookie = $.read("cookie"); // 登陆 Cookie
+cookie = cookie
+  .split("; ")
+  .map((item) => {
+    const temp = item.split("=");
+    return temp[0] === "expire_in"
+      ? `${temp[0]}=${parseInt(temp[1]) + 105660800}`
+      : item;
+  })
+  .join("; ");
 const baseUrl ='https://www.cuuc.club/';
 
 const headers = {
