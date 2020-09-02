@@ -16,12 +16,12 @@
         "@gov.body.symptom",
         "@gov.body.temperature"
       ],
-      "descs_html":[
+      "descs_html": [
         "小程序：国家政务服务",
         "打卡半自动，进入小程序之后会自动打卡上报健康信息",
         "城市的编码可使用【<a href=\"https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/areas.json\">城市区域</a>】获取对应的数据Code，并按照此脚本注释进行配置。"
       ],
-      "settings":[
+      "settings": [
         {
           "id": "@gov.body.phone",
           "name": "手机号",
@@ -97,6 +97,7 @@
       "keys": ["@cuuc.cookie"],
       "icons": [],
       "author": "@dompling",
+      "descs_html": ["Cookie有效时间一周"],
       "repo": "https://github.com/dompling/Script/blob/master/cuuc/cuuc.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/cuuc/cuuc.js"
     },
