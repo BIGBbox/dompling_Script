@@ -16,10 +16,10 @@
         "@gov.body.symptom",
         "@gov.body.temperature"
       ],
-      "desc_html":[
+      "descs_html":[
         "小程序：国家政务服务",
         "打卡半自动，进入小程序之后会自动打卡上报健康信息",
-        "城市的编码可使用<a href=\"https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/areas.json\">数据</a>获取对应的数据Code，并按照此脚本注释进行配置。"
+        "城市的编码可使用【<a href=\"https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/areas.json\">城市区域</a>】获取对应的数据Code，并按照此脚本注释进行配置。"
       ],
       "settings":[
         {
@@ -90,6 +90,15 @@
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/xiaomiyp/xiaomiyp.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js"
+    },
+    {
+      "id": "cuuc",
+      "name": "CU云加速",
+      "keys": ["@cuuc.cookie"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/cuuc/cuuc.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/cuuc/cuuc.js"
     },
     {
       "id": "ymatou",
