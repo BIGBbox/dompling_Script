@@ -90,6 +90,15 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js"
     },
     {
+      "id": "youyun",
+      "name": "优云",
+      "keys": ["@youyun.cookie"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/youyun/youyun.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/youyun/youyun.js"
+    },
+    {
       "id": "ymatou",
       "name": "洋码头",
       "keys": ["@ymatou.cookie,@ymatou.accessToken,@ymatou.deviceId"],
