@@ -1,6 +1,5 @@
-
 /**
- *  名称：每日健康打卡
+ *  名称：每日健康打卡（半自动）
  *  小程序：国家政务服务
  *  hostname = zwms.gjzwfw.gov.cn
  *  [Rewrite]
