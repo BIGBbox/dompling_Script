@@ -70,11 +70,11 @@
         {
           "id": "@gov.body.temperature",
           "name": "体温",
-          "val": "36.1",
+          "val": null,
           "type": "text",
           "rows": 2,
-          "placeholder": "体温",
-          "desc": "必填"
+          "placeholder": "默认随机上报健康区间体温",
+          "desc": "非必填"
         }
       ],
       "icons": [],

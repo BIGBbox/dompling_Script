@@ -13,14 +13,20 @@ const did = $request.headers["x-tif-did"];
 const sid = $request.headers["x-tif-sid"];
 const city = $request.headers["x-yss-city-code"];
 const body = $.read('body');
-const date= new Date();
+if (!body.temperature) {
+  const temperature = `${
+    Math.round((Math.random() * 0.01 + 0.35) * 1000) / 10
+  }`;
+  body.temperature = temperature.length > 3 ? temperature : `${temperature}.0`;
+}
+const date = new Date();
 const today =
   date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 const headers = {
   "content-type": `application/json`,
   "x-tif-did": did,
   "x-tif-sid": sid,
-  "x-yss-city-code": city
+  "x-yss-city-code": city,
 };
 
 const baseUrl = "https://zwms.gjzwfw.gov.cn/";
@@ -30,7 +36,11 @@ const baseUrl = "https://zwms.gjzwfw.gov.cn/";
   await verfiysign();
   const signRes = await sign();
   if (signRes.errcode !== 0) throw new Error("打卡失败：" + signRes.errmsg);
-  $.notify("每日健康打卡", "", signRes.data.result);
+  $.notify(
+    "每日健康打卡",
+    "",
+    `🎊${signRes.data.result}\n 🌡上报体温：${body.temperature}`
+  );
   $.done();
 })()
   .catch((e) => {
@@ -40,7 +50,6 @@ const baseUrl = "https://zwms.gjzwfw.gov.cn/";
   .finally(() => {
     $.done();
   });
-
 
 function randomString(e) {
   for (
@@ -56,7 +65,6 @@ function randomString(e) {
   return i;
 }
 
-
 function verfiysign() {
   const url = `${baseUrl}ebus/gss/api/r/health_service/AllHealthQuery?rNum=${rNum}`;
   const body = {};
@@ -70,14 +78,14 @@ function verfiysign() {
     console.log(response);
     if (response.errcode === 1002)
       throw new Error(response.errmsg + " 登陆信息过期");
-   if (response.data && response.data.yqReports.length > 0) {
-     let isSign = response.data.yqReports[0].date;
-     isSign = isSign
-       .split("-")
-       .map((item) => parseInt(item))
-       .join("-");
-     if (today === isSign) throw new Error("已打卡");
-   }
+    if (response.data && response.data.yqReports.length > 0) {
+      let isSign = response.data.yqReports[0].date;
+      isSign = isSign
+        .split("-")
+        .map((item) => parseInt(item))
+        .join("-");
+      if (today === isSign) throw new Error("已打卡\n 📆：" + response.isSign);
+    }
     return response;
   });
 }
