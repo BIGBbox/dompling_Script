@@ -117,7 +117,10 @@
       "id": "oneSay",
       "name": "每天一句",
       "keys": ["@oneSay.mediaImg", "@oneSay.username"],
-      "icons": [],
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/calendar.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/calendar.png"
+      ],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/oneSay/oneSay.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/oneSay/oneSay.js",
