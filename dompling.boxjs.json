@@ -86,7 +86,10 @@
       "id": "xiaomiyp",
       "name": "小米有品",
       "keys": ["@xiaomiyp.cookie"],
-      "icons": [],
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/task/master/xiaomiyp.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/xiaomiyp.png"
+      ],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/xiaomiyp/xiaomiyp.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js"

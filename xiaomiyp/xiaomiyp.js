@@ -1,6 +1,6 @@
 
 /**
- 
+ 图标 https://raw.githubusercontent.com/Orz-3/task/master/xiaomiyp.png
 # 获取方式:进入签到页面获取，https://m.xiaomiyoupin.com:个人中心->我的资产->积分
 
 [task_local]
