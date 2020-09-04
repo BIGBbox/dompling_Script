@@ -6,6 +6,20 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
+      "id": "historyToday",
+      "name": "历史上的今天",
+      "keys": ["@historyToday.jh_key"],
+      "icons": [],
+      "descs_html": [
+        "历史上的今天需要申请聚合数据的 KEY",
+        "每天免费调用 100 次接口",
+        "聚合数据申请地址【<a href=\"https://dashboard.juhe.cn/data/index/apply/63\">历史上的今天</a>】获取对应的应用 KEY，并按照此脚本注释进行配置。"
+      ],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/historyToday/index.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/historyToday/index.js"
+    },
+    {
       "id": "gov",
       "name": "每日健康打卡",
       "keys": [
