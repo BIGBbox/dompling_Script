@@ -10,6 +10,17 @@
       "name": "历史上的今天",
       "keys": ["@historyToday.api_token"],
       "icons": [],
+      "settings": [
+        {
+          "id": "@historyToday.api_token",
+          "name": "API聚合 TOEK",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "申请的 token",
+          "desc": "必填"
+        }
+      ],
       "descs_html": [
         "历史上的今天需要申请API聚合数据的 KEY",
         "聚合数据申请地址【<a href=\"https://api.bubaijun.com/\">历史上的今天</a>】获取对应的应用 token，并按照此脚本注释进行配置。"
