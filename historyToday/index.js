@@ -1,6 +1,6 @@
 
 /**
- * 在聚合数据里注册申请 key https://dashboard.juhe.cn/data/index/apply/63
+ * 在API聚合数据里注册申请 token https://api.bubaijun.com/home
  * 
  * 
  *[task_local]
@@ -9,13 +9,13 @@
  */
 const $ = new API("historyToday", true);
 const titleName = "📆历史上的今天";
-const jh_key = $.read("jh_key");
+const jh_key = $.read("api_token");
 
 
 const date = new Date();
 const month = date.getMonth() + 1;
 const day = date.getDate();
-const baseUrl = "http://api.juheapi.com/";
+const baseUrl = "https://api.bubaijun.com/api/v1/";
 
 const headers = {
   accept: "*",
@@ -26,13 +26,12 @@ const headers = {
   const response = await getHistoryToday();
   let content = "";
   let thumb=""
-  if (response.result && response.result.length > 0) {
-    let { result = [] } = response;
-    thumb = result.find((item) => item.pic !== "").pic;
-    for (let i = 0; i <= 6; i++) {
-      const item = result[i];
-      content += `[•]${item.title}\n    ${item.des}\n`;
-    }
+  if (response.data && response.data.length > 0) {
+    let { data = [] } = response;
+    console.log(data);
+    data.forEach((item) => {
+      content += `[📍]${item.year}-${item.month}-${item.day}：${item.title}\n`;
+    });
   }
   !$.env.isSurge
     ? $.notify(titleName, "", content, {
@@ -47,15 +46,14 @@ const headers = {
   .finally($.done());
 
 function getHistoryToday() {
-  const params = `v=1&month=${month}&day=${day}&key=${jh_key}`;
+  const params = `token=${jh_key}`;
   const requestConfig = {
-    url: `${baseUrl}japi/toh?${params}`,
+    url: `${baseUrl}today_in_history_all?${params}`,
     headers,
   };
   return $.http.get(requestConfig).then((res) => {
     const { body } = res;
     const response = JSON.parse(body);
-    if (response.error_code) throw new Error(response.reason);
     return response;
   });
 }
