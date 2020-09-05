@@ -13,8 +13,6 @@ const jh_key = $.read("api_token");
 
 
 const date = new Date();
-const month = date.getMonth() + 1;
-const day = date.getDate();
 const baseUrl = "https://api.bubaijun.com/api/v1/";
 
 const headers = {
