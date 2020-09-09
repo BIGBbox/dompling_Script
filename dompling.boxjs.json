@@ -9,7 +9,10 @@
       "id": "historyToday",
       "name": "历史上的今天",
       "keys": ["@historyToday.api_token"],
-      "icons": [],
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/task/master/historyToday.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/historyToday.png"
+      ],
       "settings": [
         {
           "id": "@historyToday.api_token",
