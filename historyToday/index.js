@@ -8,24 +8,24 @@
  */
 const $ = new API("historyToday", true);
 const titleName = "📆历史上的今天";
-const jh_key = $.read("api_token");
-
-const baseUrl = "//api.bubaijun.com/api/v1/";
-
+const baseUrl = "https://zhufred.gitee.io/zreader/ht/event/";
 const headers = {
   accept: "*",
   "Content-type": "application/json",
 };
 
+const date = new Date();
+let month = date.getMonth() + 1;
+month = month > 10 ? month : `0${month}`;
+const day = date.getDate();
+
 !(async ($) => {
-  const response = await getHistoryToday();
+  const data = await getHistoryToday();
   let content = "";
   let thumb = "";
-  if (response.data && response.data.length > 0) {
-    let { data = [] } = response;
-    console.log(data);
+  if (data.length > 0) {
     data.forEach((item) => {
-      content += `[📍]${item.year}-${item.month}-${item.day}：${item.title}\n`;
+      content += `[📍]${item.title}\n`;
     });
   }
   !$.env.isSurge
@@ -41,11 +41,11 @@ const headers = {
   .finally($.done());
 
 function getHistoryToday() {
-  const params = `token=${jh_key}`;
   const requestConfig = {
-    url: `${baseUrl}today_in_history_all?${params}`,
+    url: `${baseUrl}${month}${day}.json`,
     headers,
   };
+  console.log(requestConfig);
   return $.http.get(requestConfig).then((res) => {
     const { body } = res;
     const response = JSON.parse(body);
