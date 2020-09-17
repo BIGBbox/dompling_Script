@@ -21,18 +21,14 @@ const day = date.getDate();
 
 !(async ($) => {
   const data = await getHistoryToday();
-  let content = "";
-  let thumb = "";
+  let content = "",
+    subTitle = `${month}-${day}`;
   if (data.length > 0) {
     data.forEach((item) => {
       content += `[📍]${item.title}\n`;
     });
   }
-  !$.env.isSurge
-    ? $.notify(titleName, "", content, {
-        "media-url": thumb,
-      })
-    : $.notify(titleName, "", content);
+  $.notify(titleName, subTitle, content);
 })($)
   .catch((err) => {
     $.log(err);
