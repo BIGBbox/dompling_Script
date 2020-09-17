@@ -6,20 +6,6 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
-      "id": "historyToday",
-      "name": "历史上的今天",
-      "icons": [
-        "https://raw.githubusercontent.com/Orz-3/task/master/historyToday.png",
-        "https://raw.githubusercontent.com/Orz-3/task/master/historyToday.png"
-      ],
-      "descs_html": [
-        "历史上的今天地址【<a href=\"https://raw.githubusercontent.com/dompling/Script/master/historyToday/index.js\">脚本地址</a>】"
-      ],
-      "author": "@dompling",
-      "repo": "https://github.com/dompling/Script/blob/master/historyToday/index.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/historyToday/index.js"
-    },
-    {
       "id": "gov",
       "name": "每日健康打卡",
       "keys": [
@@ -117,15 +103,6 @@
       "descs_html": ["Cookie有效时间一周"],
       "repo": "https://github.com/dompling/Script/blob/master/cuuc/cuuc.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/cuuc/cuuc.js"
-    },
-    {
-      "id": "ymatou",
-      "name": "洋码头",
-      "keys": ["@ymatou.cookie,@ymatou.accessToken,@ymatou.deviceId"],
-      "icons": [],
-      "author": "@dompling",
-      "repo": "https://github.com/dompling/Script/blob/master/ymatou/ymatou.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/ymatou/ymatou.js"
     },
     {
       "id": "oneSay",
