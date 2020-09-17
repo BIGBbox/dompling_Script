@@ -2,7 +2,7 @@
 const cookieName = "cookie";
 const $ = new API("xiaomiyp", true);
 const cookieVal = $request.headers["Cookie"];
-if (cookieVal) {
+if (cookieVal.indexOf('youpindistinct_id') > 0) {
   $.write(cookieVal, cookieName);
   $.notify("小米有品", "Cookie写入成功", "详见日志");
 }
