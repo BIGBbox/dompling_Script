@@ -31,10 +31,7 @@ const day = date.getDate();
   if ($.env.isSurge) {
     $.notify(titleName, subTitle, content);
   } else {
-    $.notify(titleName, subTitle, content, {
-      "media-url":
-        "https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&sharp=15&w=1400",
-    });
+    $.notify(titleName, subTitle, content);
   }
 })($)
   .catch((err) => {
