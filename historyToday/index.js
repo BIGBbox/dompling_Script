@@ -25,7 +25,7 @@ const day = date.getDate();
     subTitle = `${month}-${day}`;
   if (data.length > 0) {
     data.forEach((item) => {
-      content += `[📍]${item.title}\n`;
+      content += `[📍]${item.title}\n\n`;
     });
   }
   if ($.env.isSurge) {
