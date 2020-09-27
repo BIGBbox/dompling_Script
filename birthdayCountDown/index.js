@@ -198,19 +198,9 @@ if (verify) {
       }
     }
   }
-  if ($.env.isScriptable) {
-    birthdayNotify();
-  } else {
-    birthdayNotify();
-  }
+  birthdayNotify();
 } else {
   if (!$.env.isScriptable) $.done();
-}
-
-async function geScriptBoxJsData() {
-  return $.http.get("http://boxjs.com/query/boxdata").then(({ body }) => {
-    return body;
-  });
 }
 
 async function getEveryDaySay() {
