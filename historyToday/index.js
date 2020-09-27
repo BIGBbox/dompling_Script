@@ -28,7 +28,14 @@ const day = date.getDate();
       content += `[📍]${item.title}\n`;
     });
   }
-  $.notify(titleName, subTitle, content);
+  if ($.env.isSurge) {
+    $.notify(titleName, subTitle, content);
+  } else {
+    $.notify(titleName, subTitle, content, {
+      "media-url":
+        "https://images.pexels.com/photos/3178786/pexels-photo-3178786.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&sharp=15&w=1400",
+    });
+  }
 })($)
   .catch((err) => {
     $.log(err);
