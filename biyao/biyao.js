@@ -1,12 +1,96 @@
-//获取 Cookie
-const cookieName = "cookie";
-const $ = new API("cuuc", true);
-const cookieVal = $request.headers["Cookie"];
-if (cookieVal) {
-  $.write(cookieVal, cookieName);
-  $.notify("CU云加速", "Cookie写入成功", "详见日志");
+/**
+ 图标 https://raw.githubusercontent.com/Orz-3/task/master/biyao.png
+# 获取方式:进入签到页面获取
+
+[task_local]
+1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.js
+
+(1). Quantumult X
+[MITM]
+hostname=m.xiaomiyoupin.com
+[rewrite_local]
+^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
+
+(2). Loon
+[MITM]
+hostname=m.xiaomiyoupin.com
+[Script]
+http-request ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
+
+(3). Surge
+[MITM]
+hostname=m.xiaomiyoupin.com
+[Script]
+type=http-request, pattern=^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin, script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
+
+ */
+
+const $ = new API("biyao");
+const $cache = $.cache;
+const baseURL = "https://marketappapi.biyao.com";
+// const apiURl = "https://appapi.biyao.com";
+const title = "🛎必要";
+const options = {
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded;text/html;charset=utf-8",
+    ...$cache,
+  },
+};
+
+const comonBody = {
+  token: $cache.token,
+  uid: $cache.uid,
+};
+
+(async () => {
+  const signResult = await sign();
+  const { data = {} } = signResult;
+  if (!data.currentHighestInfo) throw new Error("签到失败");
+  const currentHighestInfo = data.currentHighestInfo;
+  $.log(data);
+  console.log(currentHighestInfo);
+  const content = `
+  ${currentHighestInfo.canBookedCoin}
+  💰总金币金币：${currentHighestInfo.currentTotalCoin}
+  🎁${currentHighestInfo.coinHint}:${currentHighestInfo.coin}
+  🎉预计：${currentHighestInfo.canBookedCoin}🎉[左滑打开详情]`;
+  $.notify(title, "签到成功", content, {
+    "open-url": currentHighestInfo.billRouterUrl,
+  });
+})().catch((e) => {
+  $.notify(title, "失败", "❎原因：" + e.message || e);
+});
+
+function sign() {
+  const body = {
+    q: { notify: "1", addressBook: "1", isSignIn: "0" },
+    sign: $cache.loginSign,
+    ...comonBody,
+  };
+
+  return $.http
+    .post({
+      ...options,
+      url: `${baseURL}/signIn/getGeneralPage.do`,
+      body: getEncodeURI(body),
+    })
+    .then((response) => {
+      return JSON.parse(response.body);
+    });
 }
-$.done({});
+
+function getEncodeURI(body) {
+  let data = Object.keys(body).map((key) => {
+    return (
+      key +
+      "=" +
+      (typeof body[key] === "object"
+        ? encodeURIComponent(JSON.stringify(body[key]))
+        : body[key])
+    );
+  });
+  return data.join("&");
+}
 
 function ENV() {
   const isQX = typeof $task !== "undefined";

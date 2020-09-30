@@ -1,10 +1,30 @@
 //获取 Cookie
-const cookieName = "cookie";
-const $ = new API("cuuc", true);
-const cookieVal = $request.headers["Cookie"];
-if (cookieVal) {
-  $.write(cookieVal, cookieName);
-  $.notify("CU云加速", "Cookie写入成功", "详见日志");
+const $ = new API("biyao", true);
+if ($request.url.indexOf("signIn/getGeneralPage") > -1) {
+}
+const headers = $request.headers;
+console.log(headers);
+const arr = [
+  "deviceType",
+  "uuid",
+  "appVersion",
+  "appName",
+  "platform",
+  "uid",
+  "dzvisit",
+  "sessionId",
+  "token",
+];
+let isWrite = true;
+arr.forEach((key) => {
+  if (headers[key]) {
+    $.write(headers[key], key);
+  } else {
+    isWrite = false;
+  }
+});
+if (isWrite) {
+  $.notify("🛎必要", "Cookie写入成功", "详见日志");
 }
 $.done({});
 
