@@ -7,19 +7,19 @@
 
 (1). Quantumult X
 [MITM]
-hostname=m.xiaomiyoupin.com
+hostname=marketappapi.biyao.com
 [rewrite_local]
 ^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do url script-request-header https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
 
 (2). Loon
 [MITM]
-hostname=m.xiaomiyoupin.com
+hostname=marketappapi.biyao.com
 [Script]
 http-request ^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
 
 (3). Surge
 [MITM]
-hostname=m.xiaomiyoupin.com
+hostname=marketappapi.biyao.com
 [Script]
 type=http-request, pattern=^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do, script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
 
