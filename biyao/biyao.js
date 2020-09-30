@@ -9,19 +9,19 @@
 [MITM]
 hostname=m.xiaomiyoupin.com
 [rewrite_local]
-^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin url script-request-header https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
+^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do url script-request-header https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
 
 (2). Loon
 [MITM]
 hostname=m.xiaomiyoupin.com
 [Script]
-http-request ^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
+http-request ^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
 
 (3). Surge
 [MITM]
 hostname=m.xiaomiyoupin.com
 [Script]
-type=http-request, pattern=^https:\/\/m\.xiaomiyoupin\.com\/api\/auth\/login\/isloggedin, script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
+type=http-request, pattern=^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do, script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
 
  */
 
