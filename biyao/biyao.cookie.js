@@ -4,6 +4,7 @@ if ($request.url.indexOf("signIn/getGeneralPage") > -1) {
 }
 const headers = $request.headers;
 console.log($request);
+console.log($response);
 const arr = [
   "deviceType",
   "uuid",
@@ -14,6 +15,7 @@ const arr = [
   "dzvisit",
   "sessionId",
   "token",
+  "Cookie",
 ];
 let isWrite = true;
 arr.forEach((key) => {
