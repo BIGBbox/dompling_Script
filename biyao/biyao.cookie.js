@@ -3,7 +3,7 @@ const $ = new API("biyao", true);
 if ($request.url.indexOf("signIn/getGeneralPage") > -1) {
 }
 const headers = $request.headers;
-console.log(headers);
+console.log($request);
 const arr = [
   "deviceType",
   "uuid",
