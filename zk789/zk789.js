@@ -1,27 +1,8 @@
 /**
- 图标 https://raw.githubusercontent.com/Orz-3/task/master/zk789.png
 # 获取方式:进入页面手动签到一次
 
 [task_local]
 1 1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.js
-
-(1). Quantumult X
-[MITM]
-hostname=wx.zk789.cn
-[rewrite_local]
-^https:\/\/wx\.zk789\.cn([\s\S]*)SetQuestionNaireDetail url script-request-header https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js
-
-(2). Loon
-[MITM]
-hostname=wx.zk789.cn
-[Script]
-http-request ^https:\/\/wx\.zk789\.cn([\s\S]*)SetQuestionNaireDetail script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
-
-(3). Surge
-[MITM]
-hostname=wx.zk789.cn
-[Script]
-type=http-request, pattern=^https:\/\/wx\.zk789\.cn([\s\S]*)SetQuestionNaireDetail, script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
 
  */
 const $ = new API("zk789");
