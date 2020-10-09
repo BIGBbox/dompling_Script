@@ -90,6 +90,7 @@
         "@zk789.data.sex",
         "@zk789.data.mobile",
         "@zk789.data.idCard",
+        "@zk789.data.address",
         "@zk789.data.spareuser",
         "@zk789.data.spareid",
         "@zk789.headers.Referer",
@@ -122,6 +123,15 @@
           "type": "text",
           "rows": 2,
           "placeholder": "用户名",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.address",
+          "name": "地址",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "地址",
           "desc": "必填"
         },
         {
