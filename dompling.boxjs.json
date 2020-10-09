@@ -87,6 +87,7 @@
       "name": "自考打卡",
       "keys": [
         "@zk789.data.userName",
+        "@zk789.data.sex",
         "@zk789.data.mobile",
         "@zk789.data.idCard",
         "@zk789.data.spareuser",
@@ -104,9 +105,10 @@
           "placeholder": "Cookie",
           "desc": "必填"
         },
+
         {
           "id": "@zk789.headers.Referer",
-          "name": "链接来源",
+          "name": "Referer",
           "val": null,
           "type": "text",
           "rows": 2,
@@ -115,11 +117,20 @@
         },
         {
           "id": "@zk789.data.userName",
-          "name": "用户名",
+          "name": "userName",
           "val": null,
           "type": "text",
           "rows": 2,
           "placeholder": "用户名",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.sex",
+          "name": "性别",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "性别",
           "desc": "必填"
         },
         {
