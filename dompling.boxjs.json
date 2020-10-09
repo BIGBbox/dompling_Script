@@ -89,6 +89,9 @@
         "@zk789.data.userName",
         "@zk789.data.mobile",
         "@zk789.data.idCard",
+        "@zk789.data.spareuser",
+        "@zk789.data.id",
+        "@zk789.data.idCard",
         "@zk789.headers.Referer",
         "@zk789.headers.Cookie"
       ],
