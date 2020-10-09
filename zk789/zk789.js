@@ -2,7 +2,7 @@
 # 获取方式:进入页面手动签到一次
 
 [task_local]
-1 1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.js
+1 10 * * * https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.js
 
  */
 const $ = new API("zk789");
