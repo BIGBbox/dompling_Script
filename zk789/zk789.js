@@ -6,9 +6,9 @@
 
  */
 const $ = new API("zk789");
-$headers = $.cache.headers;
-$data = $.cache.data;
-const baseURL = "https://wx.zk789.cn";
+const $headers = $.cache.headers;
+const $data = $.cache.data;
+const baseURL = "https://wx1.zk789.cn";
 const title = "健康填报";
 let temperature = `${Math.round((Math.random() * 0.01 + 0.35) * 1000) / 10}`;
 temperature = temperature.length > 3 ? temperature : `${temperature}.0`;
@@ -47,7 +47,7 @@ function sign() {
   return $.http
     .post({
       ...options,
-      url: `${baseURL}/Front/QuestionNaire/SetQuestionNaireDetail.aspx/SetQuestionnaireResult`,
+      url: `${baseURL}/Front/QuestionNaire/QuestionNaireDetail.aspx/SetQuestionnaireResult`,
       body: JSON.stringify(body),
     })
     .then((response) => {
