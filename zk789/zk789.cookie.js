@@ -1,9 +1,11 @@
 //获取 Cookie
-const cookieName = "cookie";
 const $ = new API("zk789", true);
 const cookieVal = $request.headers["Cookie"];
+const referer = $request.headers["Referer"];
+console.log($response.body);
 if (cookieVal.indexOf("security_session_verify") > 0) {
-  $.write(cookieVal, cookieName);
+  $.write(cookieVal, "headers.Cookie");
+  $.write(referer, "headers.Referer");
   $.notify("zk789", "Cookie写入成功", "详见日志");
 }
 $.done({});

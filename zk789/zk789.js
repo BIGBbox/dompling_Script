@@ -9,19 +9,19 @@
 [MITM]
 hostname=wx.zk789.cn
 [rewrite_local]
-^https:\/\/wx\.zk789\.cn([\s\S]*)QuestionNaireDetail\.aspx url script-request-header https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js
+^https:\/\/wx\.zk789\.cn([\s\S]*)SetQuestionNaireDetail url script-request-header https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js
 
 (2). Loon
 [MITM]
 hostname=wx.zk789.cn
 [Script]
-http-request ^https:\/\/wx\.zk789\.cn([\s\S]*)QuestionNaireDetail\.aspx script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
+http-request ^https:\/\/wx\.zk789\.cn([\s\S]*)SetQuestionNaireDetail script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
 
 (3). Surge
 [MITM]
 hostname=wx.zk789.cn
 [Script]
-type=http-request, pattern=^https:\/\/wx\.zk789\.cn([\s\S]*)QuestionNaireDetail\.aspx, script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
+type=http-request, pattern=^https:\/\/wx\.zk789\.cn([\s\S]*)SetQuestionNaireDetail, script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
 
  */
 const $ = new API("zk789");
@@ -41,10 +41,10 @@ const body = {
   spareuser: $data.spareuser,
   spareid: $data.spareid,
 };
+
 const headers = {
   "Content-Type": `application/json;chartset=UTF-8`,
   ...$headers,
-  Referer: "https://wx1.zk789.cn/Front/QuestionNaire/QuestionNaireDetail.aspx",
 };
 
 const options = { headers };
@@ -66,7 +66,7 @@ function sign() {
   return $.http
     .post({
       ...options,
-      url: `${baseURL}/Front/QuestionNaire/QuestionNaireDetail\.aspx/SetQuestionnaireResult`,
+      url: `${baseURL}/Front/QuestionNaire/SetQuestionNaireDetail/SetQuestionnaireResult`,
       body: JSON.stringify(body),
     })
     .then((response) => {
