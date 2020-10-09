@@ -118,7 +118,7 @@
         },
         {
           "id": "@zk789.data.userName",
-          "name": "userName",
+          "name": "用户名",
           "val": null,
           "type": "text",
           "rows": 2,
