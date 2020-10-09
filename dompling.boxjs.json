@@ -90,8 +90,7 @@
         "@zk789.data.mobile",
         "@zk789.data.idCard",
         "@zk789.data.spareuser",
-        "@zk789.data.id",
-        "@zk789.data.idCard",
+        "@zk789.data.spareid",
         "@zk789.headers.Referer",
         "@zk789.headers.Cookie"
       ],
@@ -139,6 +138,24 @@
           "type": "text",
           "rows": 2,
           "placeholder": "手机号",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.spareuser",
+          "name": "用户 spareCode",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "spareCode",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.spareid",
+          "name": "用户 ID",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "用户 ID",
           "desc": "必填"
         }
       ],
