@@ -32,8 +32,8 @@ const options = { headers };
 
 (async () => {
   const signResult = await sign();
-  if (signResult.d.indexOf("mp.weixin.qq.com") === -1)
-    throw new Error(signResult.d);
+  if (!signResult.d || signResult.d.indexOf("mp.weixin.qq.com") === -1)
+    throw new Error(signResult.d || JSON.stringify(signResult));
   const content = `
   🐷姓名：${$data.userName}
   📆日期：${today}
@@ -47,10 +47,11 @@ function sign() {
   return $.http
     .post({
       ...options,
-      url: `${baseURL}/Front/QuestionNaire/SetQuestionNaireDetail/SetQuestionnaireResult`,
+      url: `${baseURL}/Front/QuestionNaire/SetQuestionNaireDetail.aspx/SetQuestionnaireResult`,
       body: JSON.stringify(body),
     })
     .then((response) => {
+      console.log(response);
       return JSON.parse(response.body);
     });
 }
