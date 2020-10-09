@@ -180,7 +180,10 @@
           "desc": "必填"
         }
       ],
-      "icons": [],
+      "icons": [
+        "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7GCsADbkOIE4pOYW0MUa3gojhTV8G5trloMPNWHNHCibg/0",
+        "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7GCsADbkOIE4pOYW0MUa3gojhTV8G5trloMPNWHNHCibg/0"
+      ],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/gov/gov.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js"
