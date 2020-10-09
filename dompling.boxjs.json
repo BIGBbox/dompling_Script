@@ -83,6 +83,68 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js"
     },
     {
+      "id": "zk789",
+      "name": "自考打卡",
+      "keys": [
+        "@zk789.data.userName",
+        "@zk789.data.mobile",
+        "@zk789.data.idCard",
+        "@zk789.headers.Referer",
+        "@zk789.headers.Cookie"
+      ],
+      "settings": [
+        {
+          "id": "@zk789.headers.Cookie",
+          "name": "Cookie",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "Cookie",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.headers.Referer",
+          "name": "链接来源",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "链接来源",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.userName",
+          "name": "用户名",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "用户名",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.idCard",
+          "name": "身份证",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "身份证",
+          "desc": "必填"
+        },
+        {
+          "id": "@zk789.data.mobile",
+          "name": "手机号",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "手机号",
+          "desc": "必填"
+        }
+      ],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/gov/gov.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/gov/gov.js"
+    },
+    {
       "id": "xiaomiyp",
       "name": "小米有品",
       "keys": ["@xiaomiyp.cookie"],
