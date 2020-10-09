@@ -1,32 +1,78 @@
-//获取 Cookie
-const $ = new API("biyao", true);
-if ($request.url.indexOf("signIn/getGeneralPage") > -1) {
-}
-const headers = $request.headers;
-const arr = [
-  "deviceType",
-  "uuid",
-  "appVersion",
-  "appName",
-  "platform",
-  "uid",
-  "dzvisit",
-  "sessionId",
-  "token",
-  "Cookie",
-];
-let isWrite = true;
-arr.forEach((key) => {
-  if (headers[key]) {
-    $.write(headers[key], key);
-  } else {
-    isWrite = false;
-  }
+/**
+ 图标 https://raw.githubusercontent.com/Orz-3/task/master/zk789.png
+# 获取方式:进入页面手动签到一次
+
+[task_local]
+1 1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.js
+
+(1). Quantumult X
+[MITM]
+hostname=wx.zk789.cn
+[rewrite_local]
+^https:\/\/wx\.zk789\.cn([\s\S]*)QuestionNaireDetail\.aspx url script-request-header https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js
+
+(2). Loon
+[MITM]
+hostname=wx.zk789.cn
+[Script]
+http-request ^https:\/\/wx\.zk789\.cn([\s\S]*)QuestionNaireDetail\.aspx script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
+
+(3). Surge
+[MITM]
+hostname=wx.zk789.cn
+[Script]
+type=http-request, pattern=^https:\/\/wx\.zk789\.cn([\s\S]*)QuestionNaireDetail\.aspx, script-path=https://raw.githubusercontent.com/dompling/Script/master/zk789/zk789.cookie.js, require-body=false
+
+ */
+const $ = new API("zk789");
+$headers = $.cache.headers;
+$data = $.cache.data;
+const baseURL = "https://wx.zk789.cn";
+const title = "健康填报";
+let temperature = `${Math.round((Math.random() * 0.01 + 0.35) * 1000) / 10}`;
+temperature = temperature.length > 3 ? temperature : `${temperature}.0`;
+const date = new Date();
+const today =
+  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+const body = {
+  values: `273_[${$data.userName}]|||274_[${$data.sex}]|||276_[${$data.idCard}]|||277_[${$data.mobile}]|||278_[${$data.address}]|||279_[${temperature}]|||280_[否]|||281_[健康]|||282_[否]|||283_[否]|||284_[以上所填内容属实，如有不实，造成的一切后果由本人承担全部责任！]`,
+  time: today,
+  isexception: "",
+  spareuser: $data.spareuser,
+  spareid: $data.spareid,
+};
+const headers = {
+  "Content-Type": `application/json;chartset=UTF-8`,
+  ...$headers,
+  Referer: "https://wx1.zk789.cn/Front/QuestionNaire/QuestionNaireDetail.aspx",
+};
+
+const options = { headers };
+
+(async () => {
+  const signResult = await sign();
+  if (signResult.d.indexOf("mp.weixin.qq.com") === -1)
+    throw new Error(signResult.d);
+  const content = `
+  🐷姓名：${$data.userName}
+  📆日期：${today}
+  🌡体温：${temperature}`;
+  $.notify(title, "签到成功", content);
+})().catch((e) => {
+  $.notify(title, "失败", "❎原因：" + e.message || e);
 });
-if (isWrite) {
-  $.notify("🛎必要", "Cookie写入成功", "详见日志");
+
+function sign() {
+  return $.http
+    .post({
+      ...options,
+      url: `${baseURL}/Front/QuestionNaire/QuestionNaireDetail\.aspx/SetQuestionnaireResult`,
+      body: JSON.stringify(body),
+    })
+    .then((response) => {
+      return JSON.parse(response.body);
+    });
 }
-$.done({});
 
 function ENV() {
   const isQX = typeof $task !== "undefined";
