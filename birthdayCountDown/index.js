@@ -177,11 +177,11 @@ if (verify) {
           "media-url": mediaImg,
         });
       }
-      $.done();
     }
   }
   birthdayNotify();
 }
+$.done();
 
 async function getEveryDaySay() {
   return $.http
