@@ -177,30 +177,10 @@ if (verify) {
           "media-url": mediaImg,
         });
       }
-      if ($.env.isScriptable) {
-        const res = {
-          n: `[🐣${data.username}🐣]`,
-          d: loveWords || "",
-          x: `🌠星座：${solarData.astro} ${getAstroToEmoji(solarData.astro)}`,
-          s: `🐽属相：${solarData.Animal} ${getAnimalZodiacToEmoji(
-            solarData.Animal
-          )}`,
-          l: `📆农历：${solarData.IMonthCn}-${solarData.IDayCn}`,
-          dw: `🎂下次：${birthdayText[1] || "0"} 天`,
-          sl: `💏相识天数：${acquaintance} 天`,
-        };
-
-        const widget = createWidget(res);
-        Script.setWidget(widget);
-        Script.complete();
-      } else {
-        $.done();
-      }
+      $.done();
     }
   }
   birthdayNotify();
-} else {
-  if (!$.env.isScriptable) $.done();
 }
 
 async function getEveryDaySay() {
