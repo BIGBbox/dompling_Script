@@ -297,64 +297,6 @@ function getPhysiological(d, r, i) {
   return [_pdays, nextPday];
 }
 
-async function createWidget(res) {
-  const w = new ListWidget();
-  const bgColor = new LinearGradient();
-  bgColor.colors = [new Color("#1c1c1c"), new Color("#29323c")];
-  bgColor.locations = [0.0, 1.0];
-  w.backgroundGradient = bgColor;
-  w.centerAlignContent();
-
-  // const image = await new Request(mediaImg).loadImage();
-  // const sister = w.addImage(image);
-  // sister.borderColor = new Color("#efdbff");
-  // sister.borderWidth = 1;
-  // sister.imageSize = new Size(120,120);
-  // sister.cornerRadius = 50;
-  // sister.centerAlignImage();
-
-  const oneLine = w.addText(res.n);
-  oneLine.textSize = 12;
-  oneLine.textColor = Color.white();
-  oneLine.textOpacity = 0.7;
-  oneLine.leftAlignText();
-  oneLine.applyHeadlineTextStyling();
-
-  const twoLine = w.addText(res.d);
-  twoLine.textSize = 12;
-  twoLine.lineLimit = 3;
-  twoLine.textColor = new Color("#bae7ff");
-  twoLine.leftAlignText();
-
-  const threeLine = w.addText(res.x);
-  threeLine.textSize = 12;
-  threeLine.textColor = new Color("#efdbff");
-  threeLine.leftAlignText();
-
-  const fourLine = w.addText(res.s);
-  fourLine.textSize = 12;
-  fourLine.textColor = new Color("#b5f5ec");
-  fourLine.leftAlignText();
-
-  const fiveLine = w.addText(res.l);
-  fiveLine.textSize = 12;
-  fiveLine.textColor = new Color("#ffd6e7");
-  fiveLine.leftAlignText();
-
-  const sixLine = w.addText(res.dw);
-  sixLine.textSize = 12;
-  sixLine.textColor = new Color("#ffffb8");
-  sixLine.leftAlignText();
-
-  const sevenLine = w.addText(res.sl);
-  sevenLine.textSize = 12;
-  sevenLine.textColor = new Color("#ffa39e");
-  sevenLine.leftAlignText();
-
-  w.presentLarge();
-  return w;
-}
-
 function Calendar(data) {
   this.data = data;
   this.lunarInfo = [
