@@ -91,6 +91,7 @@ function getEncodeURI(body) {
   });
   return data.join("&");
 }
+
 function ENV() {
   const isQX = typeof $task !== "undefined";
   const isLoon = typeof $loon !== "undefined";
@@ -284,7 +285,7 @@ function API(name = "untitled", debug = false) {
       this.log(`SET ${key}`);
       if (key.indexOf("#") !== -1) {
         key = key.substr(1);
-        if (isSurge || isLoon) {
+        if (isSurge & isLoon) {
           $persistentStore.write(data, key);
         }
         if (isQX) {
@@ -303,7 +304,7 @@ function API(name = "untitled", debug = false) {
       this.log(`READ ${key}`);
       if (key.indexOf("#") !== -1) {
         key = key.substr(1);
-        if (isSurge || isLoon) {
+        if (isSurge & isLoon) {
           return $persistentStore.read(key);
         }
         if (isQX) {
@@ -321,7 +322,7 @@ function API(name = "untitled", debug = false) {
       this.log(`DELETE ${key}`);
       if (key.indexOf("#") !== -1) {
         key = key.substr(1);
-        if (isSurge || isLoon) {
+        if (isSurge & isLoon) {
           $persistentStore.write(null, key);
         }
         if (isQX) {

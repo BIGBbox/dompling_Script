@@ -1,32 +1,32 @@
 //获取 Cookie
 const $ = new API("biyao", true);
-if ($request.url.indexOf("signIn/getGeneralPage") > -1) {
-}
 const headers = $request.headers;
-const arr = [
-  "deviceType",
-  "uuid",
-  "appVersion",
-  "appName",
-  "platform",
-  "uid",
-  "dzvisit",
-  "sessionId",
-  "token",
-  "Cookie",
-];
-let isWrite = true;
-arr.forEach((key) => {
-  if (headers[key]) {
-    $.write(headers[key], key);
-  } else {
-    isWrite = false;
-  }
-});
-if (isWrite) {
-  $.notify("🛎必要", "Cookie写入成功", "详见日志");
-}
+console.log(headers);
+// const arr = [
+//   "deviceType",
+//   "uuid",
+//   "appVersion",
+//   "appName",
+//   "platform",
+//   "uid",
+//   "dzvisit",
+//   "sessionId",
+//   "token",
+//   "Cookie",
+// ];
+// let isWrite = true;
+// arr.forEach((key) => {
+//   if (headers[key]) {
+//     $.write(headers[key], key);
+//   } else {
+//     isWrite = false;
+//   }
+// });
+// if (isWrite) {
+//   $.notify("🛎必要", "Cookie写入成功", "详见日志");
+// }
 $.done({});
+
 function ENV() {
   const isQX = typeof $task !== "undefined";
   const isLoon = typeof $loon !== "undefined";
