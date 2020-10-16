@@ -1,7 +1,7 @@
 //获取 Cookie
 const $ = new API("biyao", true);
 const headers = $request.headers;
-console.log(headers);
+console.log($request, $response);
 // const arr = [
 //   "deviceType",
 //   "uuid",
