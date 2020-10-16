@@ -1,30 +1,33 @@
 //获取 Cookie
 const $ = new API("biyao", true);
-const headers = $request.headers;
-console.log(headers);
-// const arr = [
-//   "deviceType",
-//   "uuid",
-//   "appVersion",
-//   "appName",
-//   "platform",
-//   "uid",
-//   "dzvisit",
-//   "sessionId",
-//   "token",
-//   "Cookie",
-// ];
-// let isWrite = true;
-// arr.forEach((key) => {
-//   if (headers[key]) {
-//     $.write(headers[key], key);
-//   } else {
-//     isWrite = false;
-//   }
-// });
-// if (isWrite) {
-//   $.notify("🛎必要", "Cookie写入成功", "详见日志");
-// }
+try {
+  const headers = $request.headers;
+  const arr = [
+    "deviceType",
+    "uuid",
+    "appVersion",
+    "appName",
+    "platform",
+    "uid",
+    "dzvisit",
+    "sessionId",
+    "token",
+    "Cookie",
+  ];
+  let isWrite = true;
+  arr.forEach((key) => {
+    if (headers[key]) {
+      $.write(headers[key], key);
+    } else {
+      isWrite = false;
+    }
+  });
+  if (isWrite) {
+    $.notify("🛎必要", "Cookie写入成功", "详见日志");
+  }
+} catch (e) {
+  console.log(e);
+}
 $.done({});
 
 function ENV() {
