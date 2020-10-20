@@ -1,82 +1,162 @@
 /**
  图标 https://raw.githubusercontent.com/Orz-3/task/master/biyao.png
-# 获取方式:进入签到页面获取
+# 获取方式:进入签到页面获取。
 
 [task_local]
-1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.js
+1 10 * * * https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.js
 
 (1). Quantumult X
 [MITM]
-hostname=marketappapi.biyao.com
+hostname=apiplus.biyao.com
 [rewrite_local]
-^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do url script-request-header https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
+
+^https:\/\/apiplus\.biyao\.com\/signIn\/getSigneRoutineV4\.do* url script-request-header https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
+^https:\/\/apiplus\.biyao\.com\/user\/authorLogin.do* url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js
 
 (2). Loon
 [MITM]
-hostname=marketappapi.biyao.com
+hostname=apiplus.biyao.com
 [Script]
-http-request ^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
+http-request ^https:\/\/apiplus\.biyao\.com\/signIn\/getSigneRoutineV4\.do* script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
 
 (3). Surge
 [MITM]
-hostname=marketappapi.biyao.com
+hostname=apiplus.biyao.com
 [Script]
-type=http-request, pattern=^https:\/\/marketappapi\.biyao\.com\/signIn\/getGeneralPage\.do, script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
+type=http-request, pattern=^https:\/\/apiplus\.biyao\.com\/signIn\/getSigneRoutineV4\.do*, script-path=https://raw.githubusercontent.com/dompling/Script/master/biyao/biyao.cookie.js, require-body=false
 
  */
-
-const $ = new API("biyao");
+const debug = true;
+const $ = new API("biyao", debug);
 const $cache = $.cache;
-const baseURL = "https://marketappapi.biyao.com";
-// const apiURl = "https://appapi.biyao.com";
+const baseURL = "https://apiplus.biyao.com";
 const title = "🛎必要";
-const options = {
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded;text/html;charset=utf-8",
-    ...$cache,
+const options = { headers: { ...$cache.headers } };
+const taskList = {
+  每日访问新手专享频道: {
+    taskName: "每日访问新手专享频道",
+    awardCon: "10金币",
+    api: `${baseURL}/middlepage/recommendInfoV2.do`,
+    body: {
+      tagId: "moses:pid_14",
+      topicId: "",
+      pageIndex: 1,
+      sourceType: 1,
+    },
   },
-};
-
-const comonBody = {
-  token: $cache.token,
-  uid: $cache.uid,
+  每日访问一起拼频道: {
+    taskName: "每日访问一起拼频道",
+    awardCon: "10金币",
+    api: `${baseURL}/middlepage/groupBuy/getGroupChannelV2.do`,
+    body: {
+      stpStr: "",
+    },
+  },
+  自然周内完成1次首页搜索: {
+    taskName: "自然周内完成1次首页搜索",
+    awardCon: "10金币",
+    api:
+      "https://searchmisc.biyao.com/querysuggestion?inputquery=%E7%89%9B%E8%82%89",
+    body: {
+      formId: "fb0dc27ed0a34a7bb20e5d14623beb91",
+      wxId: $cache.wechat.openId,
+    },
+  },
+  每日浏览3个不同商品: {
+    taskName: "每日浏览3个不同商品",
+    awardCon: "10金币",
+    api: "",
+  },
+  自然周内收藏3个商品: {
+    taskName: "自然周内收藏3个商品",
+    awardCon: "30金币",
+    api: "",
+  },
 };
 
 (async () => {
   const signResult = await sign();
+  if (!signResult.success) throw new Error("签到失败");
   const { data = {} } = signResult;
-  if (!data.currentHighestInfo) throw new Error("签到失败");
-  const currentHighestInfo = data.currentHighestInfo;
-  $.log(data);
-  console.log(currentHighestInfo);
+  // const myTasklist = getTaskList(data.myTasklist);
+  // $.log(myTasklist["自然周内完成1次首页搜索"]);
+  // if (myTasklist["自然周内完成1次首页搜索"]) {
+  //   await fetchTaskEveryDay(myTasklist["自然周内完成1次首页搜索"]);
+  // }
   const content = `
-  ${currentHighestInfo.canBookedCoin}
-  💰总金币金币：${currentHighestInfo.currentTotalCoin}
-  🎁${currentHighestInfo.coinHint}:${currentHighestInfo.coin}
-  🎉预计：${currentHighestInfo.canBookedCoin}🎉[左滑打开详情]`;
-  $.notify(title, "签到成功", content, {
-    "open-url": currentHighestInfo.billRouterUrl,
-  });
+  💰总金币：${data.totalAmount}
+  🎉${data.shareMessage.shareTitle}`;
+  $.notify(title, "签到成功", content);
 })().catch((e) => {
   $.notify(title, "失败", "❎原因：" + e.message || e);
 });
 
-function sign() {
-  const body = {
-    q: { notify: "1", addressBook: "1", isSignIn: "0" },
-    sign: $cache.loginSign,
-    ...comonBody,
-  };
+const getTaskList = (data) => {
+  const myTasklist = {};
+  data.forEach((item) => {
+    const taskInfo = taskList[item.taskName] || {};
+    if (taskInfo.api) {
+      myTasklist[item.taskName] = { ...item, ...taskInfo };
+    }
+  });
+  return myTasklist;
+};
 
+function sign() {
   return $.http
-    .post({
+    .get({
       ...options,
-      url: `${baseURL}/signIn/getGeneralPage.do`,
-      body: getEncodeURI(body),
+      url: `${baseURL}/sign/getSigneRoutineV4.do?hookGold=0`,
     })
     .then((response) => {
       return JSON.parse(response.body);
     });
+}
+
+async function fetchTaskEveryDay(taskItem) {
+  const newbieChannelHeaders = {
+    ...options.headers,
+    "Content-Type": "application/x-www-form-urlencoded;text/html;charset=utf-8",
+  };
+  await $.http.post({
+    headers: newbieChannelHeaders,
+    url: `${baseURL}/user/recordUser.do`,
+    body: getEncodeURI({
+      formId: "fb0dc27ed0a34a7bb20e5d14623beb91",
+      wxId: $cache.wechat.openId,
+    }),
+  });
+  const params = {
+    headers: newbieChannelHeaders,
+    url: taskItem.api,
+  };
+  if (taskItem.body) params.body = getEncodeURI(taskItem.body);
+  const newChannel = await $.http.post(params).then((response) => {
+    console.log(response);
+    return JSON.parse(response.body);
+  });
+  $.log(newChannel);
+
+  // /sign/taskFinish.do
+
+  // const awardReceiving = await $.http
+  //   .post({
+  //     headers: newbieChannelHeaders,
+  //     url: `${baseURL}/sign/awardReceiving.do`,
+  //     body: getEncodeURI({
+  //       taskId: taskInfo.taskId,
+  //     }),
+  //   })
+  //   .then((response) => {
+  //     return JSON.parse(response.body);
+  //   });
+  // $.log(
+  //   `${taskInfo.taskName}:${
+  //     awardReceiving.data.awardType === 5
+  //       ? `+${awardReceiving.data.awardAmount}`
+  //       : "已领取"
+  //   }`
+  // );
 }
 
 function getEncodeURI(body) {

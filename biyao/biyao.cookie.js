@@ -1,34 +1,51 @@
 //获取 Cookie
 const $ = new API("biyao", true);
 try {
-  const headers = $request.headers;
-  const arr = [
-    "deviceType",
-    "uuid",
-    "appVersion",
-    "appName",
-    "platform",
-    "uid",
-    "dzvisit",
-    "sessionId",
-    "token",
-    "Cookie",
-  ];
-  let isWrite = true;
-  arr.forEach((key) => {
-    if (headers[key]) {
-      $.write(headers[key], key);
-    } else {
-      isWrite = false;
+  const url = $request.url;
+  if (url.indexOf("getSigneRoutineV4") > -1) {
+    const headers = $request && $request.headers ? $request.headers : false;
+    if (headers) {
+      const arr = ["uuid", "appversion", "platform", "uid", "token"];
+      const cacheHeaders = setCache(headers, "headers", arr);
+      if (cacheHeaders) {
+        $.notify("🛎必要", "Cookie写入成功", "详见日志");
+      }
     }
-  });
-  if (isWrite) {
-    $.notify("🛎必要", "Cookie写入成功", "详见日志");
+  }
+
+  if (url.indexOf("authorLogin") > -1) {
+    let wxResponse = $response ? $response.body : false;
+    if (wxResponse) {
+      wxResponse = JSON.parse(wxResponse);
+      if (wxResponse.success) {
+        const cacheWechat = setCache(wxResponse.data, "wechat");
+        if (cacheWechat) {
+          $.notify("🛎必要", "微信信息写入成功", "详见日志");
+        }
+      }
+    }
   }
 } catch (e) {
   console.log(e);
 }
 $.done({});
+
+function setCache(data, prefix, arr = false) {
+  const cacheData = arr ? arr : Object.keys(data);
+  let isWrite = true;
+  cacheData.forEach((key) => {
+    if (data[key]) {
+      const cacheValue =
+        typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+      $.log(cacheValue);
+      $.write(cacheValue, `${prefix}.${key}`);
+    } else {
+      $.log("写入失败：" + key);
+      isWrite = false;
+    }
+  });
+  return isWrite;
+}
 
 function ENV() {
   const isQX = typeof $task !== "undefined";
