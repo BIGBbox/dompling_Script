@@ -8,7 +8,7 @@
  */
 const $ = new API("historyToday", true);
 const titleName = "📆历史上的今天";
-const baseUrl = "https://zhufred.gitee.io/zreader/ht/event/";
+const baseUrl = "http://code.lssdjt.com/jsondata";
 const headers = {
   accept: "*",
   "Content-type": "application/json",
@@ -16,23 +16,23 @@ const headers = {
 
 const date = new Date();
 let month = date.getMonth() + 1;
+let day = date.getDate();
+day = day >= 10 ? day : `0${day}`;
 month = month >= 10 ? month : `0${month}`;
-const day = date.getDate();
 
 !(async ($) => {
   const data = await getHistoryToday();
-  let content = "",
-    subTitle = `${month}-${day}`;
+  let content = "";
   if (data.length > 0) {
-    data.forEach((item) => {
-      content += `[📍]${item.title}\n\n`;
+    data.forEach((item, index) => {
+      if (index === 8) return;
+      content += `[📍]${item.t}\n`;
     });
   }
-  if ($.env.isSurge) {
-    $.notify(titleName, subTitle, content);
-  } else {
-    $.notify(titleName, subTitle, content);
-  }
+  $.notify(titleName, "", content, {
+    "media-url": `http://img.lssdjt.com/${data[0].j || data[1].j}`,
+    "open-url": `https://m.8684.cn/today_d${month}${day}`,
+  });
 })($)
   .catch((err) => {
     $.log(err);
@@ -42,14 +42,13 @@ const day = date.getDate();
 
 function getHistoryToday() {
   const requestConfig = {
-    url: `${baseUrl}${month}${day}.json`,
+    url: `${baseUrl}/history.${month}.${day}.js`,
     headers,
   };
-  console.log(requestConfig);
   return $.http.get(requestConfig).then((res) => {
     const { body } = res;
     const response = JSON.parse(body);
-    return response;
+    return response.d;
   });
 }
 function ENV() {
