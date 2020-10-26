@@ -23,14 +23,18 @@ month = month >= 10 ? month : `0${month}`;
 !(async ($) => {
   const data = await getHistoryToday();
   let content = "";
+  let img = {};
   if (data.length > 0) {
     data.forEach((item, index) => {
       if (index === 8) return;
       content += `[📍]${item.t}\n`;
     });
+    img =
+      data.find((item) => item.g === 1) || data.find((item) => item.j !== "");
   }
+
   $.notify(titleName, "", content, {
-    "media-url": `http://img.lssdjt.com/${data[0].j || data[1].j}`,
+    "media-url": `http://img.lssdjt.com/${data[0].j || img.j}`,
     "open-url": `https://m.8684.cn/today_d${month}${day}`,
   });
 })($)
