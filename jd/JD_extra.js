@@ -3003,8 +3003,8 @@ function GetCookie() {
         var updateCodkie = CookiesData.find((item, index) => {
           var ck = item.cookie;
           var Account = ck
-            ? CK1.match(/pt_pin=.+?;/)
-              ? CK1.match(/pt_pin=(.+?);/)[1]
+            ? ck.match(/pt_pin=.+?;/)
+              ? ck.match(/pt_pin=(.+?);/)[1]
               : null
             : null;
           const verify = UserName === Account;
