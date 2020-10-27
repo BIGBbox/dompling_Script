@@ -21,7 +21,6 @@
 
 开启抓包app后, Safari浏览器登录 https://bean.m.jd.com 点击签到并且出现签到日历后, 返回抓包app搜索关键字 functionId=signBean 复制请求头Cookie填入以下Key处的单引号内即可 */
 
-var CookieKey = "CookiesJD";
 /* 
    注1: 以上选项仅针对于JsBox或Node.js, 如果使用QX,Surge,Loon, 请使用脚本获取Cookie.
    注2: 双账号用户抓取"账号1"Cookie后, 请勿点击退出账号(可能会导致Cookie失效), 需清除浏览器资料或更换浏览器登录"账号2"抓取.
@@ -91,6 +90,7 @@ https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean url script-reques
 hostname = api.m.jd.com
 
 *************************/
+var CookieKey = "CookiesJD"; // 缓存的数组cookie的key
 
 var LogDetails = false; //是否开启响应日志, true则开启
 
@@ -2984,7 +2984,7 @@ function GetCookie() {
         var CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
         var UserName = CookieValue.match(/pt_pin=(.+?);/)[1];
         var DecodeName = decodeURIComponent(UserName);
-        var CookiesData = $nobyda.read(CookieKey);
+        var CookiesData = $nobyda.read(CookieKey) || [];
         var updateCookiesData = [...CookiesData];
         var updateIndex;
         var updateCodkie = CookiesData.find((item, index) => {
