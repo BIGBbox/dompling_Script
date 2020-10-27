@@ -41,8 +41,10 @@ if ($.isNode()) {
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false")
     console.log = () => {};
 } else {
-  cookiesArr.push($.getdata("CookiesJD"));
-  cookiesArr.push($.getdata("CookiesJD2"));
+  const cookiesData = $.getdata("CookiesJD");
+  cookiesArr = cookiesData.map((item) => item.cookie);
+  // cookiesArr.push();
+  // cookiesArr.push($.getdata("CookiesJD2"));
 }
 
 const JD_API_HOST = "https://rdcseason.m.jd.com/api/";

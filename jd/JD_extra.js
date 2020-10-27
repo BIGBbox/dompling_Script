@@ -1,8 +1,14 @@
 /*************************
 
+修改自野比大佬的脚本
+
+
+ * Author: 2Ya
+ * Github: https://github.com/domping
+ 
+
 京东多合一签到脚本
 
-更新时间: 2020.10.24 21:00 v1.79
 有效接口: 42+
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 电报频道: @NobyDa 
@@ -15,11 +21,9 @@
 
 开启抓包app后, Safari浏览器登录 https://bean.m.jd.com 点击签到并且出现签到日历后, 返回抓包app搜索关键字 functionId=signBean 复制请求头Cookie填入以下Key处的单引号内即可 */
 
-var Key = ""; //单引号内自行填写您抓取的Cookie
-
-var DualKey = ""; //如需双账号签到,此处单引号内填写抓取的"账号2"Cookie, 否则请勿填写
-
-/* 注1: 以上选项仅针对于JsBox或Node.js, 如果使用QX,Surge,Loon, 请使用脚本获取Cookie.
+var CookieKey = "CookiesJD";
+/* 
+   注1: 以上选项仅针对于JsBox或Node.js, 如果使用QX,Surge,Loon, 请使用脚本获取Cookie.
    注2: 双账号用户抓取"账号1"Cookie后, 请勿点击退出账号(可能会导致Cookie失效), 需清除浏览器资料或更换浏览器登录"账号2"抓取.
    注3: 如果复制的Cookie开头为"Cookie: "请把它删除后填入.
    注4: 如果使用QX,Surge,Loon并获取Cookie后, 再重复填写以上选项, 则签到优先读取以上Cookie.
@@ -503,11 +507,7 @@ function notify() {
       var DName = merge.TotalBean.nickname
         ? merge.TotalBean.nickname
         : "获取失败";
-      var Name = add
-        ? DualAccount
-          ? "【签到号一】:  " + DName + "\n"
-          : "【签到号二】:  " + DName + "\n"
-        : "";
+      var Name = "【签到号】:  " + DName + "\n";
       console.log("\n" + Name + one + two + three + four + disa + notify);
       if ($nobyda.isJSBox) {
         if (add && DualAccount) {
@@ -518,14 +518,11 @@ function notify() {
           $intents.finish(Shortcut + Name + one + two + three);
         }
       }
-      if (!$nobyda.isNode)
+      if (!$nobyda.isNode) {
         $nobyda.notify("", "", Name + one + two + three + four + disa + notify);
-      if (DualAccount) {
-        double();
-      } else {
-        $nobyda.time();
-        $nobyda.done();
       }
+      $nobyda.time();
+      $nobyda.done();
     } catch (eor) {
       $nobyda.notify(
         "通知模块 " + eor.name + "‼️",
@@ -539,14 +536,14 @@ function notify() {
 }
 
 function ReadCookie() {
-  initial();
-  DualAccount = true;
-  const EnvInfo = $nobyda.isJSBox ? "JD_CookieBox" : "CookiesJD";
-  const EnvInfo2 = $nobyda.isJSBox ? "JD_CookieBox2" : "CookiesJD2";
+  if ($nobyda.isRequest) {
+    GetCookie();
+    return;
+  }
+  var CookiesData = $nobyda.read(CookieKey);
   if (DeleteCookie) {
-    if ($nobyda.read(EnvInfo) || $nobyda.read(EnvInfo2)) {
-      $nobyda.write("", EnvInfo);
-      $nobyda.write("", EnvInfo2);
+    if (CookiesData && CookiesData.length) {
+      $nobyda.write([], CookieKey);
       $nobyda.notify(
         "京东Cookie清除成功 !",
         "",
@@ -558,45 +555,30 @@ function ReadCookie() {
     $nobyda.notify("脚本终止", "", '未关闭脚本内"DeleteCookie"选项 ‼️');
     $nobyda.done();
     return;
-  } else if ($nobyda.isRequest) {
-    GetCookie();
-    return;
   }
-  if (Key || $nobyda.read(EnvInfo)) {
-    if ($nobyda.isJSBox || $nobyda.isNode) {
-      if (Key) $nobyda.write(Key, EnvInfo);
-      if (DualKey) $nobyda.write(DualKey, EnvInfo2);
-    }
-    add = DualKey || $nobyda.read(EnvInfo2) ? true : false;
-    KEY = Key ? Key : $nobyda.read(EnvInfo);
-    out = parseInt($nobyda.read("JD_DailyBonusTimeOut")) || out;
-    stop = parseInt($nobyda.read("JD_DailyBonusDelay")) || stop;
-    boxdis =
-      $nobyda.read("JD_Crash_disable") === "false" ||
-      $nobyda.isNode ||
-      $nobyda.isJSBox
-        ? false
-        : boxdis;
-    LogDetails = $nobyda.read("JD_DailyBonusLog") === "true" || LogDetails;
-    ReDis = ReDis ? $nobyda.write("", "JD_DailyBonusDisables") : "";
-    all();
-  } else {
-    $nobyda.notify("京东签到", "", "脚本终止, 未获取Cookie ‼️");
-    $nobyda.done();
-  }
+  out = parseInt($nobyda.read("JD_DailyBonusTimeOut")) || out;
+  stop = parseInt($nobyda.read("JD_DailyBonusDelay")) || stop;
+  boxdis =
+    $nobyda.read("JD_Crash_disable") === "false" ||
+    $nobyda.isNode ||
+    $nobyda.isJSBox
+      ? false
+      : boxdis;
+  LogDetails = $nobyda.read("JD_DailyBonusLog") === "true" || LogDetails;
+  ReDis = ReDis ? $nobyda.write("", "JD_DailyBonusDisables") : "";
+
+  CookiesData.forEach((item) => {
+    double(item.cookie);
+  });
+  $nobyda.done();
 }
 
-function double() {
+function double(cookie) {
   initial();
   add = true;
   DualAccount = false;
-  if (
-    DualKey ||
-    $nobyda.read($nobyda.isJSBox ? "JD_CookieBox2" : "CookiesJD2")
-  ) {
-    KEY = DualKey
-      ? DualKey
-      : $nobyda.read($nobyda.isJSBox ? "JD_CookieBox2" : "CookiesJD2");
+  if (cookie) {
+    KEY = cookie;
     all();
   } else {
     $nobyda.time();
@@ -3000,47 +2982,27 @@ function GetCookie() {
       var CV = $request.headers["Cookie"];
       if (CV.match(/(pt_key=.+?pt_pin=|pt_pin=.+?pt_key=)/)) {
         var CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
-        var CK1 = $nobyda.read("CookiesJD");
-        var CK2 = $nobyda.read("CookiesJD2");
-        var AccountOne = CK1
-          ? CK1.match(/pt_pin=.+?;/)
-            ? CK1.match(/pt_pin=(.+?);/)[1]
-            : null
-          : null;
-        var AccountTwo = CK2
-          ? CK2.match(/pt_pin=.+?;/)
-            ? CK2.match(/pt_pin=(.+?);/)[1]
-            : null
-          : null;
         var UserName = CookieValue.match(/pt_pin=(.+?);/)[1];
         var DecodeName = decodeURIComponent(UserName);
-        if (!AccountOne || UserName == AccountOne) {
-          var CookieName = " [账号一] ";
-          var CookieKey = "CookiesJD";
-        } else if (!AccountTwo || UserName == AccountTwo) {
-          var CookieName = " [账号二] ";
-          var CookieKey = "CookiesJD2";
-        } else {
-          $nobyda.notify(
-            "更新京东Cookie失败",
-            "非历史写入账号 ‼️",
-            '请开启脚本内"DeleteCookie"以清空Cookie ‼️'
-          );
-          $nobyda.done();
-          return;
-        }
-      } else {
-        $nobyda.notify(
-          "写入京东Cookie失败",
-          "",
-          "请查看脚本内说明, 登录网页获取 ‼️"
-        );
-        $nobyda.done();
-        return;
-      }
-      if ($nobyda.read(CookieKey)) {
-        if ($nobyda.read(CookieKey) != CookieValue) {
-          var cookie = $nobyda.write(CookieValue, CookieKey);
+        var CookiesData = $nobyda.read(CookieKey);
+        var updateCookiesData = [...CookiesData];
+        var updateIndex;
+        var updateCodkie = CookiesData.find((item, index) => {
+          var ck = item.cookie;
+          var Account = ck
+            ? CK1.match(/pt_pin=.+?;/)
+              ? CK1.match(/pt_pin=(.+?);/)[1]
+              : null
+            : null;
+          const verify = UserName === Account;
+          if (verify) {
+            updateIndex = index;
+          }
+          return verify;
+        });
+        if (updateCodkie) {
+          updateCookiesData[updateIndex].cookie = updateCodkie;
+          var cookie = $nobyda.write(updateCookiesData, CookieKey);
           if (!cookie) {
             $nobyda.notify(
               "用户名: " + DecodeName,
@@ -3055,24 +3017,34 @@ function GetCookie() {
             );
           }
         } else {
-          console.log("京东: \n与历史Cookie相同, 跳过写入");
+          updateCookiesData.push({
+            userName: DecodeName,
+            cookie: CookieValue,
+          });
+          var cookie = $nobyda.write(updateCookiesData, CookieKey);
+          if (!cookie) {
+            $nobyda.notify(
+              "用户名: " + DecodeName,
+              "",
+              "首次写入京东" + CookieName + "Cookie失败 ‼️"
+            );
+          } else {
+            $nobyda.notify(
+              "用户名: " + DecodeName,
+              "",
+              "首次写入京东" + CookieName + "Cookie成功 🎉"
+            );
+          }
         }
       } else {
-        var cookie = $nobyda.write(CookieValue, CookieKey);
-        if (!cookie) {
-          $nobyda.notify(
-            "用户名: " + DecodeName,
-            "",
-            "首次写入京东" + CookieName + "Cookie失败 ‼️"
-          );
-        } else {
-          $nobyda.notify(
-            "用户名: " + DecodeName,
-            "",
-            "首次写入京东" + CookieName + "Cookie成功 🎉"
-          );
-        }
+        $nobyda.notify(
+          "写入京东Cookie失败",
+          "",
+          "请查看脚本内说明, 登录网页获取 ‼️"
+        );
       }
+      $nobyda.done();
+      return;
     } else {
       $nobyda.notify(
         "写入京东Cookie失败",
