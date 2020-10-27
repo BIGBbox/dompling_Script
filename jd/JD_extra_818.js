@@ -41,7 +41,7 @@ if ($.isNode()) {
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false")
     console.log = () => {};
 } else {
-  const cookiesData = $.getdata("CookiesJD");
+  const cookiesData = $.getdata("CookiesJD") || "";
   cookiesArr = cookiesData.map((item) => item.cookie);
   // cookiesArr.push();
   // cookiesArr.push($.getdata("CookiesJD2"));
