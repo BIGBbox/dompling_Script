@@ -535,15 +535,27 @@ function notify() {
   });
 }
 
+function saveCache(updateCookiesData) {
+  return $nobyda.write(JSON.stringify(updateCookiesData), CookieKey);
+}
+
+function getCache() {
+  var cache = $nobyda.read(CookieKey);
+  if (cache) {
+    return JSON.parse(cache);
+  }
+  return [];
+}
+
 function ReadCookie() {
   if ($nobyda.isRequest) {
     GetCookie();
     return;
   }
-  var CookiesData = $nobyda.read(CookieKey);
+  var CookiesData = getCache();
   if (DeleteCookie) {
     if (CookiesData && CookiesData.length) {
-      $nobyda.write([], CookieKey);
+      $nobyda.write("", CookieKey);
       $nobyda.notify(
         "京东Cookie清除成功 !",
         "",
@@ -567,8 +579,8 @@ function ReadCookie() {
   LogDetails = $nobyda.read("JD_DailyBonusLog") === "true" || LogDetails;
   ReDis = ReDis ? $nobyda.write("", "JD_DailyBonusDisables") : "";
 
-  CookiesData.forEach((item) => {
-    double(item.cookie);
+  CookiesData.forEach(async (item) => {
+    await double(item.cookie);
   });
   $nobyda.done();
 }
@@ -2984,7 +2996,7 @@ function GetCookie() {
         var CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
         var UserName = CookieValue.match(/pt_pin=(.+?);/)[1];
         var DecodeName = decodeURIComponent(UserName);
-        var CookiesData = $nobyda.read(CookieKey) || [];
+        var CookiesData = getCache();
         var updateCookiesData = [...CookiesData];
         var updateIndex;
         var CookieName = "【账号】";
@@ -3001,9 +3013,10 @@ function GetCookie() {
           }
           return verify;
         });
+        console.log(updateCookiesData);
         if (updateCodkie) {
           updateCookiesData[updateIndex].cookie = updateCodkie;
-          var cookie = $nobyda.write(updateCookiesData, CookieKey);
+          var cookie = saveCache(updateCookiesData);
           if (!cookie) {
             $nobyda.notify(
               "用户名: " + DecodeName,
@@ -3022,7 +3035,7 @@ function GetCookie() {
             userName: DecodeName,
             cookie: CookieValue,
           });
-          var cookie = $nobyda.write(updateCookiesData, CookieKey);
+          var cookie = saveCache(updateCookiesData);
           if (!cookie) {
             $nobyda.notify(
               "用户名: " + DecodeName,
