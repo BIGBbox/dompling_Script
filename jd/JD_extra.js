@@ -106,7 +106,7 @@ var out = 0; //接口超时退出, 用于可能发生的网络不稳定, 0则关
 
 var $nobyda = nobyda();
 
-async function all() {
+async function all(_number) {
   if (stop == 0) {
     await Promise.all([
       JingDongBean(stop), //京东京豆
@@ -443,7 +443,7 @@ async function all() {
     TotalSubsidy(), //总金贴查询
     TotalMoney(), //总现金查询
   ]);
-  await notify(); //通知模块
+  await notify(_number); //通知模块
 }
 
 function saveCache(data) {
@@ -453,11 +453,10 @@ function saveCache(data) {
 
 function getCache() {
   var cache = $nobyda.read(CookieKey) || "[]";
-  console.log(cache);
   return JSON.parse(cache);
 }
 
-function notify() {
+function notify(_number) {
   return new Promise((resolve) => {
     try {
       var bean = 0;
@@ -518,7 +517,7 @@ function notify() {
       var DName = merge.TotalBean.nickname
         ? merge.TotalBean.nickname
         : "获取失败";
-      var Name = "【签到号】:  " + DName + "\n";
+      var Name = "【签到号" + _number + "】:  " + DName + "\n";
       console.log("\n" + Name + one + two + three + four + disa + notify);
       if ($nobyda.isJSBox) {
         if (add && DualAccount) {
@@ -546,7 +545,7 @@ function notify() {
   });
 }
 
-function ReadCookie() {
+async function ReadCookie() {
   if ($nobyda.isRequest) {
     GetCookie();
     return;
@@ -577,20 +576,18 @@ function ReadCookie() {
       : boxdis;
   LogDetails = $nobyda.read("JD_DailyBonusLog") === "true" || LogDetails;
   ReDis = ReDis ? $nobyda.write("", "JD_DailyBonusDisables") : "";
-
-  CookiesData.forEach(async (item) => {
-    await double(item.cookie);
-  });
+  for (let index = 0; index < CookiesData.length; index++) {
+    const item = CookiesData[index];
+    await double(item.cookie, index + 1);
+  }
   $nobyda.done();
 }
 
-function double(cookie) {
-  initial();
-  add = true;
-  DualAccount = false;
+async function double(cookie, _number) {
   if (cookie) {
+    initial();
     KEY = cookie;
-    all();
+    await all(_number);
   } else {
     $nobyda.time();
     $nobyda.done();
