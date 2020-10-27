@@ -535,8 +535,9 @@ function notify() {
   });
 }
 
-function saveCache(updateCookiesData) {
-  return $nobyda.write(JSON.stringify(updateCookiesData), CookieKey);
+function saveCache(data) {
+  console.log(data);
+  return $nobyda.write(JSON.stringify(data), CookieKey);
 }
 
 function getCache() {
@@ -3013,9 +3014,8 @@ function GetCookie() {
           }
           return verify;
         });
-        console.log(updateCookiesData);
         if (updateCodkie) {
-          updateCookiesData[updateIndex].cookie = updateCodkie;
+          updateCookiesData[updateIndex].cookie = CookieValue;
           var cookie = saveCache(updateCookiesData);
           if (!cookie) {
             $nobyda.notify(
