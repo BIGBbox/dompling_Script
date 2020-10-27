@@ -536,8 +536,11 @@ function notify() {
 }
 
 function saveCache(data) {
-  console.log(data);
-  return $nobyda.write(JSON.stringify(data), CookieKey);
+  let isWrite = true;
+  data.forEach((item, index) => {
+    if (isWrite) isWrite = $nobyda.write(item, `${CookieKey}.${index}`);
+  });
+  return isWrite;
 }
 
 function getCache() {
@@ -3014,6 +3017,7 @@ function GetCookie() {
           }
           return verify;
         });
+
         if (updateCodkie) {
           updateCookiesData[updateIndex].cookie = CookieValue;
           var cookie = saveCache(updateCookiesData);
