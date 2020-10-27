@@ -446,6 +446,17 @@ async function all() {
   await notify(); //通知模块
 }
 
+function saveCache(data) {
+  console.log(data);
+  return $nobyda.write(JSON.stringify(data), CookieKey);
+}
+
+function getCache() {
+  var cache = $nobyda.read(CookieKey) || "[]";
+  console.log(cache);
+  return JSON.parse(cache);
+}
+
 function notify() {
   return new Promise((resolve) => {
     try {
@@ -533,22 +544,6 @@ function notify() {
       resolve();
     }
   });
-}
-
-function saveCache(data) {
-  let isWrite = true;
-  data.forEach((item, index) => {
-    if (isWrite) isWrite = $nobyda.write(item, `${CookieKey}.${index}`);
-  });
-  return isWrite;
-}
-
-function getCache() {
-  var cache = $nobyda.read(CookieKey);
-  if (cache) {
-    return JSON.parse(cache);
-  }
-  return [];
 }
 
 function ReadCookie() {
@@ -3021,6 +3016,7 @@ function GetCookie() {
         if (updateCodkie) {
           updateCookiesData[updateIndex].cookie = CookieValue;
           var cookie = saveCache(updateCookiesData);
+          console.log(cookie);
           if (!cookie) {
             $nobyda.notify(
               "用户名: " + DecodeName,
@@ -3071,7 +3067,7 @@ function GetCookie() {
       );
     }
   } catch (eor) {
-    $nobyda.write([], "CookiesJD");
+    $nobyda.write("", "CookiesJD");
     $nobyda.notify("写入京东Cookie失败", "", "已尝试清空历史Cookie, 请重试 ⚠️");
     console.log(
       `\n写入京东Cookie出现错误 ‼️\n${JSON.stringify(
