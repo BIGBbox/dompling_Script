@@ -2987,6 +2987,7 @@ function GetCookie() {
         var CookiesData = $nobyda.read(CookieKey) || [];
         var updateCookiesData = [...CookiesData];
         var updateIndex;
+        var CookieName = "【账号】";
         var updateCodkie = CookiesData.find((item, index) => {
           var ck = item.cookie;
           var Account = ck
@@ -3053,8 +3054,7 @@ function GetCookie() {
       );
     }
   } catch (eor) {
-    $nobyda.write("", "CookiesJD");
-    $nobyda.write("", "CookiesJD2");
+    $nobyda.write([], "CookiesJD");
     $nobyda.notify("写入京东Cookie失败", "", "已尝试清空历史Cookie, 请重试 ⚠️");
     console.log(
       `\n写入京东Cookie出现错误 ‼️\n${JSON.stringify(
