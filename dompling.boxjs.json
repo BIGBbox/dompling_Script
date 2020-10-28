@@ -201,6 +201,27 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/xiaomiyp/xiaomiyp.js"
     },
     {
+      "id": "JD_Cookies",
+      "name": "京东多账号 Ck",
+      "keys": ["@JD_Cookies.CookiesJD"],
+      "settings": [
+        {
+          "id": "@JD_Cookies.CookiesJD",
+          "name": "CK 列表",
+          "val": "",
+          "type": "textarea",
+          "autoGrow": true,
+          "rows": 8,
+          "desc": "CK 列表 (JSON 格式)"
+        }
+      ],
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
+      ],
+      "author": "@dompling"
+    },
+    {
       "id": "cuuc",
       "name": "CU云加速",
       "keys": ["@cuuc.cookie"],

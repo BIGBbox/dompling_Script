@@ -14,7 +14,7 @@
 【Surge脚本配置】:
 ===================
 [Script]
-获取京东Cookie = type=http-request,pattern=https:\/\/wq\.jd\.com\/client\.action.*functionId=signBean,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
+获取京东Cookie = type=http-request,pattern=http-request https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
 
 [MITM]
 hostname = wq.jd.com
@@ -23,7 +23,7 @@ hostname = wq.jd.com
 【Loon脚本配置】:
 ===================
 
-http-request https:\/\/wq\.jd\.com.*=GetJDUserInfoUniontag=获取京东Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
+http-request https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
 
 [MITM]
 hostname = wq.jd.com
@@ -33,7 +33,7 @@ hostname = wq.jd.com
 ===================
 
 [rewrite_local]
-https:\/\/wq\.jd\.com.*=GetJDUserInfoUnionurl script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
+https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
 
 [mitm]
 hostname = wq.jd.com
@@ -51,10 +51,7 @@ function getCache() {
 
 function GetCookie() {
   try {
-    if (
-      $request.headers &&
-      $request.url.match(/wq\.jd\.com.*=GetJDUserInfoUnion*/)
-    ) {
+    if ($request.headers && $request.url.indexOf("GetJDUserInfoUnion") > -1) {
       var CV = $request.headers["Cookie"] || $request.headers["cookie"];
       if (CV.match(/(pt_key=.+?pt_pin=|pt_pin=.+?pt_key=)/)) {
         var CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
@@ -88,7 +85,7 @@ function GetCookie() {
           });
           tipPrefix = "首次写入京东";
         }
-        $.write(JSON.stringify(updateCookiesData), CookieKey);
+        $.write(JSON.stringify(updateCookiesData, null, 4), CookieKey);
         $.notify(
           "用户名: " + DecodeName,
           "",
