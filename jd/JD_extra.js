@@ -90,7 +90,7 @@ https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion url script-request-hea
 hostname = api.m.jd.com
 
 *************************/
-var CookieKey = "@JD_Cookies.CookiesJD"; // 缓存的数组cookie的key
+var CookieKey = "CookiesJD"; // 缓存的数组cookie的key
 
 var LogDetails = false; //是否开启响应日志, true则开启
 
@@ -447,8 +447,12 @@ async function all(_number) {
 }
 
 function getCache() {
-  var cache = $nobyda.read(CookieKey) || "[]";
-  return JSON.parse(cache);
+  var cookies = $nobyda.read(CookieKey) || "[]";
+  if (!cookies) {
+    $nobyda.notify("脚本终止", "", "未获取到相关 Ck ‼️");
+    return $nobyda.done();
+  }
+  return JSON.parse(cookies);
 }
 
 function notify(_number) {
@@ -567,6 +571,7 @@ async function ReadCookie() {
       : boxdis;
   LogDetails = $nobyda.read("JD_DailyBonusLog") === "true" || LogDetails;
   ReDis = ReDis ? $nobyda.write("", "JD_DailyBonusDisables") : "";
+
   for (let index = 0; index < CookiesData.length; index++) {
     const item = CookiesData[index];
     await double(item.cookie, index + 1);

@@ -202,11 +202,11 @@
     },
     {
       "id": "JD_Cookies",
-      "name": "京东多账号 Ck",
-      "keys": ["@JD_Cookies.CookiesJD"],
+      "name": "京东多账号 Ck 管理",
+      "keys": ["CookiesJD", "CookieJD", "CookieJD2"],
       "settings": [
         {
-          "id": "@JD_Cookies.CookiesJD",
+          "id": "CookiesJD",
           "name": "CK 列表",
           "val": "",
           "type": "textarea",
@@ -219,7 +219,9 @@
         "https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
       ],
-      "author": "@dompling"
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/jd/JD_extra.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js"
     },
     {
       "id": "cuuc",
