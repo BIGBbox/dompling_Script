@@ -203,7 +203,7 @@
     {
       "id": "JD_Cookies",
       "name": "京东多账号 Ck 管理",
-      "keys": ["CookiesJD", "CookieJD", "CookieJD2"],
+      "keys": ["CookiesJD"],
       "settings": [
         {
           "id": "CookiesJD",
