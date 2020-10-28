@@ -40,7 +40,8 @@ if ($.isNode()) {
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false")
     console.log = () => {};
 } else {
-  let cookiesData = $.getdata("CookiesJD") || "[]";
+  var CookieKey = "@JD_Cookies.CookiesJD"; // 缓存的数组cookie的key
+  let cookiesData = $.getdata(CookieKey) || "[]";
   cookiesData = JSON.parse(cookiesData);
   cookiesArr = cookiesData.map((item) => item.cookie);
   cookiesArr.push($.getdata("CookieJD"));
