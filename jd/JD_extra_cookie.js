@@ -85,7 +85,7 @@ function GetCookie() {
           });
           tipPrefix = "首次写入京东";
         }
-        $.write(JSON.stringify(updateCookiesData, null, 4), CookieKey);
+        $.write(JSON.stringify(updateCookiesData, null, "\t"), CookieKey);
         $.notify(
           "用户名: " + DecodeName,
           "",
