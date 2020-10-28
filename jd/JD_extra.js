@@ -90,7 +90,7 @@ https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion url script-request-hea
 hostname = api.m.jd.com
 
 *************************/
-var CookieKey = "CookiesJD"; // 缓存的数组cookie的key
+var CookieKey = "@JD_Cookies.CookiesJD"; // 缓存的数组cookie的key
 
 var LogDetails = false; //是否开启响应日志, true则开启
 
