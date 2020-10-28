@@ -55,7 +55,7 @@ BoxJs订阅地址: https://raw.githubusercontent.com/NobyDa/Script/master/NobyDa
 [Script]
 京东多合一签到 = type=cron,cronexp=5 0 * * *,wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
 
-获取京东Cookie = type=http-request,pattern=https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
+获取京东Cookie = type=http-request,pattern=https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
 
 [MITM]
 hostname = api.m.jd.com
@@ -67,7 +67,7 @@ hostname = api.m.jd.com
 [Script]
 cron "5 0 * * *" tag=京东自用签到, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.jsx
 
-http-request https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
+http-request https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
 
 [MITM]
 hostname = api.m.jd.com
@@ -84,7 +84,7 @@ hostname = api.m.jd.com
 [rewrite_local]
 # 获取京东Cookie. 
 # 注意此为远程路径, 低版本用户请自行调整为本地路径.
-https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
+https:\/\/wq\.jd\.com\/user_new\/info\/GetJDUserInfoUnion url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
 
 [mitm]
 hostname = api.m.jd.com
@@ -446,11 +446,6 @@ async function all(_number) {
   await notify(_number); //通知模块
 }
 
-function saveCache(data) {
-  console.log(data);
-  return $nobyda.write(JSON.stringify(data), CookieKey);
-}
-
 function getCache() {
   var cache = $nobyda.read(CookieKey) || "[]";
   return JSON.parse(cache);
@@ -546,10 +541,6 @@ function notify(_number) {
 }
 
 async function ReadCookie() {
-  if ($nobyda.isRequest) {
-    GetCookie();
-    return;
-  }
   var CookiesData = getCache();
   if (DeleteCookie) {
     if (CookiesData && CookiesData.length) {
@@ -2984,96 +2975,6 @@ function initial() {
   }
 }
 
-function GetCookie() {
-  try {
-    if ($request.headers && $request.url.match(/api\.m\.jd\.com.*=signBean/)) {
-      var CV = $request.headers["Cookie"];
-      if (CV.match(/(pt_key=.+?pt_pin=|pt_pin=.+?pt_key=)/)) {
-        var CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
-        var UserName = CookieValue.match(/pt_pin=(.+?);/)[1];
-        var DecodeName = decodeURIComponent(UserName);
-        var CookiesData = getCache();
-        var updateCookiesData = [...CookiesData];
-        var updateIndex;
-        var CookieName = "【账号】";
-        var updateCodkie = CookiesData.find((item, index) => {
-          var ck = item.cookie;
-          var Account = ck
-            ? ck.match(/pt_pin=.+?;/)
-              ? ck.match(/pt_pin=(.+?);/)[1]
-              : null
-            : null;
-          const verify = UserName === Account;
-          if (verify) {
-            updateIndex = index;
-          }
-          return verify;
-        });
-
-        if (updateCodkie) {
-          updateCookiesData[updateIndex].cookie = CookieValue;
-          var cookie = saveCache(updateCookiesData);
-          console.log(cookie);
-          if (!cookie) {
-            $nobyda.notify(
-              "用户名: " + DecodeName,
-              "",
-              "更新京东" + CookieName + "Cookie失败 ‼️"
-            );
-          } else {
-            $nobyda.notify(
-              "用户名: " + DecodeName,
-              "",
-              "更新京东" + CookieName + "Cookie成功 🎉"
-            );
-          }
-        } else {
-          updateCookiesData.push({
-            userName: DecodeName,
-            cookie: CookieValue,
-          });
-          var cookie = saveCache(updateCookiesData);
-          if (!cookie) {
-            $nobyda.notify(
-              "用户名: " + DecodeName,
-              "",
-              "首次写入京东" + CookieName + "Cookie失败 ‼️"
-            );
-          } else {
-            $nobyda.notify(
-              "用户名: " + DecodeName,
-              "",
-              "首次写入京东" + CookieName + "Cookie成功 🎉"
-            );
-          }
-        }
-      } else {
-        $nobyda.notify(
-          "写入京东Cookie失败",
-          "",
-          "请查看脚本内说明, 登录网页获取 ‼️"
-        );
-      }
-      $nobyda.done();
-      return;
-    } else {
-      $nobyda.notify(
-        "写入京东Cookie失败",
-        "",
-        "请检查匹配URL或配置内脚本类型 ‼️"
-      );
-    }
-  } catch (eor) {
-    $nobyda.write("", "CookiesJD");
-    $nobyda.notify("写入京东Cookie失败", "", "已尝试清空历史Cookie, 请重试 ⚠️");
-    console.log(
-      `\n写入京东Cookie出现错误 ‼️\n${JSON.stringify(
-        eor
-      )}\n\n${eor}\n\n${JSON.stringify($request.headers)}\n`
-    );
-  }
-  $nobyda.done();
-}
 // Modified from yichahucha
 function nobyda() {
   const start = Date.now();
