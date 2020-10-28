@@ -1,3 +1,18 @@
+/*****
+ * 2YA
+ * 
+ * ===================
+ * 特别说明：
+ *    1.获取多个京东cookie文件，不和野比大佬的文件冲突。暂不支持野比大佬脚本签到。
+ *    2.若是要使用京东多合一签到，请使用修改版地址：https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra.js
+ * ===================
+ *
+ * ===================
+ * 使用方式：打开 https://home.m.jd.com/myJd/newhome.action ，在个人中心自动获取 cookie，若弹出成功则正常使用。
+ * ===================
+ *
+ */
+
 $ = new API("JD_Cookies", true);
 const CookieKey = "CookiesJD";
 if ($request) GetCookie();
