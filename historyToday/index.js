@@ -17,7 +17,7 @@ const headers = {
 const date = new Date();
 let month = date.getMonth() + 1;
 let day = date.getDate();
-day = day >= 10 ? day : `0${day}`;
+// day = day >= 10 ? day : `0${day}`;
 month = month >= 10 ? month : `0${month}`;
 
 !(async ($) => {
