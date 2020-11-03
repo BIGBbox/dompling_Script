@@ -45,10 +45,23 @@ if ($.isNode()) {
 } else {
   var CookieKey = "CookiesJD"; // 缓存的数组cookie的key
   let cookiesData = $.getdata(CookieKey) || "[]";
-  cookiesData = JSON.parse(cookiesData);
+  cookiesData = transforJSON(cookiesData);
   cookiesArr = cookiesData.map((item) => item.cookie);
+
   cookiesArr.push($.getdata("CookieJD"));
   cookiesArr.push($.getdata("CookieJD2"));
+}
+
+function transforJSON(str) {
+  if (typeof str == "string") {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  }
+  console.log("It is not a string!");
 }
 
 const JD_API_HOST = "https://rdcseason.m.jd.com/api/";
