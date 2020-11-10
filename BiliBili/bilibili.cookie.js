@@ -52,6 +52,9 @@ function GetCookie() {
     ) {
       const ck = $request.headers["Cookie"] || $request.headers["cookie"];
       $.write(ck, CacheKey);
+      if (!$.read(CacheKey)) {
+        $.notify("哔哩哔哩", "", "首次写入成功，再次进入不会提醒 ‼️");
+      }
       $.done();
       return;
     } else {
