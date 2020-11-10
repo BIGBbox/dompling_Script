@@ -39,9 +39,8 @@ http-request https:\/\/api.vc.bilibili.com\/dynamic_svr\/v1\/dynamic_svr\/dynami
 https:\/\/api.vc.bilibili.com\/dynamic_svr\/v1\/dynamic_svr\/dynamic_new  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/BiliBili/bilibili.cookie.js
 
  */
-const APIKey = "bilibili_ck";
-$ = new API(APIKey, true);
-const CacheKey = `#${APIKey}`;
+const CacheKey = "cookie";
+$ = new API("bilibili", true);
 if ($request) GetCookie();
 
 function GetCookie() {

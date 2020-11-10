@@ -203,7 +203,7 @@
     {
       "id": "bilibili",
       "name": "哔哩哔哩关注中心",
-      "keys": ["bilibili_ck"],
+      "keys": ["@bilibili.cookie"],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/task/master/bilibili.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/bilibili.png"
