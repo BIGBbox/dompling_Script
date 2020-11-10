@@ -15,7 +15,7 @@ Github: https://github.com/domping
 
 ===================
 [MITM]
-hostname = wq.jd.com
+hostname = api.vc.bilibili.com
 
 【Surge脚本配置】:
 ===================
