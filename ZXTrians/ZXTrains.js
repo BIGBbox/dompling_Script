@@ -32,7 +32,7 @@ const title = "🚆智行火车";
 
 function dateToUnixTimestamp(str) {
   const dates = new Date(str.replace(/-/g, "/"));
-  return parseInt(dates.getTime() / 1000);
+  return parseInt(dates.getTime());
 }
 
 (async () => {
@@ -48,16 +48,41 @@ function dateToUnixTimestamp(str) {
     $.done({});
   });
 
+function timeAgo(o) {
+  var n = new Date().getTime();
+  var f = n - o;
+  var bs = f >= 0 ? "前" : "后"; //判断时间点是在当前时间的 之前 还是 之后
+  f = Math.abs(f);
+  if (f < 6e4) {
+    return "刚刚";
+  } //小于60秒,刚刚
+  if (f < 36e5) {
+    return parseInt(f / 6e4) + "分钟" + bs;
+  } //小于1小时,按分钟
+  if (f < 864e5) {
+    return parseInt(f / 36e5) + "小时" + bs;
+  } //小于1天按小时
+  if (f < 2592e6) {
+    return parseInt(f / 864e5) + "天" + bs;
+  } //小于1个月(30天),按天数
+  if (f < 31536e6) {
+    return parseInt(f / 2592e6) + "个月" + bs;
+  } //小于1年(365天),按月数
+  return parseInt(f / 31536e6) + "年" + bs; //大于365天,按年算
+}
+
 function message(d) {
   let { trainFlights, timeDesc } = d;
   const data = trainFlights[0];
   const passengerInfos = data.passengerInfos[0];
   const fromDate = dateToUnixTimestamp(data.fromTime);
   const toDate = dateToUnixTimestamp(data.toTime);
-  const nowDate = parseInt(new Date().getTime() / 1000);
-  if (fromDate - nowDate < 60 * 60 * 24 && nowDate < toDate) {
+  const nowDate = parseInt(new Date().getTime());
+  if (fromDate - nowDate < 1000 * 60 * 60 * 24 && nowDate < toDate) {
     if (nowDate > fromDate && nowDate < toDate) {
       timeDesc = "列车运行中";
+    } else {
+      timeDesc = `距离发车还有${timeAgo(fromDate)}`;
     }
     $.notify(
       title,
@@ -77,7 +102,7 @@ function message(d) {
     );
   }
 
-  if (fromDate - nowDate > 60 * 60 * 24)
+  if (fromDate - nowDate > 1000 * 60 * 60 * 24)
     console.log(`${data.title} 未到提醒时间`);
   if (nowDate > toDate) console.log(`${data.title} 当前车次已经   `);
 }
