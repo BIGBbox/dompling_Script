@@ -1,0 +1,104 @@
+$ = new API("ZXTrains", true);
+
+const title = "🚆智行火车";
+
+function dateToUnixTimestamp(str) {
+  const dates = new Date(str.replace(/-/g, '/'));
+  return dates.getTime() / 1000;
+}
+
+(async () => {
+  const response = $.read("travels");
+  console.log(response)
+  response.forEach((item) => {
+    message(item.orders[0])
+  })
+})()
+  .catch((e) => {
+    console.log(e);
+  })
+  .finally(() => {
+    $.done({});
+  });
+
+function message(d) {
+  let { trainFlights, timeDesc } = d;
+  const data = trainFlights[0];
+  const passengerInfos = data.passengerInfos[0];
+  const fromDate = dateToUnixTimestamp(data.fromTime)
+  const toDate = dateToUnixTimestamp(data.toTime)
+  const nowDate = new Date().getTime() / 1000;
+  if (fromDate - nowDate < 60 * 60 * 24) {
+    if (nowDate > fromDate && nowDate < toDate) {
+      timeDesc = "列车运行中";
+    }
+    $.notify(
+      title,
+      `⏰${timeDesc}`,
+      `
+    ⚙类型：${data.title}
+    ⛩票口：${data.checkInDesc || "到站自信查询"}
+    🛎提醒:   ${data.tripName}
+    ⏰开始:   ${data.fromTime}
+    ⏰结束:   ${data.toTime}
+    🏷地点：${data.fromStation} - ${data.toStation}
+    💰价格：${data.price}
+    💺座位：${passengerInfos.seatCategory} ${passengerInfos.carriageNo} ${passengerInfos.seatNo} 
+    `
+    )
+  } else { console.log(`${data.title} 未到提醒时间`) }
+}
+
+async function getTrainsList() {
+  try {
+    const headers = JSON.parse($.read("senku_signheader_zxhc"));
+    try {
+      if (!headers) throw "cookie 没有缓存，请获取";
+    } catch (e) {
+      console.log(e);
+      $.notify(title, "", e);
+      $.done({});
+    }
+    const url = `https://m.ctrip.com/restapi/soa2/17644/json/getWaitTravelOrders?__gw_os=IOS&__gw_platform=APP&__gw_appid=1003&__gw_ver=707.943`;
+    const option = {
+      headers: headers,
+      body: JSON.stringify({
+        "account12306": "q374779689",
+        head: {
+          extension: [
+            {
+              name: "partner",
+              value: "zhixing",
+            },
+            {
+              name: "correctVersion",
+              value: "38",
+            },
+          ],
+        },
+      }),
+    };
+    const response = await $.http.post({
+      url,
+      ...option,
+    });
+    const zxTrains = JSON.parse(response.body);
+    if (zxTrains.resultCode === 1) {
+      const {
+        getWaitTravelOrdersData: { travels },
+      } = zxTrains;
+      travels.splice(0, 1)
+      return travels;
+    }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+// prettier-ignore
+function ENV() { const isQX = typeof $task !== "undefined"; const isLoon = typeof $loon !== "undefined"; const isSurge = typeof $httpClient !== "undefined" && !isLoon; const isJSBox = typeof require == "function" && typeof $jsbox != "undefined"; const isNode = typeof require == "function" && !isJSBox; const isRequest = typeof $request !== "undefined"; const isScriptable = typeof importModule !== "undefined"; return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest, isScriptable } }
+// prettier-ignore
+function HTTP(baseURL, defaultOptions = {}) { const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV(); const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"]; function send(method, options) { options = typeof options === "string" ? { url: options } : options; options.url = baseURL ? baseURL + options.url : options.url; options = { ...defaultOptions, ...options }; const timeout = options.timeout; const events = { ...{ onRequest: () => { }, onResponse: (resp) => resp, onTimeout: () => { }, }, ...options.events, }; events.onRequest(method, options); let worker; if (isQX) { worker = $task.fetch({ method, ...options }) } else if (isLoon || isSurge || isNode) { worker = new Promise((resolve, reject) => { const request = isNode ? require("request") : $httpClient; request[method.toLowerCase()](options, (err, response, body) => { if (err) reject(err); else resolve({ statusCode: response.status || response.statusCode, headers: response.headers, body, }) }) }) } else if (isScriptable) { const request = new Request(options.url); request.method = method; request.headers = options.headers; request.body = options.body; worker = new Promise((resolve, reject) => { request.loadString().then((body) => { resolve({ statusCode: request.response.statusCode, headers: request.response.headers, body, }) }).catch((err) => reject(err)) }) } let timeoutid; const timer = timeout ? new Promise((_, reject) => { timeoutid = setTimeout(() => { events.onTimeout(); return reject(`${method}URL:${options.url}exceeds the timeout ${timeout}ms`) }, timeout) }) : null; return (timer ? Promise.race([timer, worker]).then((res) => { clearTimeout(timeoutid); return res }) : worker).then((resp) => events.onResponse(resp)) } const http = {}; methods.forEach((method) => (http[method.toLowerCase()] = (options) => send(method, options))); return http }
+// prettier-ignore
+function API(name = "untitled", debug = false) { const { isQX, isLoon, isSurge, isNode, isJSBox, isScriptable } = ENV(); return new (class { constructor(name, debug) { this.name = name; this.debug = debug; this.http = HTTP(); this.env = ENV(); this.node = (() => { if (isNode) { const fs = require("fs"); return { fs } } else { return null } })(); this.initCache(); const delay = (t, v) => new Promise(function (resolve) { setTimeout(resolve.bind(null, v), t) }); Promise.prototype.delay = function (t) { return this.then(function (v) { return delay(t, v) }) } } initCache() { if (isQX) this.cache = JSON.parse($prefs.valueForKey(this.name) || "{}"); if (isLoon || isSurge) this.cache = JSON.parse($persistentStore.read(this.name) || "{}"); if (isNode) { let fpath = "root.json"; if (!this.node.fs.existsSync(fpath)) { this.node.fs.writeFileSync(fpath, JSON.stringify({}), { flag: "wx" }, (err) => console.log(err)) } this.root = {}; fpath = `${this.name}.json`; if (!this.node.fs.existsSync(fpath)) { this.node.fs.writeFileSync(fpath, JSON.stringify({}), { flag: "wx" }, (err) => console.log(err)); this.cache = {} } else { this.cache = JSON.parse(this.node.fs.readFileSync(`${this.name}.json`)) } } } persistCache() { const data = JSON.stringify(this.cache); if (isQX) $prefs.setValueForKey(data, this.name); if (isLoon || isSurge) $persistentStore.write(data, this.name); if (isNode) { this.node.fs.writeFileSync(`${this.name}.json`, data, { flag: "w" }, (err) => console.log(err)); this.node.fs.writeFileSync("root.json", JSON.stringify(this.root), { flag: "w" }, (err) => console.log(err)) } } write(data, key) { this.log(`SET ${key}`); if (key.indexOf("#") !== -1) { key = key.substr(1); if (isSurge || isLoon) { $persistentStore.write(data, key) } if (isQX) { $prefs.setValueForKey(data, key) } if (isNode) { this.root[key] = data } } else { this.cache[key] = data } this.persistCache() } read(key) { this.log(`READ ${key}`); if (key.indexOf("#") !== -1) { key = key.substr(1); if (isSurge || isLoon) { return $persistentStore.read(key) } if (isQX) { return $prefs.valueForKey(key) } if (isNode) { return this.root[key] } } else { return this.cache[key] } } delete(key) { this.log(`DELETE ${key}`); if (key.indexOf("#") !== -1) { key = key.substr(1); if (isSurge || isLoon) { $persistentStore.write(null, key) } if (isQX) { $prefs.removeValueForKey(key) } if (isNode) { delete this.root[key] } } else { delete this.cache[key] } this.persistCache() } notify(title, subtitle = "", content = "", options = {}) { const openURL = options["open-url"]; const mediaURL = options["media-url"]; if (isQX) $notify(title, subtitle, content, options); if (isSurge) { $notification.post(title, subtitle, content + `${mediaURL ? "\n多媒体:" + mediaURL : ""}`, { url: openURL }) } if (isLoon) { let opts = {}; if (openURL) opts["openUrl"] = openURL; if (mediaURL) opts["mediaUrl"] = mediaURL; if (JSON.stringify(opts) == "{}") { $notification.post(title, subtitle, content) } else { $notification.post(title, subtitle, content, opts) } } if (isNode || isScriptable) { const content_ = content + (openURL ? `\n点击跳转:${openURL}` : "") + (mediaURL ? `\n多媒体:${mediaURL}` : ""); if (isJSBox) { const push = require("push"); push.schedule({ title: title, body: (subtitle ? subtitle + "\n" : "") + content_, }) } else { console.log(`${title}\n${subtitle}\n${content_}\n\n`) } } } log(msg) { if (this.debug) console.log(msg) } info(msg) { console.log(msg) } error(msg) { console.log("ERROR: " + msg) } wait(millisec) { return new Promise((resolve) => setTimeout(resolve, millisec)) } done(value = {}) { if (isQX || isLoon || isSurge) { $done(value) } else if (isNode && !isJSBox) { if (typeof $context !== "undefined") { $context.headers = value.headers; $context.statusCode = value.statusCode; $context.body = value.body } } } })(name, debug) }

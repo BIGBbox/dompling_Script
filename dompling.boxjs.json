@@ -6,9 +6,9 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
-      "id": "ZLTrains",
+      "id": "ZXTrains",
       "name": "智行火车票",
-      "keys": ["@ZLTrains.travels"],
+      "keys": ["@ZXTrains.travels"],
       "icons": [],
       "author": "@dompling",
       "descs_html": ["使用智行火车票 app，在未出行中获取该列表。"],
