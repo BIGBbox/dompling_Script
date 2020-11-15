@@ -1,3 +1,31 @@
+/**
+ 图标
+# 获取方式: 进入待出行列表查看
+
+[task_local]
+30 * * * https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/ZXTrains.js
+
+(1). Quantumult X
+[MITM]
+hostname=m.ctrip.com
+[rewrite_local]
+
+^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders* url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/update.trians.js
+
+(2). Loon
+[MITM]
+hostname=m.ctrip.com
+[Script]
+http-response ^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders* script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/update.trians.js, require-body=true
+
+(3). Surge
+[MITM]
+hostname=m.ctrip.com
+[Script]
+type=http-response, pattern=^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders*, script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/update.trians.js, require-body=true
+
+ */
+
 $ = new API("ZXTrains", true);
 
 const title = "🚆智行火车";
