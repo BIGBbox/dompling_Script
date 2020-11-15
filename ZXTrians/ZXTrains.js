@@ -3,16 +3,15 @@ $ = new API("ZXTrains", true);
 const title = "🚆智行火车";
 
 function dateToUnixTimestamp(str) {
-  const dates = new Date(str.replace(/-/g, '/'));
-  return dates.getTime() / 1000;
+  const dates = new Date(str.replace(/-/g, "/"));
+  return parseInt(dates.getTime() / 1000);
 }
 
 (async () => {
   const response = $.read("travels");
-  console.log(response)
   response.forEach((item) => {
-    message(item.orders[0])
-  })
+    message(item.orders[0]);
+  });
 })()
   .catch((e) => {
     console.log(e);
@@ -25,10 +24,10 @@ function message(d) {
   let { trainFlights, timeDesc } = d;
   const data = trainFlights[0];
   const passengerInfos = data.passengerInfos[0];
-  const fromDate = dateToUnixTimestamp(data.fromTime)
-  const toDate = dateToUnixTimestamp(data.toTime)
-  const nowDate = new Date().getTime() / 1000;
-  if (fromDate - nowDate < 60 * 60 * 24) {
+  const fromDate = dateToUnixTimestamp(data.fromTime);
+  const toDate = dateToUnixTimestamp(data.toTime);
+  const nowDate = parseInt(new Date().getTime() / 1000);
+  if (fromDate - nowDate < 60 * 60 * 24 && nowDate < toDate) {
     if (nowDate > fromDate && nowDate < toDate) {
       timeDesc = "列车运行中";
     }
@@ -38,15 +37,21 @@ function message(d) {
       `
     ⚙类型：${data.title}
     ⛩票口：${data.checkInDesc || "到站自信查询"}
-    🛎提醒:   ${data.tripName}
-    ⏰开始:   ${data.fromTime}
-    ⏰结束:   ${data.toTime}
+    🛎提醒: ${data.tripName}
+    ⏰开始：${data.fromTime}
+    ⏰结束：${data.toTime}
     🏷地点：${data.fromStation} - ${data.toStation}
     💰价格：${data.price}
-    💺座位：${passengerInfos.seatCategory} ${passengerInfos.carriageNo} ${passengerInfos.seatNo} 
+    💺座位：${passengerInfos.seatCategory} ${passengerInfos.carriageNo} ${
+        passengerInfos.seatNo
+      } 
     `
-    )
-  } else { console.log(`${data.title} 未到提醒时间`) }
+    );
+  }
+
+  if (fromDate - nowDate > 60 * 60 * 24)
+    console.log(`${data.title} 未到提醒时间`);
+  if (nowDate > toDate) console.log(`${data.title} 当前车次已经   `);
 }
 
 async function getTrainsList() {
@@ -63,7 +68,7 @@ async function getTrainsList() {
     const option = {
       headers: headers,
       body: JSON.stringify({
-        "account12306": "q374779689",
+        account12306: "q374779689",
         head: {
           extension: [
             {
@@ -87,7 +92,7 @@ async function getTrainsList() {
       const {
         getWaitTravelOrdersData: { travels },
       } = zxTrains;
-      travels.splice(0, 1)
+      travels.splice(0, 1);
       return travels;
     }
   } catch (e) {
@@ -117,9 +122,9 @@ function HTTP(baseURL, defaultOptions = {}) {
     const timeout = options.timeout;
     const events = {
       ...{
-        onRequest: () => { },
+        onRequest: () => {},
         onResponse: (resp) => resp,
-        onTimeout: () => { },
+        onTimeout: () => {},
       },
       ...options.events,
     };
@@ -164,20 +169,20 @@ function HTTP(baseURL, defaultOptions = {}) {
     let timeoutid;
     const timer = timeout
       ? new Promise((_, reject) => {
-        timeoutid = setTimeout(() => {
-          events.onTimeout();
-          return reject(
-            `${method} URL: ${options.url} exceeds the timeout ${timeout} ms`
-          );
-        }, timeout);
-      })
+          timeoutid = setTimeout(() => {
+            events.onTimeout();
+            return reject(
+              `${method} URL: ${options.url} exceeds the timeout ${timeout} ms`
+            );
+          }, timeout);
+        })
       : null;
 
     return (timer
       ? Promise.race([timer, worker]).then((res) => {
-        clearTimeout(timeoutid);
-        return res;
-      })
+          clearTimeout(timeoutid);
+          return res;
+        })
       : worker
     ).then((resp) => events.onResponse(resp));
   }
