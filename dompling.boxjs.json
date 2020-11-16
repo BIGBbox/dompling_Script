@@ -12,7 +12,7 @@
       "author": "@dompling",
       "descs_html": ["使用智行火车票 app，在未出行中获取该列表。"],
       "repo": "https://github.com/dompling/Script/blob/master/ZXTrians/ZXTrians.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/ZXTrians.js",
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/ZXTrains.js",
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/zxhc.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/zxhc.png"
