@@ -518,12 +518,8 @@ function notify(_number) {
           "",
           Name + one + two + three + four + five + disa + notify
         );
-      if (DualAccount) {
-        double();
-      } else {
-        $nobyda.time();
-        $nobyda.done();
-      }
+      $nobyda.time();
+      $nobyda.done();
     } catch (eor) {
       $nobyda.notify(
         "通知模块 " + eor.name + "‼️",
