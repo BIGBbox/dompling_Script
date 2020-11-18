@@ -532,53 +532,6 @@ function notify(_number) {
   });
 }
 
-function ReadCookie() {
-  DualAccount = true;
-  const EnvInfo = $nobyda.isJSBox ? "JD_Cookie" : "CookieJD";
-  const EnvInfo2 = $nobyda.isJSBox ? "JD_Cookie2" : "CookieJD2";
-  if (DeleteCookie) {
-    if ($nobyda.read(EnvInfo) || $nobyda.read(EnvInfo2)) {
-      $nobyda.write("", EnvInfo);
-      $nobyda.write("", EnvInfo2);
-      $nobyda.notify(
-        "京东Cookie清除成功 !",
-        "",
-        '请手动关闭脚本内"DeleteCookie"选项'
-      );
-      $nobyda.done();
-      return;
-    }
-    $nobyda.notify("脚本终止", "", '未关闭脚本内"DeleteCookie"选项 ‼️');
-    $nobyda.done();
-    return;
-  } else if ($nobyda.isRequest) {
-    GetCookie();
-    return;
-  }
-  if (Key || $nobyda.read(EnvInfo)) {
-    if ($nobyda.isJSBox || $nobyda.isNode) {
-      if (Key) $nobyda.write(Key, EnvInfo);
-      if (DualKey) $nobyda.write(DualKey, EnvInfo2);
-    }
-    add = DualKey || $nobyda.read(EnvInfo2) ? true : false;
-    KEY = Key ? Key : $nobyda.read(EnvInfo);
-    out = parseInt($nobyda.read("JD_DailyBonusTimeOut")) || out;
-    stop = parseInt($nobyda.read("JD_DailyBonusDelay")) || stop;
-    boxdis =
-      $nobyda.read("JD_Crash_disable") === "false" ||
-      $nobyda.isNode ||
-      $nobyda.isJSBox
-        ? false
-        : boxdis;
-    LogDetails = $nobyda.read("JD_DailyBonusLog") === "true" || LogDetails;
-    ReDis = ReDis ? $nobyda.write("", "JD_DailyBonusDisables") : "";
-    all();
-  } else {
-    $nobyda.notify("京东签到", "", "脚本终止, 未获取Cookie ‼️");
-    $nobyda.done();
-  }
-}
-
 function getCache() {
   var cookies = $nobyda.read(CookieKey) || "[]";
   try {
