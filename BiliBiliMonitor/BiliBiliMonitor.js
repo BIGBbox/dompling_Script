@@ -183,7 +183,12 @@ async function getSubscription(params) {
     data.push(`pn=${pageSize}`);
     data = data.join("&");
     const url = `https://api.bilibili.com/x/space/bangumi/follow/list?${data}`;
-    const response = await $.http.get({ url });
+    const response = await $.http.get({
+      url,
+      headers: {
+        cookie: bilibiliCookie,
+      },
+    });
     try {
       const body = JSON.parse(response.body);
       if (body.code !== 0) throw "获取番剧列表失败" + (body.message || "");
