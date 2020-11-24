@@ -39,13 +39,17 @@ cron "0 0 0,1 * * *" script-path=https://raw.githubusercontent.com/dompling/Scri
 
 const bilibiliCookie = new API("bilibili").read("cookie");
 const cookieData = bilibiliCookie.split("; ");
-
 const $ = new API("BiliBiliMonitor", true);
-
 $.log(cookieData);
-
+let vmid;
+try {
+  vmid = cookieData
+    .find((item) => item.indexOf("DedeUserID=") > -1)
+    .split("=")[1];
+} catch (e) {
+  $.log(e);
+}
 const dateTime = new Date().getTime();
-const vmid = $.read("vmid");
 const moduleName = "📹 哔哩哔哩番剧监控";
 const subscriptionName = "subscriptions";
 
@@ -96,22 +100,22 @@ function message(data) {
       }
       let result = findDifferentElements2(storedKeyList, curKeyList);
       if (!result || result.length == 0) {
-        $.log("无番剧更新🔉");
+        $.log("💭无番剧更新");
       } else {
-        $.log(`番剧更新如下：`);
+        $.log(`💭番剧更新如下：`);
         for (let i in result) {
+          const keys = result[i];
+          const bangumi = curList[keys];
           $.notify(
             moduleName,
-            `【${curList[result[i]].title}】- ${curList[result[i]].indexShow}`,
+            `【${bangumi.title}】- ${bangumi.indexShow}`,
             "",
             {
-              "media-url": result.cover,
-              "open-url": result.url,
+              "media-url": bangumi.cover,
+              "open-url": bangumi.url,
             }
           );
-          $.log(
-            `【${curList[result[i]].title}】- ${curList[result[i]].indexShow}`
-          );
+          $.log(`【${bangumi.title}】- ${bangumi.indexShow}`);
         }
       }
     } catch (e) {
