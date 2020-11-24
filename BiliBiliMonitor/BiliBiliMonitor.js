@@ -13,7 +13,7 @@ Surge 4.2.0+ 脚本配置:
 [Script]
 # > 哔哩哔哩番剧监控
 获取哔哩哔哩 = type=http-request,pattern=^https:\/\/api.vc.bilibili.com\/dynamic_svr\/v1\/dynamic_svr\/dynamic_new,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/dompling/Script/master/BiliBili/bilibili.cookie.js,script-update-interval=0
-哔哩哔哩番剧监控 = type=cron,cronexp="0 0 0,1 * * ?",wake-system=1,script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/BiliBiliMonitor.js
+哔哩哔哩番剧监控 = type=cron,cronexp="0 0 0,1 * * ?",wake-system=1,script-path=https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js
 
 
 ************************
@@ -25,7 +25,7 @@ QuantumultX 本地脚本配置:
 https:\/\/api.vc.bilibili.com\/dynamic_svr\/v1\/dynamic_svr\/dynamic_new  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/BiliBili/bilibili.cookie.js
 
 [task_local]
-0 0 0,1 * * ? https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/BiliBiliMonitor.js
+0 0 0,1 * * ? https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js
 
 ************************
 LOON 本地脚本配置:
@@ -33,7 +33,7 @@ LOON 本地脚本配置:
 
 [Script]
 http-request https:\/\/api.vc.bilibili.com\/dynamic_svr\/v1\/dynamic_svr\/dynamic_new tag=获取哔哩哔哩Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/BiliBili/bilibili.cookie.js
-cron "0 0 0,1 * * *" script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/BiliBiliMonitor.js, tag=哔哩哔哩番剧监控
+cron "0 0 0,1 * * *" script-path=https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js, tag=哔哩哔哩番剧监控
 
 */
 
