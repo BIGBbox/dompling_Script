@@ -107,52 +107,6 @@ function message(d) {
   if (nowDate > toDate) console.log(`${data.title} 当前车次已经   `);
 }
 
-async function getTrainsList() {
-  try {
-    const headers = JSON.parse($.read("senku_signheader_zxhc"));
-    try {
-      if (!headers) throw "cookie 没有缓存，请获取";
-    } catch (e) {
-      console.log(e);
-      $.notify(title, "", e);
-      $.done({});
-    }
-    const url = `https://m.ctrip.com/restapi/soa2/17644/json/getWaitTravelOrders?__gw_os=IOS&__gw_platform=APP&__gw_appid=1003&__gw_ver=707.943`;
-    const option = {
-      headers: headers,
-      body: JSON.stringify({
-        account12306: "q374779689",
-        head: {
-          extension: [
-            {
-              name: "partner",
-              value: "zhixing",
-            },
-            {
-              name: "correctVersion",
-              value: "38",
-            },
-          ],
-        },
-      }),
-    };
-    const response = await $.http.post({
-      url,
-      ...option,
-    });
-    const zxTrains = JSON.parse(response.body);
-    if (zxTrains.resultCode === 1) {
-      const {
-        getWaitTravelOrdersData: { travels },
-      } = zxTrains;
-      travels.splice(0, 1);
-      return travels;
-    }
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-}
 function ENV() {
   const isQX = typeof $task !== "undefined";
   const isLoon = typeof $loon !== "undefined";
@@ -164,13 +118,17 @@ function ENV() {
   return { isQX, isLoon, isSurge, isNode, isJSBox, isRequest, isScriptable };
 }
 
-function HTTP(baseURL, defaultOptions = {}) {
+function HTTP(defaultOptions = { baseURL: "" }) {
   const { isQX, isLoon, isSurge, isScriptable, isNode } = ENV();
   const methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH"];
+  const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
     options = typeof options === "string" ? { url: options } : options;
-    options.url = baseURL ? baseURL + options.url : options.url;
+    const baseURL = defaultOptions.baseURL;
+    if (baseURL && !URL_REGEX.test(options.url || "")) {
+      options.url = baseURL ? baseURL + options.url : options.url;
+    }
     options = { ...defaultOptions, ...options };
     const timeout = options.timeout;
     const events = {
@@ -282,6 +240,7 @@ function API(name = "untitled", debug = false) {
         });
       };
     }
+
     // persistance
 
     // initialize cache
