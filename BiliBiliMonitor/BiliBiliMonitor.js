@@ -41,7 +41,7 @@ const bilibiliCookie = new API("bilibili").read("cookie");
 const cookieData = bilibiliCookie.split("; ");
 const $ = new API("BiliBiliMonitor", true);
 $.log(cookieData);
-let vmid = $.read(vmid);
+let vmid = $.read("vmid");
 try {
   if (!vmid) {
     vmid = cookieData
