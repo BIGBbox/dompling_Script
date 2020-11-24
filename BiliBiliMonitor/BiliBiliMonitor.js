@@ -41,14 +41,11 @@ const bilibiliCookie = new API("bilibili").read("cookie");
 const cookieData = bilibiliCookie.split("; ");
 const $ = new API("BiliBiliMonitor", true);
 $.log(cookieData);
-let vmid = $.read("vmid");
+let vmid;
 try {
-  if (!vmid) {
-    vmid = cookieData
-      .find((item) => item.indexOf("DedeUserID=") > -1)
-      .split("=")[1];
-    $.write(vmid, "vmid");
-  }
+  vmid = cookieData
+    .find((item) => item.indexOf("DedeUserID=") > -1)
+    .split("=")[1];
 } catch (e) {
   $.log(e);
 }
