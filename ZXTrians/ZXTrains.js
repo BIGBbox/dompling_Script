@@ -10,19 +10,19 @@
 hostname=m.ctrip.com
 [rewrite_local]
 
-^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders* url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/update.trians.js
+^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders* url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/update.trians.js
 
 (2). Loon
 [MITM]
 hostname=m.ctrip.com
 [Script]
-http-response ^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders* script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/update.trians.js, require-body=true
+http-response ^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders* script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/update.trians.js, require-body=true
 
 (3). Surge
 [MITM]
 hostname=m.ctrip.com
 [Script]
-type=http-response, pattern=^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders*, script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrains/update.trians.js, require-body=true
+type=http-response, pattern=^https:\/\/m.ctrip.com\/restapi\/soa2\/17644\/json\/getWaitTravelOrders*, script-path=https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/update.trians.js, require-body=true
 
  */
 
