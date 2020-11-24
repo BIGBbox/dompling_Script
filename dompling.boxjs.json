@@ -216,7 +216,11 @@
     {
       "id": "bilibili",
       "name": "哔哩哔哩关注中心/番剧监控",
-      "keys": ["@bilibili.cookie", "@BiliBiliMonitor.subscriptions"],
+      "keys": [
+        "@bilibili.cookie",
+        "@BiliBiliMonitor.vmid",
+        "@BiliBiliMonitor.subscriptions"
+      ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/task/master/bilibili.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/bilibili.png"
@@ -226,13 +230,13 @@
       "script": "https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js",
       "settings": [
         {
-          "id": "@bilibili.cookie",
-          "name": "cookie",
+          "id": "@BiliBiliMonitor.vmid",
+          "name": "vmid",
           "val": null,
           "type": "text",
           "autoGrow": false,
           "rows": 2,
-          "placeholder": "哔哩哔哩关注中心cookie"
+          "placeholder": "哔哩哔哩番剧vmid"
         }
       ]
     },
