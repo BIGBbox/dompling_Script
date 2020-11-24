@@ -223,7 +223,18 @@
       ],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/BiliBili/bilibili.cookie.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js"
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js",
+      "settings": [
+        {
+          "id": "@bilibili.cookie",
+          "name": "cookie",
+          "val": null,
+          "type": "text",
+          "autoGrow": false,
+          "rows": 2,
+          "placeholder": "哔哩哔哩关注中心cookie"
+        }
+      ]
     },
     {
       "id": "JD_Cookies",
