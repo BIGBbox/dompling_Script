@@ -1,6 +1,5 @@
 /**
- 图标
-# 获取方式: 进入待出行列表查看
+# 获取方式: 进入页面获取
 (1). Quantumult X
 [MITM]
 hostname=www.dutangapp.cn
