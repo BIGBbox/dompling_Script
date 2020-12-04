@@ -28,9 +28,9 @@ try {
   if ($request.url.indexOf("dutangapp.cn/u/me") > -1) {
     var body = $response.body;
     var djt = JSON.parse(body);
-    if (djt.code === 0 && djt.data.unid) {
-      $.write(djt.data.unid, "unid");
+    if (djt.code === 0 && djt.data.unid) {      
       const unid = $.read("unid");
+      $.write(djt.data.unid, "unid");
       if (!unid) $.notify(title, "首次写入 cookie 成功", "详细请访问 BoxJS 查看");
       $.log(`${title}cookie 写入成功`);
     }
