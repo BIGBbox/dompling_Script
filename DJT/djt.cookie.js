@@ -5,27 +5,27 @@
 hostname=www.dutangapp.cn
 [rewrite_local]
 
-^https:\/\/www.dutangapp.cn\/u\/wx_login* url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js
+^http:\/\/www.dutangapp.cn\/u\/me url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js
 
 (2). Loon
 [MITM]
 hostname=www.dutangapp.cn
 [Script]
-http-response ^https:\/\/www.dutangapp.cn\/u\/wx_login* script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, require-body=true
+http-response ^http:\/\/www.dutangapp.cn\/u\/me script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, require-body=true
 
 (3). Surge
 [MITM]
 hostname=www.dutangapp.cn
 [Script]
-type=http-response, pattern=^https:\/\/www.dutangapp.cn\/u\/wx_login*, script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, require-body=true
+type=http-response, pattern=^http:\/\/www.dutangapp.cn\/u\/me, script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, require-body=true
 
  */
 
-
-const $ = new API("DJT");
+const $ = new API("DJT", true);
 const title = "📆毒汤日历";
+$.log($response);
 try {
-  if ($request.url.indexOf("www.dutangapp.cn/u/wx_login") > -1) {
+  if ($request.url.indexOf("dutangapp.cn/u/me") > -1) {
     var body = $response.body;
     var djt = JSON.parse(body);
     if (djt.code === 0 && djt.data.unid) {
