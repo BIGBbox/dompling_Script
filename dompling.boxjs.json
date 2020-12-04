@@ -1,4 +1,4 @@
-{
+u{
   "id": "dompling.app.sub",
   "name": "DomplingYaYa 应用订阅",
   "author": "@DomplingYaYa",
@@ -224,6 +224,14 @@
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/BiliBili/bilibili.cookie.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/BiliBiliMonitor/BiliBiliMonitor.js"
+    },
+    {
+      "id": "DJT",
+      "name": "毒汤日历",
+      "keys": ["@DJT.unid"],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/DJT/djt.cookie.js"
     },
     {
       "id": "JD_Cookies",
