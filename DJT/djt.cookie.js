@@ -4,8 +4,7 @@
 [MITM]
 hostname=www.dutangapp.cn
 [rewrite_local]
-
-^http:\/\/www.dutangapp.cn\/u\/me url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js
+^http:\/\/www.dutangapp.cn\/u\/me  url script-respones-body https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js
 
 (2). Loon
 [MITM]
