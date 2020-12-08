@@ -15,7 +15,7 @@ cron "10 0 0 * * *" script-path=https://raw.githubusercontent.com/dompling/Scrip
 const $ = API("birthday", true);
 
 const title = "🐣破壳日🐣";
-$.baseURL = "https://www.iamwawa.cn/home/nongli/ajax";
+
 $.config = {
   username: "", // 姓名
   birthday: "", // 生日日期
