@@ -23,6 +23,7 @@ $.config = {
   physiologicalCycle: "", // 下一次周期
   nongli: true, // 农历生日
   eday: "",
+  loveWords: true,
   isLeapMonth: false, //如果是农历闰月第四个参数赋值true即可
 };
 
@@ -51,20 +52,21 @@ const defaultKey = [
 defaultKey.forEach((key, index) => {
   if ($.read(readKey[index])) $.config[key] = $.read(readKey[index]);
 });
-
+$.log($.config);
 (async () => {
   const calendarRes = await getCalendarJs();
   $.calendar = evil(calendarRes);
   if (!$.config.username || !$.calendar.verifyTime($.config.birthday))
     throw "姓名或者出生日格式不正确";
-  $.oneSay = await getEveryDaySay();
+  if ($.config.loveWords === "true" || $.config.loveWords === true)
+    $.oneSay = await getEveryDaySay();
 
   getBirthday();
   getEdayNumber();
   getPhysiologicalDay();
 
   let content = `
-  [🐣${$.config.username}🐣]：${$.oneSay}
+  [🐣${$.config.username}🐣]：${$.oneSay || ""}
 
   📆农历：${$.lunar}
 
@@ -131,7 +133,7 @@ function getPhysiologicalDay() {
 function getBirthday() {
   const [y, m, d] = $.config.birthday.split("-");
   const type =
-    $.config.type === "false" || $.config.type === false ? false : true;
+    $.config.nongli === "false" || $.config.nongli === false ? false : true;
   const year = parseInt(y),
     month = parseInt(m),
     day = parseInt(d);
