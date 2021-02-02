@@ -10,13 +10,13 @@ hostname=www.dutangapp.cn
 [MITM]
 hostname=www.dutangapp.cn
 [Script]
-http-response ^http:\/\/www.dutangapp.cn\/u\/me script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, require-body=true
+http-response ^http:\/\/www.dutangapp.cn\/u\/me script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, requires-body=true
 
 (3). Surge
 [MITM]
 hostname=www.dutangapp.cn
 [Script]
-type=http-response, pattern=^http:\/\/www.dutangapp.cn\/u\/me, script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, require-body=true
+type=http-response, pattern=^http:\/\/www.dutangapp.cn\/u\/me, script-path=https://raw.githubusercontent.com/dompling/Script/master/DJT/djt.cookie.js, requires-body=true
 
  */
 
