@@ -234,6 +234,17 @@
       "repo": "https://github.com/dompling/Script/blob/master/DJT/djt.cookie.js"
     },
     {
+      "id": "scriptable",
+      "name": "桌面组件",
+      "keys": ["scriptable"],
+      "icons": [
+        "https://scriptablejs.gitee.io/store/favicon.ico",
+        "https://scriptablejs.gitee.io/store/favicon.ico"
+      ],
+      "author": "@dompling",
+      "repo": ""
+    },
+    {
       "id": "JD_Cookies",
       "name": "京东多账号 Ck 管理",
       "keys": ["CookiesJD"],
