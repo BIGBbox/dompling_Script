@@ -256,7 +256,7 @@
       "settings": [
         {
           "id": "BoxJSDomain",
-          "name": "CK 列表",
+          "name": "BoxJS域名",
           "val": "boxjs.net",
           "type": "text",
           "autoGrow": false,
