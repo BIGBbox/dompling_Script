@@ -7,7 +7,9 @@ Github: https://github.com/domping
 ===================
 1 0 * * * https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_sign.js
 
-
+[获取 ck]
+使用方式：复制 https://home.m.jd.com/myJd/newhome.action 到浏览器打开 ，在个人中心自动获取 cookie，
+若弹出成功则正常使用。否则继续再此页面继续刷新一下试试
 ===================
 [MITM]
 hostname = wq.jd.com
