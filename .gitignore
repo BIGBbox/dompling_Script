@@ -7,3 +7,4 @@
 /.output
 *.json
 test.js
+.DS_Store
