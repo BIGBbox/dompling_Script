@@ -1,6 +1,6 @@
 /*
 Author: 2Ya
-
+Description: 本脚本使用的野比大佬的多合一签到
 Github: https://github.com/domping
 ===================
 【task】
