@@ -1,6 +1,6 @@
 /*
 Author: 2Ya
-Description: 本脚本使用的野比大佬的多合一签到
+Description: 本脚本使用的野比大佬的多合一签到 原脚本地址：https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
 Github: https://github.com/domping
 ===================
 【task】
