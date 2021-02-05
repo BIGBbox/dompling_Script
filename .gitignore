@@ -4,6 +4,6 @@
 /.vscode
 /.idea
 /.history
+/.output
 *.json
 test.js
-/.output
