@@ -91,10 +91,10 @@ try {
   for (let index = 0; index < saveCookies.length; index++) {
     const item = saveCookies[index];
     $.write(item[0].cookie, CookieJD);
-    $.log(item[0].userName);
+    $.log(`京东账号：${item[0].userName}`);
     if (item.length > 1) {
       $.write(item[1].cookie, CookieJD2);
-      $.log(item[1].userName);
+      $.log(`京东账号：${item[1].userName}`);
     }
     const cached_logs = [];
     await new Promise((rslve) => {
