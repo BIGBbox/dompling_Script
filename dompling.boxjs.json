@@ -6,6 +6,16 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
+      "id": "10010",
+      "name": "10010",
+      "keys": ["@YaYa10010.cookie"],
+      "author": "@dompling",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/10010.png",
+        "https://raw.githubusercontent.com/Orz-3/mini/master/Color/10010.png"
+      ]
+    },
+    {
       "id": "ZXTrains",
       "name": "智行火车行程提醒",
       "keys": ["@ZXTrains.travels"],
