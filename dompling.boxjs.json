@@ -6,8 +6,8 @@
   "repo": "https://github.com/dompling/Script",
   "apps": [
     {
-      "id": "10010",
-      "name": "10010",
+      "id": "10010Ck",
+      "name": "中国联通 Cookie",
       "keys": ["@YaYa_10010.cookie"],
       "author": "@dompling",
       "icons": [
