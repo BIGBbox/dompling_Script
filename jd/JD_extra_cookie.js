@@ -50,7 +50,8 @@ function getCache() {
 }
 
 function GetCookie() {
-  if (typeof $request.headers['scriptable'] !== 'undefined') return;
+  const userAgent = $request.headers['User-Agent'] || '';
+  if (userAgent.indexOf('scriptable') > -1) return;
   try {
     if ($request.headers && $request.url.indexOf('GetJDUserInfoUnion') > -1) {
       var CV = $request.headers['Cookie'] || $request.headers['cookie'];
