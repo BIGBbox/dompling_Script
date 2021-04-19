@@ -45,13 +45,12 @@ if ($request) GetCookie();
 
 function getCache() {
   var cache = $.read(CacheKey) || '[]';
-  $.log(cache);
   return JSON.parse(cache);
 }
 
 function GetCookie() {
-  const userAgent = $request.headers['User-Agent'] || '';
-  if (userAgent.indexOf('scriptable') > -1) return;
+  const Referer = $request.headers['Referer'] || '';
+  if (Referer.indexOf('scriptable') > -1) return;
   try {
     if ($request.headers && $request.url.indexOf('GetJDUserInfoUnion') > -1) {
       var CV = $request.headers['Cookie'] || $request.headers['cookie'];
