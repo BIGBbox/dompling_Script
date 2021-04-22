@@ -50,7 +50,7 @@ function getCache() {
 
 function GetCookie() {
   const Referer = $request.headers['Referer'] || '';
-  if (Referer.indexOf('scriptable') > -1) return;
+  if (!Referer) return;
   try {
     if ($request.headers && $request.url.indexOf('GetJDUserInfoUnion') > -1) {
       var CV = $request.headers['Cookie'] || $request.headers['cookie'];
