@@ -41,7 +41,9 @@ http-request ^https:\/\/me-api\.jd\.com\/user_new\/info\/GetJDUserInfoUnion tag=
 const APIKey = 'CookiesJD';
 $ = new API(APIKey, true);
 const CacheKey = `#${APIKey}`;
+
 if ($request) GetCookie();
+$.done();
 
 function getCache() {
   var cache = $.read(CacheKey) || '[]';
@@ -98,7 +100,6 @@ function GetCookie() {
       } else {
         $.notify('写入京东Cookie失败', '', '请查看脚本内说明, 登录网页获取 ‼️');
       }
-      $.done();
       return;
     } else {
       $.notify('写入京东Cookie失败', '', '请检查匹配URL或配置内脚本类型 ‼️');
@@ -112,7 +113,6 @@ function GetCookie() {
       )}\n\n${eor}\n\n${JSON.stringify($request.headers)}\n`,
     );
   }
-  $.done();
 }
 
 function ENV() {
