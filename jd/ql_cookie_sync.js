@@ -10,24 +10,36 @@ let token = '';
 const headers = {
   'Content-Type': `application/json;charset=UTF-8`,
 };
+const account = {
+  password: $.read('password'),
+  username: $.read('username'),
+};
 const jd_cookies = JSON.parse($.read('#CookiesJD') || '[]');
 const jd_cookie1 = $.read('#CookieJD') || '';
 const jd_cookie2 = $.read('#CookieJD2') || '';
-
+$.log(account);
 (async () => {
   const loginRes = await login();
-  if (loginRes.err === 400) return $.notify(title, '', loginRes.msg);
+  if (loginRes.code === 400) return $.notify(title, '', loginRes.msg);
+  $.log(loginRes);
   token = loginRes.token;
   headers.Authorization = `Bearer ${token}`;
   const cookiesRes = await getCookies();
+  $.log(cookiesRes);
   for (const item of cookiesRes.data) {
     await delCookie(item._id);
   }
+  $.log('清空 cookie');
   const cookies = jd_cookies.map(item => item.cookie);
   if (jd_cookie1) cookies.push(jd_cookie1);
   if (jd_cookie2) cookies.push(jd_cookie2);
   const addRes = await addCookies(cookies);
-  console.log(addRes);
+  $.log(addRes);
+  const cookiesName = cookies.map(item => {
+    const UserName = item.cookie.match(/pt_pin=(.+?);/)[1];
+    return decodeURIComponent(UserName);
+  });
+  return $.notify(title, '', `同步成功：${cookiesName.join('\n')}`);
 })().catch((e) => {
   $.log(JSON.stringify(e));
 }).finally(() => {
@@ -42,10 +54,7 @@ function login() {
   const opt = {
     headers,
     url: getURL('login'),
-    body: JSON.stringify({
-      password: $.read('password'),
-      username: $.read('username'),
-    }),
+    body: JSON.stringify(account),
   };
   return $.http.post(opt).then((response) => JSON.parse(response.body));
 }
