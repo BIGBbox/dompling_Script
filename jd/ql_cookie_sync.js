@@ -5,7 +5,7 @@
 const $ = new API('ql', true);
 const title = '🐉 通知提示';
 const ipAddress = $.read('ip') || '';
-$.log(ipAddress);
+
 const baseURL = `http://${ipAddress}`;
 let token = '';
 const headers = {
@@ -15,15 +15,15 @@ const account = {
   password: $.read('password'),
   username: $.read('username'),
 };
-console.log($.read('username'));
 const jd_cookies = JSON.parse($.read('#CookiesJD') || '[]');
 const jd_cookie1 = $.read('#CookieJD') || '';
 const jd_cookie2 = $.read('#CookieJD2') || '';
-$.log(account);
+$.log(`登陆：${ipAddress}`);
+$.log(`账号：${account.username}`);
 (async () => {
   const loginRes = await login();
   if (loginRes.code === 400) return $.notify(title, '', loginRes.msg);
-  $.log(JSON.parse(loginRes));
+  $.log(JSON.stringify(loginRes));
   token = loginRes.token;
   headers.Authorization = `Bearer ${token}`;
   const cookiesRes = await getCookies();
@@ -34,15 +34,14 @@ $.log(account);
   const cookies = jd_cookies.map(item => item.cookie);
   if (jd_cookie1) cookies.push(jd_cookie1);
   if (jd_cookie2) cookies.push(jd_cookie2);
-  const addRes = await addCookies(cookies);
-  $.log(JSON.parse(addRes));
+  await addCookies(cookies);
   const cookiesName = cookies.map(item => {
-    const UserName = item.cookie.match(/pt_pin=(.+?);/)[1];
-    return decodeURIComponent(UserName);
+    const userName = item.match(/pt_pin=(.+?);/)[1];
+    return decodeURIComponent(userName);
   });
-  const cookieText = cookiesName.join('\n');
-  console.log(cookieText);
-  return $.notify(title, '', `同步成功：${cookieText}`);
+  $.log(cookiesName);
+  const cookieText = cookiesName.join(`\n`);
+  return $.notify(title, '', `同步成功：\n ${cookieText}`);
 })().catch((e) => {
   $.log(JSON.stringify(e));
 }).finally(() => {
