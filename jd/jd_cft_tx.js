@@ -31,13 +31,14 @@ $.userName = '';
   if (!getCookies()) return;
   if (!getTokens()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
-    $.currentCookie = $.cookieArr[i];
-    $.currentToken = $.tokenArr[i];
-    if ($.currentCookie) {
-      $.userName = decodeURIComponent($.currentCookie.match(/pt_pin=(.+?);/) &&
-        $.currentCookie.match(/pt_pin=(.+?);/)[1]);
+    const account = $.cookieArr[i].match(/pt_pin=(.+?);/)[1];
+    const currentToken = $.tokenArr.find((item) => {
+      return item.pin === account;
+    });
+    if (currentToken) {
+      $.currentToken = currentToken;
+      $.userName = decodeURIComponent(account);
       $.log(`\n开始【京东账号${i + 1}】${$.userName}`);
-
       await cashOut();
     }
   }
@@ -54,9 +55,9 @@ function cashOut() {
       async (err, resp, data) => {
         try {
           $.log(data);
-          const {iRet, sErrMsg} = JSON.parse(data);
+          let {iRet, sErrMsg} = JSON.parse(data);
           $.log(sErrMsg);
-          $.result.push(`【${$.userName}】\n ${sErrMsg == ''
+          $.result.push(`【${$.userName}】\n ${sErrMsg === ''
             ? sErrMsg = '今天手气太棒了'
             : sErrMsg}`);
           resolve(sErrMsg);
@@ -96,7 +97,6 @@ function getCookies() {
     const jd_cookie2 = $.getdata('CookieJD2') || '';
     if (jd_cookie1) $.cookieArr.unshift(jd_cookie1);
     if (jd_cookie2) $.cookieArr.unshift(jd_cookie2);
-    console.log(JSON.stringify($.cookieArr));
   }
 
   if (!$.cookieArr[0]) {
