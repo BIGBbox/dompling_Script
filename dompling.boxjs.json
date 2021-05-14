@@ -314,8 +314,7 @@
       "id": "JD_Cookies",
       "name": "京东多账号 Ck 管理",
       "keys": [
-        "CookiesJD",
-        "BoxJSDomain"
+        "CookiesJD"
       ],
       "descs_html": [
         "请勿随意修改 JSON文件，若要修改，请按照JSON 格式修改。",
@@ -323,15 +322,6 @@
         "使用方式【<a href=\"https://home.m.jd.com/myJd/newhome.action\">个人中心</a>】获取对应的数据Code"
       ],
       "settings": [
-        {
-          "id": "BoxJSDomain",
-          "name": "BoxJS域名",
-          "val": "boxjs.net",
-          "type": "text",
-          "autoGrow": false,
-          "rows": 4,
-          "desc": ""
-        },
         {
           "id": "CookiesJD",
           "name": "CK 列表",
