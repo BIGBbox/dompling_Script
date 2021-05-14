@@ -270,7 +270,7 @@
     },
     {
       "id": "ql",
-      "name": "青龙 JD_Cookie 同步",
+      "name": "青龙 Cookie 同步",
       "keys": [
         "@ql.ip",
         "@ql.username",
