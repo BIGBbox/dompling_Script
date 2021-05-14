@@ -299,7 +299,8 @@
       ],
       "icons": [],
       "author": "@dompling",
-      "repo": "https://github.com/dompling/Script/blob/master/DJT/djt.cookie.js"
+      "repo": "https://github.com/dompling/Script/blob/master/jd/ql_cookie_sync.js",
+      "scripts": "https://raw.githubusercontent.com/dompling/Script/master/jd/ql_cookie_sync.js"
     },
     {
       "id": "JD_Cookies",
@@ -340,20 +341,6 @@
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/jd/JD_extra.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_sign.js"
-    },
-    {
-      "id": "cuuc",
-      "name": "CU云加速",
-      "keys": [
-        "@cuuc.cookie"
-      ],
-      "icons": [],
-      "author": "@dompling",
-      "descs_html": [
-        "Cookie有效时间一周"
-      ],
-      "repo": "https://github.com/dompling/Script/blob/master/cuuc/cuuc.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/cuuc/cuuc.js"
     },
     {
       "id": "oneSay",
