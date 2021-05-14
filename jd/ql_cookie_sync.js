@@ -22,7 +22,8 @@ const jd_cookie2 = $.read('#CookieJD2') || '';
   const cookies = jd_cookies.map(item => item.cookie);
   if (jd_cookie1) cookies.push(jd_cookie1);
   if (jd_cookie2) cookies.push(jd_cookie2);
-  await addCookies(cookies);
+  const addRes = await addCookies(cookies);
+  console.log(addRes);
 })().catch((e) => {
   $.log(JSON.stringify(e));
 }).finally(() => {
