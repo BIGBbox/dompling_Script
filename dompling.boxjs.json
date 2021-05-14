@@ -297,10 +297,18 @@
           "type": "text"
         }
       ],
-      "icons": [],
+      "icons": [
+        "https://qinglong.whyour.cn/qinglong.png",
+        "https://qinglong.whyour.cn/qinglong.png"
+      ],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/jd/ql_cookie_sync.js",
-      "script": "https://raw.githubusercontent.com/dompling/Script/master/jd/ql_cookie_sync.js"
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/jd/ql_cookie_sync.js",
+      "descs_html": [
+        "青龙 docker 的安装方式请移步 tg 频道",
+        "青龙 docker 作者仓库：【<a href=\"https://github.com/whyour\">github</a>】",
+        "青龙 docker 频道：【<a href=\"https://t.me/qiongqiya\">电报频道</a>】"
+      ]
     },
     {
       "id": "JD_Cookies",
