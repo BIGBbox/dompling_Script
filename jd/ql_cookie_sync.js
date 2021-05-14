@@ -40,8 +40,8 @@ $.log(`账号：${account.username}`);
     return decodeURIComponent(userName);
   });
   $.log(cookiesName);
-  const cookieText = cookiesName.join(`\n`);
-  return $.notify(title, '', `同步成功：\n ${cookieText}`);
+  const cookieText = cookiesName.join(`;`);
+  return $.notify(title, '', `已同步账号： ${cookieText}`);
 })().catch((e) => {
   $.log(JSON.stringify(e));
 }).finally(() => {
