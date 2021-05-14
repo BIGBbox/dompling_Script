@@ -4,14 +4,17 @@
   "description": "QuanX",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./app.js",
-    "start:node": "node src/app.js"
+    "dev": "cross-env NODE_ENV=dev nodemon ./app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "nodemon": "^2.0.4",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.7"
   }
 }

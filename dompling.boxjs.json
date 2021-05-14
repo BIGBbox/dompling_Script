@@ -8,7 +8,9 @@
     {
       "id": "10010Ck",
       "name": "中国联通 Cookie",
-      "keys": ["@YaYa_10010.cookie"],
+      "keys": [
+        "@YaYa_10010.cookie"
+      ],
       "author": "@dompling",
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/Alpha/10010.png",
@@ -18,9 +20,13 @@
     {
       "id": "ZXTrains",
       "name": "智行火车行程提醒",
-      "keys": ["@ZXTrains.travels"],
+      "keys": [
+        "@ZXTrains.travels"
+      ],
       "author": "@dompling",
-      "descs_html": ["使用智行火车票 app，在未出行中获取该列表。"],
+      "descs_html": [
+        "使用智行火车票 app，在未出行中获取该列表。"
+      ],
       "repo": "https://github.com/dompling/Script/blob/master/ZXTrians/ZXTrians.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/ZXTrians/ZXTrains.js",
       "icons": [
@@ -129,7 +135,6 @@
           "placeholder": "Cookie",
           "desc": "必填"
         },
-
         {
           "id": "@zk789.headers.Referer",
           "name": "Referer",
@@ -214,7 +219,9 @@
     {
       "id": "xiaomiyp",
       "name": "小米有品",
-      "keys": ["@xiaomiyp.cookie"],
+      "keys": [
+        "@xiaomiyp.cookie"
+      ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/task/master/xiaomiyp.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/xiaomiyp.png"
@@ -226,7 +233,10 @@
     {
       "id": "bilibili",
       "name": "哔哩哔哩关注中心/番剧监控",
-      "keys": ["@bilibili.cookie", "@BiliBiliMonitor.subscriptions"],
+      "keys": [
+        "@bilibili.cookie",
+        "@BiliBiliMonitor.subscriptions"
+      ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/task/master/bilibili.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/bilibili.png"
@@ -238,7 +248,9 @@
     {
       "id": "DJT",
       "name": "毒汤日历",
-      "keys": ["@DJT.unid"],
+      "keys": [
+        "@DJT.unid"
+      ],
       "icons": [],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/DJT/djt.cookie.js"
@@ -246,7 +258,9 @@
     {
       "id": "scriptable",
       "name": "桌面组件",
-      "keys": ["scriptable"],
+      "keys": [
+        "scriptable"
+      ],
       "icons": [
         "https://scriptablejs.gitee.io/store/favicon.ico",
         "https://scriptablejs.gitee.io/store/favicon.ico"
@@ -255,9 +269,45 @@
       "repo": ""
     },
     {
+      "id": "ql",
+      "name": "青龙 JD_Cookie 同步",
+      "keys": [
+        "@ql.ip",
+        "@ql.username",
+        "@ql.password"
+      ],
+      "settings": [
+        {
+          "id": "@ql.ip",
+          "name": "青龙登陆的域名或IP:端口号",
+          "val": "",
+          "type": "text",
+          "placeholder": "111.21.0.32:5700"
+        },
+        {
+          "id": "@ql.username",
+          "name": "账号",
+          "val": "",
+          "type": "text"
+        },
+        {
+          "id": "@ql.password",
+          "name": "密码",
+          "val": "",
+          "type": "text"
+        }
+      ],
+      "icons": [],
+      "author": "@dompling",
+      "repo": "https://github.com/dompling/Script/blob/master/DJT/djt.cookie.js"
+    },
+    {
       "id": "JD_Cookies",
       "name": "京东多账号 Ck 管理",
-      "keys": ["CookiesJD", "BoxJSDomain"],
+      "keys": [
+        "CookiesJD",
+        "BoxJSDomain"
+      ],
       "descs_html": [
         "请勿随意修改 JSON文件，若要修改，请按照JSON 格式修改。",
         "脚本地址【<a href=\"https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js\">京东多 CK获取</a>】,并按照此脚本注释进行配置",
@@ -294,17 +344,24 @@
     {
       "id": "cuuc",
       "name": "CU云加速",
-      "keys": ["@cuuc.cookie"],
+      "keys": [
+        "@cuuc.cookie"
+      ],
       "icons": [],
       "author": "@dompling",
-      "descs_html": ["Cookie有效时间一周"],
+      "descs_html": [
+        "Cookie有效时间一周"
+      ],
       "repo": "https://github.com/dompling/Script/blob/master/cuuc/cuuc.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/cuuc/cuuc.js"
     },
     {
       "id": "oneSay",
       "name": "每天一句",
-      "keys": ["@oneSay.mediaImg", "@oneSay.username"],
+      "keys": [
+        "@oneSay.mediaImg",
+        "@oneSay.username"
+      ],
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/calendar.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/calendar.png"
