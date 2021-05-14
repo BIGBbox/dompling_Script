@@ -300,7 +300,7 @@
       "icons": [],
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/jd/ql_cookie_sync.js",
-      "scripts": "https://raw.githubusercontent.com/dompling/Script/master/jd/ql_cookie_sync.js"
+      "script": "https://raw.githubusercontent.com/dompling/Script/master/jd/ql_cookie_sync.js"
     },
     {
       "id": "JD_Cookies",
