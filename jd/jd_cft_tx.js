@@ -92,8 +92,8 @@ function getCookies() {
   } else {
     $.cookieArr = JSON.parse($.getdata('CookiesJD') || '[]').filter(
       x => !!x).map(x => x.cookie);
-    const jd_cookie1 = $.read('#CookieJD') || '';
-    const jd_cookie2 = $.read('#CookieJD2') || '';
+    const jd_cookie1 = $.getdata('CookieJD') || '';
+    const jd_cookie2 = $.getdata('CookieJD2') || '';
     if (jd_cookie1) $.cookieArr.unshift(jd_cookie1);
     if (jd_cookie2) $.cookieArr.unshift(jd_cookie2);
     console.log(JSON.stringify($.cookieArr));
