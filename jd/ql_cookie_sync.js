@@ -27,7 +27,6 @@ $.log(account);
   token = loginRes.token;
   headers.Authorization = `Bearer ${token}`;
   const cookiesRes = await getCookies();
-  $.log(cookiesRes);
   for (const item of cookiesRes.data) {
     await delCookie(item._id);
   }
