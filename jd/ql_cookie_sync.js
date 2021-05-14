@@ -23,7 +23,7 @@ $.log(account);
 (async () => {
   const loginRes = await login();
   if (loginRes.code === 400) return $.notify(title, '', loginRes.msg);
-  $.log(loginRes);
+  $.log(JSON.parse(loginRes));
   token = loginRes.token;
   headers.Authorization = `Bearer ${token}`;
   const cookiesRes = await getCookies();
@@ -35,12 +35,14 @@ $.log(account);
   if (jd_cookie1) cookies.push(jd_cookie1);
   if (jd_cookie2) cookies.push(jd_cookie2);
   const addRes = await addCookies(cookies);
-  $.log(addRes);
+  $.log(JSON.parse(addRes));
   const cookiesName = cookies.map(item => {
     const UserName = item.cookie.match(/pt_pin=(.+?);/)[1];
     return decodeURIComponent(UserName);
   });
-  return $.notify(title, '', `同步成功：${cookiesName.join('\n')}`);
+  const cookieText = cookiesName.join('\n');
+  console.log(cookieText);
+  return $.notify(title, '', `同步成功：${cookieText}`);
 })().catch((e) => {
   $.log(JSON.stringify(e));
 }).finally(() => {
