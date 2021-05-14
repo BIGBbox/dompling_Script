@@ -36,6 +36,7 @@ $.userName = '';
       return item.pin === account;
     });
     if (currentToken) {
+      $.currentCookie = $.cookieArr[i];
       $.currentToken = currentToken;
       $.userName = decodeURIComponent(account);
       $.log(`\n开始【京东账号${i + 1}】${$.userName}`);
