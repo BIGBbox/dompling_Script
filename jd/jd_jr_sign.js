@@ -34,6 +34,7 @@ const $ = new API("jd_jr", true);
 const title = "金融领豆";
 const cookiesKey = "cookies";
 const bodyKey = "bodys";
+
 const cookies = JSON.parse($.read(cookiesKey) || "[]");
 const bodys = JSON.parse($.read(bodyKey) || "{}");
 
@@ -58,21 +59,23 @@ const account = cookies
       msg = "参加活动：失败！";
     } else {
       const joinData = joinRes.resultData.data;
-      msg += "参加活动：成功！" + "\n";
-      const res =
-        joinData.businessData.rewardDesc +
-        "：" +
-        joinData.businessData.rewardPrice +
-        joinData.businessData.rewardName +
-        "\n";
-      msg += res;
-      const response = await getReward(cookie.body);
-      if (response.resultCode !== 0) {
-        $.log(response);
-      } else {
-        msg += "领取成功！";
+      if (joinData.businessData) {
+        msg += "参加活动：成功！" + "\n";
+        const res =
+          joinData.businessData.rewardDesc +
+          "：" +
+          joinData.businessData.rewardPrice +
+          joinData.businessData.rewardName +
+          "\n";
+        msg += res;
+        const response = await getReward(cookie.body);
+        if (response.resultCode !== 0) {
+          $.log(response);
+        } else {
+          msg += "领取成功！";
+        }
+        $.msg += cookie.username + "：" + "已经领取！\n" + res;
       }
-      $.msg += cookie.username + "：" + "已经领取！\n" + res;
     }
     $.log(msg);
   }
@@ -97,7 +100,10 @@ function getReward(parmas) {
     },
     body: parmas,
   };
-  return $.http.post(opt).then((response) => JSON.parse(response.body));
+  return $.http.post(opt).then((response) => {
+    $.log(response);
+    return JSON.parse(response.body);
+  });
 }
 
 function joinActivity(phone) {
@@ -116,7 +122,7 @@ function joinActivity(phone) {
     },
     channelLv: "",
     riskDeviceParam:
-      '{"fp":"043f21008faa1a258bd76a151eb6a160","eid":"","sdkToken":"","sid":""}',
+      '{"fp":"043f21008faa1a258bd76a151eb6a154","eid":"","sdkToken":"","sid":""}',
   });
   const opt = {
     url: "https://nu.jr.jd.com/gw/generic/jrm/h5/m/process?_=1617526724742",
@@ -163,7 +169,6 @@ function HTTP(defaultOptions = { baseURL: "" }) {
     };
 
     events.onRequest(method, options);
-
     let worker;
     if (isQX) {
       worker = $task.fetch({ method, ...options });
