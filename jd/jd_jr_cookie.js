@@ -1,7 +1,6 @@
 /*
 Author: 2Ya
 Github: https://github.com/domping
-
 ===================
 特别说明：
 1.获取多个京东金融领豆cookie文件，不和野比大佬的文件冲突。暂不支持野比大佬脚本签到。
