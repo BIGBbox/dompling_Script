@@ -40,7 +40,7 @@ const bodys = JSON.parse($.read(bodyKey) || "{}");
 
 const account = cookies
   .map((item) => ({ ...item, body: bodys[item.username] }))
-  .filter((item) => !!item.body);
+  .filter((item) => !!item.phoneNumber);
 
 (async () => {
   $.log("===============金融领豆签到开始==============");
@@ -103,7 +103,7 @@ function getReward(parmas) {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-    body: JSON.stringify(parmas),
+    body: parmas,
   };
   return $.http.post(opt).then((response) => JSON.parse(response.body));
 }
