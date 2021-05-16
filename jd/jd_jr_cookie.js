@@ -1,39 +1,34 @@
 /*
-Author: 2Ya
-Github: https://github.com/domping
+Author: 2Ya
+Github: https://github.com/domping
+
 ===================
-特别说明：
-1.获取多个京东金融领豆cookie文件，不和野比大佬的文件冲突。暂不支持野比大佬脚本签到。
-2.若是要使用京东金融领豆多合一签到，请使用修改版地址：https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_sign.js
-===================
-===================
-使用方式：复制 https://home.m.jd.com/myJd/newhome.action 到浏览器打开 ，在个人中心自动获取 cookie，
-若弹出成功则正常使用。否则继续再此页面继续刷新一下试试
+下载京东金融，进入app获取
 ===================
 
 ===================
 [MITM]
-hostname = ms.jr.jd.com
+hostname = ms.jr.jd.com
 
 【Surge脚本配置】:
 ===================
 [Script]
-获取京东金融领豆Cookie = type=http-request,pattern=^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js,script-update-interval=0
+获取京东金融领豆Cookie = type=http-request,pattern=^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js,script-update-interval=0
 
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-request ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat tag=获取京东金融领豆Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js
+http-request ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat tag=获取京东金融领豆Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js
 
 ===================
-【 QX  脚本配置 】 :
+【 QX  脚本配置 】 :
 ===================
 
 [rewrite_local]
-^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js
+^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js
 
- */
+ */
 
 const $ = new API("jd_jr", true);
 const title = "金融领豆";
