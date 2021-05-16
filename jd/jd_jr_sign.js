@@ -98,12 +98,9 @@ function getReward(parmas) {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-    body: parmas,
+    body: JSON.stringify(parmas),
   };
-  return $.http.post(opt).then((response) => {
-    $.log(response);
-    return JSON.parse(response.body);
-  });
+  return $.http.post(opt).then((response) => JSON.parse(response.body));
 }
 
 function joinActivity(phone) {
