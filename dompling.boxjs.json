@@ -345,11 +345,11 @@
     {
       "id": "JD_jr_Cookies",
       "name": "京东金融领豆",
-      "keys": [
-        "@jd_jr.cookies"],
+      "keys": ["@jd_jr.cookies","@jd_jr.bodys"],
       "descs_html": [
         "请勿随意在输入框修改内容，建议通过脚本去获取cookie，若要修改，请按照JSON 格式修改（<a href=\"https://www.bejson.com/json/format\">可使用此JSON校验</a> ，或点击右上角按钮🔘进行校验(如有弹窗提示则为异常JSON)）。",
-        "仅能修改phoneNumber内容"
+        "仅能修改phoneNumber内容",
+        "JSON示例：[{phoneNumber: \"13348751678\", username: \"yaya\" }]"
       ],
       "settings": [
         {
