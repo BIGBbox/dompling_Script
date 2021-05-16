@@ -51,7 +51,7 @@ async function getCookies() {
       const cookieValue =
         currentCk.match(/pt_key=.+?;/) + currentCk.match(/pt_pin=.+?;/);
       const userName = cookieValue.match(/pt_pin=(.+?);/)[1];
-      bodys[username] = currentBody;
+      bodys[userName] = currentBody;
       saveCookie.username = userName;
       //   if (cookies.find((item) => item.username === userName)) return;
       //   const pRes = await getPhoneNumber(cookieValue);
