@@ -49,9 +49,6 @@ async function getCookies() {
       saveCookie.username = userName;
       if (cookies.find((item) => item.username === userName)) return;
       const pRes = await getPhoneNumber(cookieValue);
-      if (pRes.errcode !== 0) {
-          return $.notify(title, "", "手机号获取失败，请重新获取！");
-      }
       if(pRes.resultCode===0){
          saveCookie.phoneNumber = pRes.resultData.mobile;
       }
