@@ -26,7 +26,7 @@ http-request ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat ta
 ===================
 
 [rewrite_local]
-^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat  url script-request-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js
+^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat url script-request-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_jr_cookie.js
 
  */
 
@@ -34,8 +34,8 @@ const $ = new API("jd_jr", true);
 const title = "金融领豆";
 const cookiesKey = "cookies";
 const bodyKey = "bodys";
-const cookies = $.read(cookiesKey);
-const bodys = $.read(bodyKey);
+const cookies = JSON.parse($.read(cookiesKey) || "[]");
+const bodys = JSON.parse($.read(bodyKey) || "{}");
 
 const account = cookies
   .map((item) => ({ ...item, body: bodys[item.username] }))
