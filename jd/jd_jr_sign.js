@@ -76,8 +76,8 @@ const account = cookies
         }
         $.msg += cookie.username + "：" + "已经领取！\n" + res;
       } else {
-        msg += "今日已经领取！";
-        $.msg += cookie.username + "：" + "今日已经领取！\n";
+        msg += "未获取到活动信息！";
+        $.msg += cookie.username + "：" + "未获取到活动信息！\n";
       }
     }
     $.log(msg);
@@ -122,7 +122,7 @@ function joinActivity(phone) {
     },
     channelLv: "",
     riskDeviceParam:
-      '{"fp":"043f21008faa1a258bd76a151eb6a154","eid":"","sdkToken":"","sid":""}',
+      '{"fp":"043f21008faa1a258bd76a151eb6a160","eid":"","sdkToken":"","sid":""}',
   });
   const opt = {
     url: "https://nu.jr.jd.com/gw/generic/jrm/h5/m/process?_=1617526724742",
