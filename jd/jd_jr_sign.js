@@ -76,9 +76,11 @@ const account = cookies
         }
         $.msg += cookie.username + "：" + "已经领取！\n" + res;
       } else {
+
         msg += "未获取到活动信息！";
         $.msg += cookie.username + "：" + "未获取到活动信息！\n";
-      }
+      
+ }
     }
     $.log(msg);
   }
