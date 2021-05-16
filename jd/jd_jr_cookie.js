@@ -47,7 +47,7 @@ async function getCookies() {
       const userName = cookieValue.match(/pt_pin=(.+?);/)[1];
       bodys[userName] = currentBody;
       saveCookie.username = userName;
-      //   if (cookies.find((item) => item.username === userName)) return;
+      if (cookies.find((item) => item.username === userName)) return;
       //   const pRes = await getPhoneNumber(cookieValue);
       //   if (pRes.errcode !== 0) {
       //     return $.notify(title, "", "手机号获取失败，请重新获取！");
