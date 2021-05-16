@@ -39,7 +39,7 @@ http-request ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/uc\/newna\/m\/userstat ta
 const $ = new API("jd_jr", true);
 const title = "金融领豆";
 const cookiesKey = "cookies";
-const bodyKey = "body";
+const bodyKey = "bodys";
 const cookies = JSON.parse($.read(cookiesKey) || "[]");
 const bodys = JSON.parse($.read(bodyKey) || "{}");
 async function getCookies() {
