@@ -48,11 +48,13 @@ async function getCookies() {
       bodys[userName] = currentBody;
       saveCookie.username = userName;
       if (cookies.find((item) => item.username === userName)) return;
-      //   const pRes = await getPhoneNumber(cookieValue);
-      //   if (pRes.errcode !== 0) {
-      //     return $.notify(title, "", "手机号获取失败，请重新获取！");
-      //   }
-      //   saveCookie.phoneNumber = pRes.userdata.renderJDDate[0].msg.verifyMobile;
+      const pRes = await getPhoneNumber(cookieValue);
+      if (pRes.errcode !== 0) {
+          return $.notify(title, "", "手机号获取失败，请重新获取！");
+      }
+      if(pRes.resultCode===0){
+         saveCookie.phoneNumber = pRes.resultData.mobile;
+      }
       cookies.push(saveCookie);
       $.log(cookies);
       const cacheValue = JSON.stringify(cookies, null, "\t");
@@ -65,13 +67,12 @@ async function getCookies() {
 
 function getPhoneNumber(cookie) {
   const opt = {
-    url: `https://wq.jd.com/user/info/GetUserAllPinInfo?g_ty=ls`,
+    url: `https://ms.jr.jd.com/gw/generic/jrm/h5/m/getAlreadyBindMobile`,
     headers: {
       Cookie: cookie,
-      Referer: `https://wqs.jd.com/my/account_security.html`,
     },
+   body:`{"clientType":"web","clientVersion":"0.0.0"}`
   };
-  $.log(JSON.stringify(opt));
   return $.http.get(opt).then((response) => JSON.parse(response.body));
 }
 
