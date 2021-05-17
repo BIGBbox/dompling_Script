@@ -19,6 +19,20 @@ token 获取方式 :
 
 const $ = new API('gist', true);
 
+// 存储`用户偏好`
+$.KEY_usercfgs = '#chavy_boxjs_userCfgs';
+// 存储`应用会话`
+$.KEY_sessions = '#chavy_boxjs_sessions';
+// 存储`页面缓存`
+$.KEY_web_cache = '#chavy_boxjs_web_cache';
+// 存储`应用订阅缓存`
+$.KEY_app_subCaches = '#chavy_boxjs_app_subCaches';
+// 存储`全局备份` (弃用, 改用 `chavy_boxjs_backups`)
+$.KEY_globalBaks = '#chavy_boxjs_globalBaks';
+// 存储`备份索引`
+$.KEY_backups = '#chavy_boxjs_backups';
+// 存储`当前会话` (配合切换会话, 记录当前切换到哪个会话)
+$.KEY_cursessions = '#chavy_boxjs_cur_sessions';
 $.token = $.read('token');
 $.username = $.read('username');
 $.boxjsDomain = $.read('#boxjs_host');
@@ -33,8 +47,9 @@ $.http = new HTTP({
   },
 });
 (async () => {
-  if (!$.token || !$.boxjsDomain || !$.username) throw '请去 boxjs 完善信息';
-  const backup = await getBoxJSData();
+  if (!$.token || !$.username) throw '请去 boxjs 完善信息';
+
+  const backup = getBoxJSData();
   const gistList = await getGist();
   const isBackup = gistList.find(item => !!item.files[$.cacheKey]);
   const params = {
@@ -42,14 +57,14 @@ $.http = new HTTP({
     public: false,
     files: {
       [$.cacheKey]: {
-        content: backup,
+        content: JSON.stringify(backup, null, `\n`),
       },
     },
   };
   $.log(isBackup ? '已经存在备份' : '未找备份');
   const response = await backGist(params, isBackup);
   if (response.message) {
-    $.msg = '备份失败';
+    $.msg = response.message;
   } else {
     $.msg = '备份成功';
   }
@@ -83,9 +98,221 @@ function backGist(params, backup) {
     then(response => JSON.parse(response.body));
 }
 
+function getUserCfgs() {
+  const defcfgs = {
+    favapps: [],
+    appsubs: [],
+    viewkeys: [],
+    isPinedSearchBar: true,
+    httpapi: 'examplekey@127.0.0.1:6166',
+    http_backend: '',
+  };
+  return Object.assign(defcfgs, JSON.parse($.read($.KEY_usercfgs)));
+}
+
+function getSystemApps() {
+  // prettier-ignore
+  const sysapps = [
+    {
+      id: 'BoxSetting',
+      name: '偏好设置',
+      descs: ['可手动执行一些抹掉数据的脚本', '可设置明暗两种主题下的主色调', '可设置壁纸清单'],
+      keys: [
+        '@chavy_boxjs_userCfgs.httpapi',
+        '@chavy_boxjs_userCfgs.bgimg',
+        '@chavy_boxjs_userCfgs.http_backend',
+        '@chavy_boxjs_userCfgs.color_dark_primary',
+        '@chavy_boxjs_userCfgs.color_light_primary',
+      ],
+      settings: [
+        {
+          id: '@chavy_boxjs_userCfgs.httpapis',
+          name: 'HTTP-API (Surge)',
+          val: '',
+          type: 'textarea',
+          placeholder: ',examplekey@127.0.0.1:6166',
+          autoGrow: true,
+          rows: 2,
+          persistentHint: true,
+          desc: '示例: ,examplekey@127.0.0.1:6166! 注意: 以逗号开头, 逗号分隔多个地址, 可加回车',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.httpapi_timeout',
+          name: 'HTTP-API Timeout (Surge)',
+          val: 20,
+          type: 'number',
+          persistentHint: true,
+          desc: '如果脚本作者指定了超时时间, 会优先使用脚本指定的超时时间.',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.http_backend',
+          name: 'HTTP Backend (Quantumult X)',
+          val: '',
+          type: 'text',
+          placeholder: 'http://127.0.0.1:9999',
+          persistentHint: true,
+          desc: '示例: http://127.0.0.1:9999 ! 注意: 必须是以 http 开头的完整路径, 不能是 / 结尾',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.bgimgs',
+          name: '背景图片清单',
+          val: '无,\n跟随系统,跟随系统\nlight,http://api.btstu.cn/sjbz/zsy.php\ndark,https://uploadbeta.com/api/pictures/random\n妹子,http://api.btstu.cn/sjbz/zsy.php',
+          type: 'textarea',
+          placeholder: '无,{回车} 跟随系统,跟随系统{回车} light,图片地址{回车} dark,图片地址{回车} 妹子,图片地址',
+          persistentHint: true,
+          autoGrow: true,
+          rows: 2,
+          desc: '逗号分隔名字和链接, 回车分隔多个地址',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.bgimg',
+          name: '背景图片',
+          val: '',
+          type: 'text',
+          placeholder: 'http://api.btstu.cn/sjbz/zsy.php',
+          persistentHint: true,
+          desc: '输入背景图标的在线链接',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.changeBgImgEnterDefault',
+          name: '手势进入壁纸模式默认背景图片',
+          val: '',
+          type: 'text',
+          placeholder: '填写上面背景图片清单的值',
+          persistentHint: true,
+          desc: '',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.changeBgImgOutDefault',
+          name: '手势退出壁纸模式默认背景图片',
+          val: '',
+          type: 'text',
+          placeholder: '填写上面背景图片清单的值',
+          persistentHint: true,
+          desc: '',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.color_light_primary',
+          name: '明亮色调',
+          canvas: true,
+          val: '#F7BB0E',
+          type: 'colorpicker',
+          desc: '',
+        },
+        {
+          id: '@chavy_boxjs_userCfgs.color_dark_primary',
+          name: '暗黑色调',
+          canvas: true,
+          val: '#2196F3',
+          type: 'colorpicker',
+          desc: '',
+        },
+      ],
+      scripts: [
+        {
+          name: '抹掉：所有缓存',
+          script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/scripts/boxjs.revert.caches.js',
+        },
+        {
+          name: '抹掉：收藏应用',
+          script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/scripts/boxjs.revert.usercfgs.favapps.js',
+        },
+        {
+          name: '抹掉：用户偏好',
+          script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/scripts/boxjs.revert.usercfgs.js',
+        },
+        {
+          name: '抹掉：所有会话',
+          script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/scripts/boxjs.revert.usercfgs.sessions.js',
+        },
+        {
+          name: '抹掉：所有备份',
+          script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/scripts/boxjs.revert.baks.js',
+        },
+        {
+          name: '抹掉：BoxJs (注意备份)',
+          script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/scripts/boxjs.revert.boxjs.js',
+        },
+      ],
+      author: '@chavyleung',
+      repo: 'https://github.com/chavyleung/scripts/blob/master/box/switcher/box.switcher.js',
+      icons: [
+        'https://raw.githubusercontent.com/chavyleung/scripts/master/box/icons/BoxSetting.mini.png',
+        'https://raw.githubusercontent.com/chavyleung/scripts/master/box/icons/BoxSetting.png',
+      ],
+    },
+    {
+      id: 'BoxSwitcher',
+      name: '会话切换',
+      desc: '打开静默运行后, 切换会话将不再发出系统通知 \n注: 不影响日志记录',
+      keys: [],
+      settings: [
+        {
+          id: 'CFG_BoxSwitcher_isSilent',
+          name: '静默运行',
+          val: false,
+          type: 'boolean',
+          desc: '切换会话时不发出系统通知!',
+        },
+      ],
+      author: '@chavyleung',
+      repo: 'https://github.com/chavyleung/scripts/blob/master/box/switcher/box.switcher.js',
+      icons: [
+        'https://raw.githubusercontent.com/chavyleung/scripts/master/box/icons/BoxSwitcher.mini.png',
+        'https://raw.githubusercontent.com/chavyleung/scripts/master/box/icons/BoxSwitcher.png',
+      ],
+      script: 'https://raw.githubusercontent.com/chavyleung/scripts/master/box/switcher/box.switcher.js',
+    },
+  ];
+  return sysapps;
+}
+
+function getAppDatas(app) {
+  const datas = {};
+  const nulls = [null, undefined, 'null', 'undefined'];
+  if (app.keys && Array.isArray(app.keys)) {
+    app.keys.forEach((key) => {
+      const val = $.read(`#${key}`);
+      datas[key] = nulls.includes(val) ? null : val;
+    });
+  }
+  if (app.settings && Array.isArray(app.settings)) {
+    app.settings.forEach((setting) => {
+      const key = setting.id;
+      const val = $.read(`#${key}`);
+      datas[key] = nulls.includes(val) ? null : val;
+    });
+  }
+  return datas;
+}
+
 function getBoxJSData() {
-  const url = `${$.boxjsDomain}/query/boxdata`;
-  return $.http.get({url}).then(response => response.body);
+  const datas = {};
+  const usercfgs = getUserCfgs();
+  const sessions = JSON.parse($.read($.KEY_sessions));
+  const curSessions = JSON.parse($.read($.KEY_cursessions));
+  const appSubCaches = JSON.parse($.read($.KEY_app_subCaches));
+  const globalbaks = JSON.parse($.read($.KEY_backups));
+  const sysapps = getSystemApps();
+
+  // 把 `内置应用`和`订阅应用` 里需要持久化属性放到`datas`
+  sysapps.forEach((app) => Object.assign(datas, getAppDatas(app)));
+
+  usercfgs.appsubs.forEach((sub) => {
+    const subcache = appSubCaches[sub.url];
+    if (subcache && subcache.apps && Array.isArray(subcache.apps)) {
+      subcache.apps.forEach((app) => Object.assign(datas, getAppDatas(app)));
+    }
+  });
+  return {
+    datas,
+    usercfgs,
+    sessions,
+    curSessions,
+    sysapps,
+    appSubCaches,
+    globalbaks,
+  };
 }
 
 function ENV() {
