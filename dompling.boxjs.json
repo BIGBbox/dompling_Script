@@ -22,7 +22,6 @@
       "name": "gist 备份",
       "keys": [
         "@gist.token",
-        "@gist.boxjsDomain",
         "@gist.username"
       ],
       "author": "@dompling",
@@ -41,15 +40,6 @@
         }
       ],
       "settings": [
-        {
-          "id": "@gist.boxjsDomain",
-          "name": "boxjs 域名",
-          "val": null,
-          "type": "text",
-          "rows": 2,
-          "placeholder": "box.com | boxjs.net",
-          "desc": "必填"
-        },
         {
           "id": "@gist.username",
           "name": "用户名",
