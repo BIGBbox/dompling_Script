@@ -17,9 +17,9 @@ token 获取方式 :
 [task]
 
 # 备份
-0 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/backup.js;
+0 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/backup.js
 # 恢复
-0 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/restore.js;
+5 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/restore.js
 
  */
 
