@@ -20,7 +20,7 @@ const $ = new API('gist', true);
 
 $.token = $.read('token');
 $.username = $.read('username');
-$.boxjsDomain = $.read('boxjsDomain');
+$.boxjsDomain = $.read('#boxjs_host');
 $.cacheKey = 'BoxJS-Data';
 $.msg = '';
 $.http = new HTTP({
@@ -75,7 +75,7 @@ function getBackGist(backup) {
 }
 
 function saveBoxJSData(params) {
-  const url = `http://${$.boxjsDomain}/api/save`;
+  const url = `${$.boxjsDomain}/api/save`;
   return $.http.post({url, body: JSON.parse(params)}).then(
     response => response.body);
 }

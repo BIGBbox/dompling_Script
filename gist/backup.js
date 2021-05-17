@@ -21,7 +21,7 @@ const $ = new API('gist', true);
 
 $.token = $.read('token');
 $.username = $.read('username');
-$.boxjsDomain = $.read('boxjsDomain');
+$.boxjsDomain = $.read('#boxjs_host');
 $.cacheKey = 'BoxJS-Data';
 $.desc = 'Auto Generated BoxJS-Data Backup';
 $.msg = '';
@@ -32,7 +32,6 @@ $.http = new HTTP({
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
   },
 });
-
 (async () => {
   if (!$.token || !$.boxjsDomain || !$.username) throw '请去 boxjs 完善信息';
   const backup = await getBoxJSData();
@@ -85,7 +84,7 @@ function backGist(params, backup) {
 }
 
 function getBoxJSData() {
-  const url = `http://${$.boxjsDomain}/query/boxdata`;
+  const url = `${$.boxjsDomain}/query/boxdata`;
   return $.http.get({url}).then(response => response.body);
 }
 
