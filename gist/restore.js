@@ -32,7 +32,7 @@ $.http = new HTTP({
 });
 
 (async () => {
-  if (!$.token || !$.boxjsDomain || !$.username) throw '请去 boxjs 完善信息';
+  if (!$.token || !$.username) throw '请去 boxjs 完善信息';
   const gistList = await getGist();
   const isBackup = gistList.find(item => !!item.files[$.cacheKey]);
   $.log(isBackup ? '已经存在备份' : '未找备份');
@@ -44,13 +44,16 @@ $.http = new HTTP({
   } catch (e) {
     return $.msg = '备份数据异常';
   }
+  if (!boxjsData.datas) {
+    return $.msg = '备份数据异常';
+  }
   const params = [];
   Object.keys(boxjsData).forEach(key => {
     const obj = typeof boxjsData[key] === 'object';
-    params.push([{key, val: obj ? JSON.stringify(obj) : boxjsData[key]}]);
+    params.push({key, val: (obj ? JSON.stringify(obj) : boxjsData[key])});
   });
   const saveRes = await saveBoxJSData(params);
-  $.msg = '备份成功';
+  $.msg = '备份恢复成功';
   return saveRes;
 })().then(() => {
   $.notify('gist 备份恢复', '', `${$.username}：${$.msg}`);
@@ -74,10 +77,12 @@ function getBackGist(backup) {
     then(response => JSON.parse(response.body));
 }
 
-function saveBoxJSData(params) {
-  const url = `${$.boxjsDomain}/api/save`;
-  return $.http.post({url, body: JSON.parse(params)}).then(
-    response => response.body);
+function saveBoxJSData(data) {
+  if (Array.isArray(data)) {
+    data.forEach((dat) => $.write(dat.val, `#${dat.key}`));
+  } else {
+    $.write(data.val, `#${data.key}`);
+  }
 }
 
 function ENV() {
