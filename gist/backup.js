@@ -64,12 +64,14 @@ $.http = new HTTP({
       },
     },
   };
-  $.log(isBackup ? '已经存在备份' : '未找备份');
+  $.log(isBackup ? '更新备份' : '新建备份');
   const response = await backGist(params, isBackup);
   if (response.message) {
     $.msg = response.message;
+    $.log(isBackup ? '更新备份失败' : '新建备份失败');
   } else {
     $.msg = '备份成功';
+    $.log(isBackup ? '更新备份成功' : '新建备份成功');
   }
   return response;
 })().then((response) => {

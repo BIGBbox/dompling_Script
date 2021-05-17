@@ -53,7 +53,7 @@ $.http = new HTTP({
   if (!$.token || !$.username) throw '请去 boxjs 完善信息';
   const gistList = await getGist();
   const isBackup = gistList.find(item => !!item.files[$.cacheKey]);
-  $.log(isBackup ? '已经存在备份' : '未找备份');
+  $.log(isBackup ? '找到备份-开始备份中...' : '未找备份，请先备份');
   if (!isBackup) return $.msg = '未找到备份';
   const response = await getBackGist(isBackup);
   let boxjsData = response.files[$.cacheKey].content;
@@ -92,6 +92,7 @@ $.http = new HTTP({
   });
   const saveRes = await saveBoxJSData(params);
   $.msg = '备份恢复成功';
+  $.log($.msg);
   return saveRes;
 })().then(() => {
   $.notify('gist 备份恢复', '', `${$.username}：${$.msg}`);
