@@ -18,6 +18,47 @@
       ]
     },
     {
+      "id": "gistBackup",
+      "name": "gist 备份",
+      "keys": [
+        "@gist.token",
+        "@gist.boxjsDomain",
+        "@gist.username"
+      ],
+      "author": "@dompling",
+      "icons": [
+        "https://github.githubassets.com/favicons/favicon.png",
+        "https://github.githubassets.com/favicons/favicon.png"
+      ],
+      "settings": [
+        {
+          "id": "@gist.boxjsDomain",
+          "name": "boxjs 域名",
+          "val": null,
+          "type": "text",
+          "rows": 2,
+          "placeholder": "box.com | boxjs.net",
+          "desc": "必填"
+        },
+        {
+          "id": "@gist.username",
+          "name": "用户名",
+          "val": null,
+          "type": "text",
+          "placeholder": "github 用户名",
+          "desc": "必填"
+        },
+        {
+          "id": "@gist.token",
+          "name": "Personal access tokens",
+          "val": null,
+          "type": "text",
+          "placeholder": "github personal access tokens",
+          "desc": "必填"
+        }
+      ]
+    },
+    {
       "id": "ZXTrains",
       "name": "智行火车行程提醒",
       "keys": [
@@ -341,11 +382,14 @@
       "author": "@dompling",
       "repo": "https://github.com/dompling/Script/blob/master/jd/JD_extra.js",
       "script": "https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_sign.js"
-    }, 
+    },
     {
       "id": "JD_jr_Cookies",
       "name": "京东金融领豆",
-      "keys": ["@jd_jr.cookies","@jd_jr.bodys"],
+      "keys": [
+        "@jd_jr.cookies",
+        "@jd_jr.bodys"
+      ],
       "descs_html": [
         "请勿随意在输入框修改内容，只能通过脚本去获取cookie，若要修改，请按照JSON 格式修改（<a href=\"https://www.bejson.com/json/format\">可使用此JSON校验</a> ，或点击右上角按钮🔘进行校验(如有弹窗提示则为异常JSON)）。",
         "仅能修改phoneNumber内容",
