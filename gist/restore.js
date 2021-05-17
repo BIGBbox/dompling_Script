@@ -19,15 +19,15 @@ token 获取方式 :
 const $ = new API('gist', true);
 
 // 存储`用户偏好`
-$.KEY_usercfgs = '#chavy_boxjs_userCfgs';
+$.KEY_usercfgs = 'chavy_boxjs_userCfgs';
 // 存储`应用会话`
-$.KEY_sessions = '#chavy_boxjs_sessions';
+$.KEY_sessions = 'chavy_boxjs_sessions';
 // 存储`应用订阅缓存`
-$.KEY_app_subCaches = '#chavy_boxjs_app_subCaches';
+$.KEY_app_subCaches = 'chavy_boxjs_app_subCaches';
 // 存储`备份索引`
-$.KEY_backups = '#chavy_boxjs_backups';
+$.KEY_backups = 'chavy_boxjs_backups';
 // 存储`当前会话` (配合切换会话, 记录当前切换到哪个会话)
-$.KEY_cursessions = '#chavy_boxjs_cur_sessions';
+$.KEY_cursessions = 'chavy_boxjs_cur_sessions';
 
 $.token = $.read('token');
 $.username = $.read('username');
@@ -60,13 +60,21 @@ $.http = new HTTP({
     return $.msg = '备份数据异常';
   }
   const params = [];
-  const datas = boxjsData.datas;
+  const {
+    usercfgs,
+    datas,
+    appSubCaches,
+    curSessions,
+    sessions,
+    globalbaks,
+  } = boxjsData;
+  console.log(JSON.stringify(usercfgs));
   params.push(
-    {key: $.KEY_usercfgs, val: boxjsData.usercfgs},
-    {key: $.KEY_sessions, val: boxjsData.sessions},
-    {key: $.KEY_cursessions, val: boxjsData.curSessions},
-    {key: $.KEY_app_subCaches, val: boxjsData.appSubCaches},
-    {key: $.KEY_backups, val: boxjsData.globalbaks},
+    {key: $.KEY_usercfgs, val: JSON.stringify(usercfgs)},
+    {key: $.KEY_sessions, val: JSON.stringify(sessions)},
+    {key: $.KEY_cursessions, val: JSON.stringify(curSessions)},
+    {key: $.KEY_app_subCaches, val: JSON.stringify(appSubCaches)},
+    {key: $.KEY_backups, val: JSON.stringify(globalbaks)},
   );
 
   Object.keys(datas).forEach(key => {
