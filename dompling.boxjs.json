@@ -30,6 +30,16 @@
         "https://github.githubassets.com/favicons/favicon.png",
         "https://github.githubassets.com/favicons/favicon.png"
       ],
+      "scripts": [
+        {
+          "name": "备份 Gist",
+          "script": "https://raw.githubusercontent.com/dompling/Script/master/gist/backup.js"
+        },
+        {
+          "name": "从 Gist 恢复",
+          "script": "https://raw.githubusercontent.com/dompling/Script/master/gist/restore.js"
+        }
+      ],
       "settings": [
         {
           "id": "@gist.boxjsDomain",
