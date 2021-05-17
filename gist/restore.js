@@ -18,11 +18,23 @@ token 获取方式 :
 
 const $ = new API('gist', true);
 
+// 存储`用户偏好`
+$.KEY_usercfgs = '#chavy_boxjs_userCfgs';
+// 存储`应用会话`
+$.KEY_sessions = '#chavy_boxjs_sessions';
+// 存储`应用订阅缓存`
+$.KEY_app_subCaches = '#chavy_boxjs_app_subCaches';
+// 存储`备份索引`
+$.KEY_backups = '#chavy_boxjs_backups';
+// 存储`当前会话` (配合切换会话, 记录当前切换到哪个会话)
+$.KEY_cursessions = '#chavy_boxjs_cur_sessions';
+
 $.token = $.read('token');
 $.username = $.read('username');
 $.boxjsDomain = $.read('#boxjs_host');
 $.cacheKey = 'BoxJS-Data';
 $.msg = '';
+
 $.http = new HTTP({
   baseURL: `https://api.github.com`,
   headers: {
@@ -48,9 +60,20 @@ $.http = new HTTP({
     return $.msg = '备份数据异常';
   }
   const params = [];
-  Object.keys(boxjsData).forEach(key => {
-    const obj = typeof boxjsData[key] === 'object';
-    params.push({key, val: (obj ? JSON.stringify(obj) : boxjsData[key])});
+  const datas = boxjsData.datas;
+  params.push(
+    {key: $.KEY_usercfgs, val: boxjsData.usercfgs},
+    {key: $.KEY_sessions, val: boxjsData.sessions},
+    {key: $.KEY_cursessions, val: boxjsData.curSessions},
+    {key: $.KEY_app_subCaches, val: boxjsData.appSubCaches},
+    {key: $.KEY_backups, val: boxjsData.globalbaks},
+  );
+
+  Object.keys(datas).forEach(key => {
+    const obj = typeof datas[key] === 'object'
+      ? JSON.stringify(datas[key])
+      : datas[key];
+    params.push({key, val: obj});
   });
   const saveRes = await saveBoxJSData(params);
   $.msg = '备份恢复成功';
