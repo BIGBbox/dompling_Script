@@ -60,7 +60,7 @@ $.http = new HTTP({
     public: false,
     files: {
       [$.cacheKey]: {
-        content: JSON.stringify(backup, null, `\n`),
+        content: JSON.stringify(backup),
       },
     },
   };
