@@ -12,8 +12,15 @@ token 获取方式 :
       Generate new token ->
       在里面找到 gist 勾选提交
 ===========================
+
+
 [task]
+
+# 备份
+0 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/backup.js;
+# 恢复
 0 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/restore.js;
+
  */
 
 const $ = new API('gist', true);

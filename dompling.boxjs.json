@@ -29,6 +29,10 @@
         "https://github.githubassets.com/favicons/favicon.png",
         "https://github.githubassets.com/favicons/favicon.png"
       ],
+      "descs_html": [
+        "Token的获取方式:",
+        "头像菜单->\n      Settings ->\n      Developer settings ->\n      Personal access tokens ->\n      Generate new token ->\n      在里面找到 gist 勾选提交"
+      ],
       "scripts": [
         {
           "name": "备份 Gist",
