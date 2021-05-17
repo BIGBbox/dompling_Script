@@ -56,7 +56,7 @@ $.http = new HTTP({
   } catch (e) {
     return $.msg = '备份数据异常';
   }
-  if (!boxjsData.datas) {
+  if (!boxjsData.datas || !boxjsData.usercfgs || !appSubCaches) {
     return $.msg = '备份数据异常';
   }
   const params = [];
