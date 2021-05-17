@@ -1,3 +1,21 @@
+/*
+
+Author: 2Ya
+Github: https://www.github.com/dompling
+===========================
+gist 恢复备份：请先去 boxjs 设置完善 gist 信息，
+token 获取方式 :
+      头像菜单->
+      Settings ->
+      Developer settings ->
+      Personal access tokens ->
+      Generate new token ->
+      在里面找到 gist 勾选提交
+===========================
+[task]
+0 10 * * * https://raw.githubusercontent.com/dompling/Script/master/gist/restore.js;
+ */
+
 const $ = new API('gist', true);
 
 $.token = $.read('token');
