@@ -49,7 +49,6 @@ $.http = new HTTP({
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
   },
 });
-
 (async () => {
   if (!$.token || !$.username) throw '请去 boxjs 完善信息';
   const gistList = await getGist();
@@ -63,9 +62,10 @@ $.http = new HTTP({
   } catch (e) {
     return $.msg = '备份数据异常';
   }
-  if (!boxjsData.datas || !boxjsData.usercfgs || !appSubCaches) {
+  if (!boxjsData.datas || !boxjsData.usercfgs || !boxjsData.appSubCaches) {
     return $.msg = '备份数据异常';
   }
+
   const params = [];
   const {
     usercfgs,
@@ -75,7 +75,7 @@ $.http = new HTTP({
     sessions,
     globalbaks,
   } = boxjsData;
-  console.log(JSON.stringify(usercfgs));
+
   params.push(
     {key: $.KEY_usercfgs, val: JSON.stringify(usercfgs)},
     {key: $.KEY_sessions, val: JSON.stringify(sessions)},
