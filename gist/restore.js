@@ -23,7 +23,7 @@ token 获取方式 :
 
  */
 
-const $ = new API('gist', true);
+const $ = new API('gist');
 
 // 存储`用户偏好`
 $.KEY_usercfgs = 'chavy_boxjs_userCfgs';
@@ -42,6 +42,15 @@ $.boxjsDomain = $.read('#boxjs_host');
 $.cacheKey = 'BoxJS-Data';
 $.msg = '';
 
+const cacheArr = {
+  datas: {label: '用户数据'},
+  'usercfgs': {label: '用户偏好', key: $.KEY_usercfgs},
+  'sessions': {label: '应用会话', key: $.KEY_sessions},
+  'curSessions': {label: '当前会话', key: $.KEY_cursessions},
+  'globalbaks': {label: '备份索引', key: $.KEY_backups},
+  'appSubCaches': {label: '应用订阅缓存', key: $.KEY_app_subCaches},
+};
+
 $.http = new HTTP({
   baseURL: `https://api.github.com`,
   headers: {
@@ -52,48 +61,39 @@ $.http = new HTTP({
 (async () => {
   if (!$.token || !$.username) throw '请去 boxjs 完善信息';
   const gistList = await getGist();
-  const isBackup = gistList.find(item => !!item.files[$.cacheKey]);
-  $.log(isBackup ? '找到备份-开始备份中...' : '未找备份，请先备份');
-  if (!isBackup) return $.msg = '未找到备份';
-  const response = await getBackGist(isBackup);
-  let boxjsData = response.files[$.cacheKey].content;
-  try {
-    boxjsData = JSON.parse(boxjsData);
-  } catch (e) {
-    return $.msg = '备份数据异常';
+
+  for (const cacheArrKey in cacheArr) {
+    const item = cacheArr[cacheArrKey];
+    const saveKey = `${$.cacheKey}_${cacheArrKey}`;
+    const isBackUp = gistList.find(item => !!item.files[saveKey]);
+    if (isBackUp) {
+      console.log(`${item.label}：已找到备份-开始恢复到设备中...`);
+      const response = await getBackGist(isBackUp);
+      let content = response.files[saveKey].content;
+      try {
+        content = JSON.parse(content);
+        if (!item.key) {
+          for (const contentKey in content) {
+            const cItem = content[contentKey];
+            const val = typeof cItem === 'object'
+              ? JSON.stringify(cItem)
+              : cItem;
+            saveBoxJSData({key: contentKey, val});
+          }
+        } else {
+          saveBoxJSData({key: item.key, val: JSON.stringify(content)});
+        }
+        $.msg += `${item.label}：备份恢复成功 \n`;
+        console.log(`${item.label}：备份恢复成功`);
+      } catch (e) {
+        $.msg += `${item.label}：备份数据异常 \n`;
+      }
+    } else {
+      $.msg += `${item.label}：未找到备份，请先备份 \n`;
+      console.log(`${item.label}：未找到备份，请先备份`);
+    }
   }
-  if (!boxjsData.datas || !boxjsData.usercfgs || !boxjsData.appSubCaches) {
-    return $.msg = '备份数据异常';
-  }
-
-  const params = [];
-  const {
-    usercfgs,
-    datas,
-    appSubCaches,
-    curSessions,
-    sessions,
-    globalbaks,
-  } = boxjsData;
-
-  params.push(
-    {key: $.KEY_usercfgs, val: JSON.stringify(usercfgs)},
-    {key: $.KEY_sessions, val: JSON.stringify(sessions)},
-    {key: $.KEY_cursessions, val: JSON.stringify(curSessions)},
-    {key: $.KEY_app_subCaches, val: JSON.stringify(appSubCaches)},
-    {key: $.KEY_backups, val: JSON.stringify(globalbaks)},
-  );
-
-  Object.keys(datas).forEach(key => {
-    const obj = typeof datas[key] === 'object'
-      ? JSON.stringify(datas[key])
-      : datas[key];
-    params.push({key, val: obj});
-  });
-  const saveRes = await saveBoxJSData(params);
-  $.msg = '备份恢复成功';
-  $.log($.msg);
-  return saveRes;
+  console.log('所有备份恢复成功');
 })().then(() => {
   $.notify('gist 备份恢复', '', `${$.username}：${$.msg}`);
 }).catch(e => {

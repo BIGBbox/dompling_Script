@@ -23,7 +23,7 @@ token 获取方式 :
 
  */
 
-const $ = new API('gist', true);
+const $ = new API('gist');
 
 // 存储`用户偏好`
 $.KEY_usercfgs = '#chavy_boxjs_userCfgs';
@@ -49,35 +49,56 @@ $.http = new HTTP({
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
   },
 });
+
+const cacheArr = {
+  'datas': '用户数据',
+  'usercfgs': '用户偏好',
+  'sessions': '应用会话',
+  'curSessions': '当前会话',
+  'globalbaks': '备份索引',
+  'appSubCaches': '应用订阅缓存',
+};
+
 (async () => {
   if (!$.token || !$.username) throw '请去 boxjs 完善信息';
 
   const backup = getBoxJSData();
   const gistList = await getGist();
-  const isBackup = gistList.find(item => !!item.files[$.cacheKey]);
-  const params = {
-    description: $.desc,
-    public: false,
-    files: {
-      [$.cacheKey]: {
-        content: JSON.stringify(backup, null, `\n`),
+
+  const commonParams = {description: $.desc, public: false};
+  const all_params = {};
+  const isBackup = {};
+  for (const cacheArrKey in cacheArr) {
+    const saveKey = `${$.cacheKey}_${cacheArrKey}`;
+    all_params[cacheArrKey] = {
+      ...commonParams,
+      files: {
+        [saveKey]: {
+          content: JSON.stringify(backup[cacheArrKey]),
+        },
       },
-    },
-  };
-  $.log(isBackup ? '更新备份' : '新建备份');
-  const response = await backGist(params, isBackup);
-  if (response.message) {
-    $.msg = response.message;
-    $.log(isBackup ? '更新备份失败' : '新建备份失败');
-  } else {
-    $.msg = '备份成功';
-    $.log(isBackup ? '更新备份成功' : '新建备份成功');
+    };
+    isBackup[cacheArrKey] = gistList.find(item => !!item.files[saveKey]);
   }
-  return response;
-})().then((response) => {
-  $.notify('gist 备份', '', `${$.username}：${$.msg}`, {
-    'open-url': response.url,
-  });
+
+  for (const isBackupKey in isBackup) {
+    const item = isBackup[isBackupKey];
+    const label = cacheArr[isBackupKey];
+    console.log(isBackup[isBackupKey]
+      ? `${label}：gist 找到备份，开始更新备份`
+      : `${label}：gist 未找到备份，开始创建备份`);
+
+    const response = await backGist(all_params[isBackupKey], item);
+    if (response.message) {
+      console.log(`${label}：gist 备份失败（${response.message}`);
+      $.msg += `${label}：gist 备份失败（${response.message}） \n`;
+    } else {
+      console.log(`${label}：gist 备份成功 \n`);
+      $.msg += `${label}：gist 备份成功 \n`;
+    }
+  }
+})().then(() => {
+  $.notify('gist 备份', '', `${$.username}：\n ${$.msg}`);
 }).catch(e => {
   $.log(e);
 }).finally(() => {
@@ -314,7 +335,6 @@ function getBoxJSData() {
     usercfgs,
     sessions,
     curSessions,
-    sysapps,
     appSubCaches,
     globalbaks,
   };
