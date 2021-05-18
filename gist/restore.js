@@ -95,7 +95,7 @@ $.http = new HTTP({
   }
   console.log('所有备份恢复成功');
 })().then(() => {
-  $.notify('gist 备份恢复', '', `${$.username}：${$.msg}`);
+  $.notify('gist 备份恢复', '', `${$.username}：\n${$.msg}`);
 }).catch(e => {
   $.log(e);
 }).finally(() => {
