@@ -98,7 +98,7 @@ const cacheArr = {
     }
   }
 })().then(() => {
-  $.notify('gist 备份', '', `${$.username}：\n ${$.msg}`);
+  $.notify('gist 备份', '', `${$.username}：\n${$.msg}`);
 }).catch(e => {
   $.log(e);
 }).finally(() => {
