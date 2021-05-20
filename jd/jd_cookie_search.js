@@ -14,7 +14,7 @@ if (CookieJD) ckData.unshift(CookieJD);
 if (CookieJD2) ckData.unshift(CookieJD2);
 
 console.log('初始化备注开始');
-console.log(`=========== 检测到京东账号：【${ckData.left}】个 ===========`);
+console.log(`=========== 检测到京东账号：【${ckData.length}】个 ===========`);
 
 const ckRemarkFormat = {};
 cookiesRemark.forEach(item => {
