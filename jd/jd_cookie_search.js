@@ -26,8 +26,8 @@ const ckFormat = ckData.map(item => {
   return ckRemarkFormat[username] || {username, nickname: '', mobile: ''};
 });
 $.write(JSON.stringify(ckFormat, null, `\n`), remark_key);
-console.log('初始化备注结束，boxjs 中修改备注');
-
+$.msg = '初始化备注结束，boxjs 中修改备注';
+console.log($.msg);
 console.log(`检测到搜索条件：${keyword}`);
 if (keyword) {
   console.log('开始搜索中');
@@ -40,7 +40,10 @@ if (keyword) {
     $.msg = '未找到相关 ck';
   }
   $.notify('京东 CK 查询', `关键字：${keyword}`, $.msg);
+} else {
+  $.notify('京东 CK 备注', ``, $.msg);
 }
+$.done();
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
