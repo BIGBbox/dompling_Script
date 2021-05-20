@@ -25,17 +25,17 @@ const ckFormat = ckData.map(item => {
   username = decodeURIComponent(username);
   return ckRemarkFormat[username] || {username, nickname: '', mobile: ''};
 });
-$.write(JSON.stringify(ckFormat, null, `\n`), remark_key);
+$.write(JSON.stringify(ckFormat, null, `\t`), remark_key);
 $.msg = '初始化备注结束，boxjs 中修改备注';
 console.log($.msg);
 console.log(`检测到搜索条件：${keyword}`);
 if (keyword) {
   console.log('开始搜索中');
-  const searchValue = ckFormat.filter(
+  const searchValue = ckFormat.find(
     (item, index) => item.username === keyword || item.nickname === keyword ||
       index === parseInt(keyword));
   if (searchValue) {
-    $.msg = `已找到搜索结果：\n` + JSON.stringify(searchValue, null, `\n`);
+    $.msg = `已找到搜索结果：\n` + JSON.stringify(searchValue, null, `\t`);
   } else {
     $.msg = '未找到相关 ck';
   }
