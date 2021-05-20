@@ -35,7 +35,7 @@ if (keyword) {
     (item, index) => item.username === keyword || item.nickname === keyword ||
       index === parseInt(keyword));
   if (searchValue) {
-    $.msg = `已找到搜索结果：\n ${JSON.stringify(searchValue, null, '\n')}`;
+    $.msg = `已找到搜索结果：\n ${JSON.stringify(searchValue, null, "\n")}`;
   } else {
     $.msg = '未找到相关 ck';
   }
