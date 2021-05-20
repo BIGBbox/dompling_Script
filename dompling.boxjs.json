@@ -383,7 +383,7 @@
           "name": "CK 备注列表",
           "val": "",
           "type": "textarea",
-          "autoGrow": true,
+          "autoGrow": false,
           "rows": 8,
           "desc": "CK 备注列表 (JSON 格式)"
         }
