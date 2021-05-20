@@ -357,7 +357,7 @@
     },
     {
       "id": "JD_Cookies_remark",
-      "name": "京东多账号 Ck 管理",
+      "name": "京东多账号 Ck 检索",
       "keys": [
         "@jd_ck_remark.remark"
       ],
