@@ -143,10 +143,8 @@ function submit(){
 
 `;
 console.log('========追加元素========');
-
 $response.body = $response.body + `\n${js}`;
-console.log($response.body);
-$.done($response);
+$.done({body:$response.body});
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
