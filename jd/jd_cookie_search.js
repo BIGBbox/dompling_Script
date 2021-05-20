@@ -1,3 +1,19 @@
+/*
+Author: 2Ya
+Github: https://github.com/domping
+
+==================================
+给京东账号添加一个备注吧 O(∩_∩)O哈哈~ （适合账号多账号昵称混乱的用户）
+==================================
+使用方法：
+1.添加 boxjs 订阅：https://raw.githubusercontent.com/dompling/Script/master/dompling.boxjs.json
+2.在应用中找到 dompling -> 京东账号 ck 检索
+3.点击右上角运行按钮初始化京东 ck 数据
+4.初始完成之后，给各个账号添加备注就能愉快的搜索你的京东 ck 了。
+5.搜索方式：设置关键字 下标（数组下标从 0 开始）、username（京东 ck 的 pin）、nickname（给京东账号设置的备注昵称）
+
+*/
+
 const $ = new API('jd_ck_remark');
 $.msg = '';
 const APIKey = 'CookiesJD';
