@@ -10,7 +10,9 @@ ScriptName:京东 ck 多账号备注
 2.在应用中找到 dompling -> 京东账号 ck 检索
 3.点击右上角运行按钮初始化京东 ck 数据
 4.初始完成之后，给各个账号添加备注就能愉快的搜索你的京东 ck 了。
-5.搜索方式：设置关键字 下标（数组下标从 0 开始）、username（京东 ck 的 pin）、nickname（给京东账号设置的备注昵称）
+5.搜索方式：设置关键字 下标（数组下标从 0 开始）、username（京东 ck 的 pin）、nickname（给京东账号设置的备注昵称）, status（正常|未登录）
+搜索示例：0,2Y,正常
+返回结果：返回下标为 0 的，返回 2Y (username|nickname),返回正常状态的
 
 */
 
@@ -20,7 +22,7 @@ const APIKey = 'CookiesJD';
 const CacheKey = `#${APIKey}`;
 const remark_key = `remark`;
 const searchKey = 'keyword';
-const keyword = $.read(searchKey);
+const keyword = ($.read(searchKey) || '').split(',');
 const cookiesRemark = JSON.parse($.read(remark_key) || '[]');
 const CookiesJD = JSON.parse($.read(CacheKey) || '[]');
 const CookieJD = $.read('#CookieJD');
@@ -36,31 +38,73 @@ const ckRemarkFormat = {};
 cookiesRemark.forEach(item => {
   ckRemarkFormat[item.username] = item;
 });
-const ckFormat = ckData.map(item => {
-  let username = item.match(/pt_pin=(.+?);/)[1];
-  username = decodeURIComponent(username);
-  return ckRemarkFormat[username] || {username, nickname: '', mobile: ''};
-});
-$.write(JSON.stringify(ckFormat, null, `\t`), remark_key);
-$.msg = '初始化备注结束，boxjs 中修改备注';
-console.log($.msg);
-console.log(`检测到搜索条件：${keyword}`);
-if (keyword) {
-  console.log('开始搜索中');
-  const searchValue = ckFormat.find(
-    (item, index) => item.username === keyword || item.nickname === keyword ||
-      index === parseInt(keyword));
-  if (searchValue) {
-    $.msg = `已找到搜索结果：\n` + JSON.stringify(searchValue, null, `\t`);
-  } else {
-    $.msg = '未找到相关 ck';
+
+(async () => {
+  const ckFormat = [];
+  for (const cookie of ckData) {
+    let username = cookie.match(/pt_pin=(.+?);/)[1];
+    username = decodeURIComponent(username);
+    console.log('===================================');
+    console.log(`检查开始：账号 ${username} 【登陆状态】`);
+    const response = await isLogin(cookie);
+    const status = response.resultCode === 0 ? '正常' : '未登录';
+    console.log(`检查结束：账号 ${username}【${status}】`);
+    console.log('===================================');
+    const item = {
+      username,
+      nickname: '',
+      mobile: '',
+      ...ckRemarkFormat[username],
+      status,
+    };
+    ckFormat.push(item);
   }
+
+  $.write(JSON.stringify(ckFormat, null, `\t`), remark_key);
+  $.msg = '初始化备注结束，boxjs 中修改备注';
   console.log($.msg);
-  $.notify('京东 CK 查询', `关键字：${keyword}`, $.msg);
-} else {
-  $.notify('京东 CK 备注', ``, $.msg);
+  console.log(`检测到${keyword.length}个搜索条件：${keyword.join(',')}`);
+  if (keyword && keyword[0]) {
+    console.log('开始搜索中');
+    const searchValue = ckFormat.filter(
+      (item, index) => {
+        return (
+          keyword.indexOf(`${index}`) > -1 ||
+          keyword.indexOf(item.username) > -1 ||
+          keyword.indexOf(item.nickname) > -1 ||
+          keyword.indexOf(item.status) > -1
+        );
+      });
+    if (searchValue.length) {
+      $.msg = `已找到搜索结果：\n`;
+      searchValue.forEach(item => {
+        $.msg += `${item.nickname ||
+        item.username}:${item.mobile} 【${item.status}】\n`;
+      });
+    } else {
+      $.msg = '未找到相关 ck';
+    }
+    console.log($.msg);
+    $.notify('京东 CK 查询', `关键字：${keyword}`, $.msg);
+  } else {
+    $.notify('京东 CK 备注', ``, $.msg);
+  }
+})().catch(e => {
+  console.log(e);
+}).finally(() => {
+  $.done();
+});
+
+async function isLogin(Cookie) {
+  const opt = {
+    url: 'https://ms.jr.jd.com/gw/generic/uc/h5/m/mySubsidyBalance',
+    headers: {
+      cookie: Cookie,
+      Referer: 'https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&',
+    },
+  };
+  return $.http.post(opt).then((response) => (JSON.parse(response.body)));
 }
-$.done();
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
