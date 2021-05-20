@@ -379,7 +379,7 @@
           "placeholder": "下标（0）、username、nickname"
         },
         {
-          "id": "remark",
+          "id": "@jd_ck_remark.remark",
           "name": "CK 备注列表",
           "val": "",
           "type": "textarea",
