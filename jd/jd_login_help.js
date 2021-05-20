@@ -34,23 +34,22 @@ const $ = new API('jd_ck_remark');
 const remark_key = `remark`;
 const searchKey = 'keyword';
 console.log('========监听到链接========');
-try {
-  console.log('========重写开始========');
-  let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
-  const keyword = ($.read(searchKey) || '').split(',');
-  cookiesRemark = cookiesRemark.filter((item, index) => {
-    return keyword[0] ? ((keyword.indexOf(`${index}`) > -1 ||
-      keyword.indexOf(item.username) > -1 ||
-      keyword.indexOf(item.nickname) > -1 ||
-      keyword.indexOf(item.status) > -1)) : !!item.mobile;
-  });
-  console.log(JSON.stringify(cookiesRemark, null, `\t`));
-  const options = cookiesRemark.map(
-    item => ('<option value="' + item.mobile +
-      '">' + item.username + '【' + item.nickname + '】' + '：' + item.mobile +
-      '</option>')).
-    join('');
-  const maskView = `
+console.log('========重写开始========');
+let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
+const keyword = ($.read(searchKey) || '').split(',');
+cookiesRemark = cookiesRemark.filter((item, index) => {
+  return keyword[0] ? ((keyword.indexOf(`${index}`) > -1 ||
+    keyword.indexOf(item.username) > -1 ||
+    keyword.indexOf(item.nickname) > -1 ||
+    keyword.indexOf(item.status) > -1)) : !!item.mobile;
+});
+console.log(`检索到京东账号：【${cookiesRemark.length}】`);
+const options = cookiesRemark.map(
+  item => ('<option value="' + item.mobile +
+    '">' + item.username + '【' + item.nickname + '】' + '：' + item.mobile +
+    '</option>')).
+  join('');
+const maskView = `
 <div id="cus-mask"  style="display: none;position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 9999;background: rgba(0,0,0,.6);">
   <div style="width: 85%;background: #fff;border-radius: .1rem;position: relative;top: 50%;left: 50%;color: #2e2d2d;transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);-moz-transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);">
     <div style="font-size: .16rem;font-family: PingFangSC-Semibold;text-align: center;padding: .18rem 0 .13rem;">
@@ -105,7 +104,7 @@ box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0);">
   </div>
 </div>
 `;
-  const boxBtn = `
+const boxBtn = `
 <div style="margin:0 .15rem;display: inline-block;width: .48rem;">
 <img style="margin-bottom: .02rem;border-radius: 50%;width: .48rem;height: .48rem;-webkit-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);
 box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0);" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
@@ -113,7 +112,7 @@ box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0);" src="https://gblobscdn.gitbook.co
 </div>
 `;
 
-  const js = `
+const js = `
 const maskView = document.createElement("div");
 maskView.innerHTML=\`${maskView}\`;
 document.getElementsByTagName("body")[0].append(maskView);
@@ -143,12 +142,10 @@ function submit(){
 }
 
 `;
-  console.log('========追加元素========');
-  console.log($response.body);
-  $response.body = $response.body + `\n${js}`;
-} catch (e) {
-  console.log(e);
-}
+console.log('========追加元素========');
+
+$response.body = $response.body + `\n${js}`;
+console.log($response.body);
 $.done($response);
 
 function ENV() {
