@@ -33,7 +33,9 @@ const $ = new API('jd_ck_remark');
 
 const remark_key = `remark`;
 const searchKey = 'keyword';
+console.log('========监听到链接========');
 try {
+  console.log('========重写开始========');
   let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
   const keyword = ($.read(searchKey) || '').split(',');
   cookiesRemark = cookiesRemark.filter((item, index) => {
@@ -42,7 +44,7 @@ try {
       keyword.indexOf(item.nickname) > -1 ||
       keyword.indexOf(item.status) > -1)) : !!item.mobile;
   });
-
+  console.log(JSON.stringify(cookiesRemark, null, `\t`));
   const options = cookiesRemark.map(
     item => ('<option value="' + item.mobile +
       '">' + item.username + '【' + item.nickname + '】' + '：' + item.mobile +
@@ -68,8 +70,8 @@ try {
     </div>
     <div style="margin-top: .09rem;
     border-radius: .1rem;
-    -webkit-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);
-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);">
+    -webkit-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0);
+box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0);">
         <div class="btn-wrap" style="display: flex">
           <a href="javascript:void(0);" style="display: inline-block;
     font-family: PingFangSC-Regular;
@@ -106,10 +108,11 @@ box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);">
   const boxBtn = `
 <div style="margin:0 .15rem;display: inline-block;width: .48rem;">
 <img style="margin-bottom: .02rem;border-radius: 50%;width: .48rem;height: .48rem;-webkit-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);
-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
+box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0);" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
 <p style="color: rgba(0,0,0,.4);">BoxJS</p>
 </div>
 `;
+
   const js = `
 const maskView = document.createElement("div");
 maskView.innerHTML=\`${maskView}\`;
@@ -140,6 +143,8 @@ function submit(){
 }
 
 `;
+  console.log('========追加元素========');
+  console.log($response.body);
   $response.body = $response.body + `\n${js}`;
 } catch (e) {
   console.log(e);
