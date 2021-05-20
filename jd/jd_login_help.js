@@ -30,6 +30,7 @@ http-response ^https:\/\/jcap\.m\.jd\.com\/home\/requireCaptcha\.js tag=京东�
  */
 
 const $ = new API('jd_ck_remark');
+
 const remark_key = `remark`;
 const searchKey = 'keyword';
 try {
