@@ -39,6 +39,7 @@ if (keyword) {
   } else {
     $.msg = '未找到相关 ck';
   }
+  console.log($.msg);
   $.notify('京东 CK 查询', `关键字：${keyword}`, $.msg);
 } else {
   $.notify('京东 CK 备注', ``, $.msg);
