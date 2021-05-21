@@ -268,22 +268,28 @@ function getCookie(cname){
     return "";
 }
 var cpTimer=null;
-function copyToClip(){
+
  var pk = getCookie("pt_key");
  var pp = getCookie("pt_pin");
+ const _input = document.createElement('input');
+      _input.type="hiden";
+      document.body.appendChild(_input);
+      _input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
+
+function copyToClip(){
   if(pk){
-      const input = document.createElement('input');
-      input.type="hiden";
-      document.body.appendChild(input);
-      input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
-      input.focus();
-      input.select();
-      const cpStatus = document.execCommand('copy');
-      console.log(\`复制 ck 到剪切板:\${cpStatus}\`);
-      if(cpStatus && cpTimer ){
-        clearInterval(cpTimer)
-        cpTimer = null;
-      }
+     _input.focus();
+    _input.select();
+    const cpStatus = document.execCommand('copy');
+    _input.blur();
+    console.log(\`复制 ck 到剪切板:\${cpStatus}\`);
+    if(cpStatus && cpTimer ){
+      clearInterval(cpTimer)
+      cpTimer = null;
+      document.body.removeChild(_input)
+    }
+  }else{
+    clearInterval(cpTimer)
   }
 }
 cpTimer = setInterval(copyToClip, 1000);
