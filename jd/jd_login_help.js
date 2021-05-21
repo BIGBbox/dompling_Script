@@ -31,8 +31,26 @@ http-response ^https:\/\/jcap\.m\.jd\.com\/home\/requireCaptcha\.js tag=京东�
 
 const $ = new API('jd_ck_remark');
 
+const APIKey = 'CookiesJD';
+const CacheKey = `#${APIKey}`;
+
 const remark_key = `remark`;
 const searchKey = 'keyword';
+
+const CookiesJD = JSON.parse($.read(CacheKey) || '[]');
+const CookieJD = $.read('#CookieJD');
+const CookieJD2 = $.read('#CookieJD2');
+const ckData = CookiesJD.map(item => item.cookie);
+if (CookieJD) ckData.unshift(CookieJD);
+if (CookieJD2) ckData.unshift(CookieJD2);
+
+const cookiesFormat = {};
+ckData.forEach(item => {
+  let username = item.match(/pt_pin=(.+?);/)[1];
+  username = decodeURIComponent(username);
+  cookiesFormat[username] = item;
+});
+
 console.log('========监听到链接========');
 console.log('========重写开始========');
 let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
@@ -43,6 +61,11 @@ cookiesRemark = cookiesRemark.filter((item, index) => {
     keyword.indexOf(item.nickname) > -1 ||
     keyword.indexOf(item.status) > -1)) : !!item.mobile;
 });
+
+cookiesRemark = cookiesRemark.map(
+  item => ({...item, cookie: cookiesFormat[item.username]})).filter(
+  item => !!item.cookie);
+
 console.log(`检索到京东账号：【${cookiesRemark.length}】`);
 const options = cookiesRemark.map(
   item => ('<option value="' + item.mobile +
@@ -63,8 +86,8 @@ const maskView = `
         </select>
         <ul style="padding-left: .2rem;color: rgba(0,0,0,.4);margin-top: 0.1rem">
             <li>该脚本配合【<a href="http://boxjs.net/#/app/JD_Cookies_remark" style="color: red">京东账号 CK 检索</a>】使用</li>
-            <li>请自行在 boxjs 中配置好相关信息</li>
-            <li>列表数据是根据检索关键字的结果进行返回若为空，返回有号码的信息</li>
+            <li>若想更新 ck，可以在检索中设置【未登录】条件</li>
+            <li>使用快速填充走正常登陆流程</li>
         </ul>
     </div>
     <div style="margin-top: .09rem;
@@ -73,32 +96,47 @@ const maskView = `
 box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0/10%);">
         <div class="btn-wrap" style="display: flex">
           <a href="javascript:void(0);" style="display: inline-block;
-    font-family: PingFangSC-Regular;
-    font-size: .15rem;
-    color: #2e2d2d;
-    text-align: center;
-    height: .45rem;
-    line-height: .45rem;
-    width: 50%;
-    border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="maskVisible(false)">取消</a>
-
+          font-family: PingFangSC-Regular;
+          font-size: .15rem;
+          color: #2e2d2d;
+          text-align: center;
+          height: .45rem;
+          line-height: .45rem;
+          width: 50%;
+          border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="maskVisible(false)">
+              取消
+          </a>
+          <a href="javascript:void(0);" style="display: inline-block;
+          font-family: PingFangSC-Regular;
+          font-size: .15rem;
+          color: #2e2d2d;
+          text-align: center;
+          height: .45rem;
+          line-height: .45rem;
+          width: 50%;
+          border-left: 1px solid #eaeaea;
+          border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="fillInput()">
+              快速填充
+          </a>
           <a href="javascript:void(0);"  style="display: inline-block;
-    font-family: PingFangSC-Regular;
-    font-size: .15rem;
-    text-align: center;
-    height: .45rem;
-    line-height: .45rem;
-    width: 50%;
-    border-top: 1px solid #eaeaea;
-    color: #fff;
-    background-image: -webkit-gradient(linear,left top,right top,from(#f10000),color-stop(73%,#ff2000),to(#ff4f18));
-    background-image: -webkit-linear-gradient(left,#f10000,#ff2000 73%,#ff4f18);
-    background-image: -o-linear-gradient(left,#f10000,#ff2000 73%,#ff4f18);
-    background-image: linear-gradient(
-90deg
-,#f10000,#ff2000 73%,#ff4f18);
-    border-radius: 0 0 .1rem 0;
-    " id="cus-mask-ok" onclick="submit()">确定</a>
+            font-family: PingFangSC-Regular;
+            font-size: .15rem;
+            text-align: center;
+            height: .45rem;
+            line-height: .45rem;
+            width: 50%;
+            border-top: 1px solid #eaeaea;
+            color: #fff;
+            background-image: -webkit-gradient(linear,left top,right top,from(#f10000),color-stop(73%,#ff2000),to(#ff4f18));
+            background-image: -webkit-linear-gradient(left,#f10000,#ff2000 73%,#ff4f18);
+            background-image: -o-linear-gradient(left,#f10000,#ff2000 73%,#ff4f18);
+            background-image: linear-gradient(
+        90deg
+        ,#f10000,#ff2000 73%,#ff4f18);
+            border-radius: 0 0 .1rem 0;
+            " id="cus-mask-ok" onclick="login()">
+            直接登录
+            </a>
         </div>
     </div>
   </div>
@@ -113,6 +151,12 @@ box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0/10%);" src="https://gblobscdn.gitboo
 `;
 
 const js = `
+const head=document.getElementsByTagName("head")[0];
+const meta = document.createElement("meta");
+meta.name="viewport";
+meta.content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no";
+head.append(meta);
+const boxjsData=\`${JSON.stringify(cookiesRemark)}\`;
 const maskView = document.createElement("div");
 maskView.innerHTML=\`${maskView}\`;
 document.getElementsByTagName("body")[0].append(maskView);
@@ -130,9 +174,9 @@ function maskVisible(visible){
  cusmsk.style.display = visible? "block" : "none";
 }
 
-function submit(){
+function fillInput(){
   const cuMobile = document.getElementById('jd_account').value;
-  console.log('选中电话号码：'+ cuMobile);
+  console.log('快速填充号码：'+ cuMobile);
   const input = document.getElementsByClassName('acc-input mobile J_ping')[0];
   input.value = cuMobile;
   ev = document.createEvent("HTMLEvents");
@@ -141,10 +185,42 @@ function submit(){
   maskVisible(false);
 }
 
+function clearAllCookie() {
+    var keys = document.cookie.match(/[^ =;]+(?=\\=)/g);
+    if (keys) {
+        for (var i = keys.length; i--;)
+            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+    }
+}
+
+function login(){
+  const cuMobile = document.getElementById('jd_account').value;
+  if(!cuMobile) return alert("请选择需要登陆的账号");
+  const jd_ck = JSON.parse(boxjsData);
+  const login_ck = jd_ck.find(item=>item.mobile===cuMobile);
+  if(!login_ck) return alert("未找到相关账号");
+  let [ pt_key , pt_pin ] = login_ck.cookie.split(";");
+  pt_key = pt_key.split("=");
+  pt_pin = pt_pin.split("=");
+  clearAllCookie();
+  setCookie(pt_key[0],pt_key[1]);
+  setCookie(pt_pin[0],pt_pin[1]);
+  sessionStorage.clear();
+  localStorage.clear();
+  window.location.href="https://home.m.jd.com/myJd/newhome.action?sceneval=2";
+}
+
+function setCookie(cname,cvalue){
+    var d = new Date();
+    d.setTime(d.getTime()+(30*24*60*60*1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.jd.com";
+}
+
 `;
 console.log('========追加元素========');
 $response.body = $response.body + `\n${js}`;
-$.done({body:$response.body});
+$.done({body: $response.body});
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
