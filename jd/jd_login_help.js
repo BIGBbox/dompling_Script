@@ -272,24 +272,27 @@ var cpTimer=null;
  var pk = getCookie("pt_key");
  var pp = getCookie("pt_pin");
  const _input = document.createElement('input');
-      _input.type="hiden";
+      _input.style.width="0";
+      _input.style.height="0";
+      _input.type="hidden";
       document.body.appendChild(_input);
-      _input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
 
 function copyToClip(){
   if(pk){
-     _input.focus();
+    _input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
+    _input.focus();
     _input.select();
     const cpStatus = document.execCommand('copy');
+    document.body.click();
     _input.blur();
     console.log(\`复制 ck 到剪切板:\${cpStatus}\`);
-    if(cpStatus && cpTimer ){
+    if(cpStatus && cpTimer){
       clearInterval(cpTimer)
       cpTimer = null;
       document.body.removeChild(_input)
     }
   }else{
-    clearInterval(cpTimer)
+  if(cpTimer) clearInterval(cpTimer)
   }
 }
 cpTimer = setInterval(copyToClip, 1000);
