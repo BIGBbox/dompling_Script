@@ -293,6 +293,9 @@ function copyToClip(){
   _input.blur();
   document.body.removeChild(_input);
   console.log(\`复制 ck 到剪切板:\${document.execCommand('copy')}\`);
+  if(document.execCommand('copy')){
+    alert('复制 ck 到剪切板成功');
+  }
 }
 `;
 console.log('========追加元素========');
