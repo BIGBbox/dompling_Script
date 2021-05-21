@@ -65,6 +65,41 @@ cookiesRemark = cookiesRemark.filter((item, index) => {
 cookiesRemark = cookiesRemark.map(
   item => ({...item, cookie: cookiesFormat[item.username]})).filter(
   item => !!item.cookie);
+const url = $request.url;
+let boxBtn = '';
+let container = '';
+let rem = '';
+
+const isLoginPage = url.indexOf('requireCaptcha') > -1;
+console.log(isLoginPage);
+const getRem = (r) => {
+  return isLoginPage ? `${r}rem` : `${r * 5}rem`;
+};
+
+if (isLoginPage) {
+  boxBtn = `
+<div style="margin:0 ${getRem(.15)};display: inline-block;width: ${getRem(.48)};">
+<img style="margin-bottom: ${getRem(.02)};border-radius: 50%;width: ${getRem(
+    .48)};height: ${getRem(.48)};-webkit-box-shadow: 0 -${getRem(
+    0.025)} ${getRem(
+    0.05)} 0 rgb(0 0 0 / 10%);
+box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
+<p style="color: rgba(0,0,0,.4);">BoxJS</p>
+</div>
+`;
+  container = `document.getElementsByClassName('quick-type')[0].append(boxlogin);`;
+} else {
+  boxBtn = `
+
+<div id="boxjs" style="position: fixed;display: flex;height:33px;width:33px;align-items: center;top:50%;right: 0; background: #f7bb10;z-index: 999;padding-left: 2px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    padding-right: 3px;">
+ <img style="border-radius: 50%;border:1px solid #fff;width: 27px;height: 27px;" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
+</div>
+  `;
+  container = `document.getElementsByTagName('body')[0].append(boxlogin);`;
+}
 
 console.log(`检索到京东账号：【${cookiesRemark.length}】`);
 const options = cookiesRemark.map(
@@ -72,81 +107,85 @@ const options = cookiesRemark.map(
     '">' + item.username + '【' + item.nickname + '】' + '：' + item.mobile +
     '</option>')).
   join('');
+
 const maskView = `
 <div id="cus-mask"  style="display: none;position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 9999;background: rgba(0,0,0,.6);">
-  <div style="width: 85%;background: #fff;border-radius: .1rem;position: relative;top: 50%;left: 50%;color: #2e2d2d;transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);-moz-transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);">
-    <div style="font-size: .16rem;font-family: PingFangSC-Semibold;text-align: center;padding: .18rem 0 .13rem;">
-        BoxJS 京东 ck 列表
+  <div style="width: 85%;background: #fff;border-radius: ${getRem(.1)};position: relative;top: 50%;left: 50%;color: #2e2d2d;transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);-moz-transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);">
+    <div style="font-size: ${getRem(
+  .16)};font-family: PingFangSC-Semibold;text-align: center;padding: ${getRem(
+  .18)} 0 ${getRem(.13)};">
+      ${isLoginPage ? 'BoxJS 京东 ck 列表' : '切换 BoxJS 其他账号'}
     </div>
-    <div style="font-family: PingFangSC-Regular;font-size: .14rem;line-height: .22rem;padding: 0 .25rem;height: 1.98rem;overflow-x: hidden;overflow-y: scroll;">
-       <label style="color: rgba(0,0,0,.4);font-size: .16rem;margin-bottom: .2rem;display: block">ck 选择列表：</label>
-        <select id="jd_account" style="width: 100%;height: .4rem;text-align: center">
+    <div style="font-family: PingFangSC-Regular;font-size: ${getRem(
+  .14)};line-height: ${getRem(.22)};padding: 0 ${getRem(
+  .25)};height: ${getRem(1.98)};overflow-x: hidden;overflow-y: scroll;">
+       <label style="color: rgba(0,0,0,.4);font-size: ${getRem(
+  .16)};margin-bottom: ${getRem(.2)};display: block">ck 选择列表：</label>
+        <select id="jd_account" style="width: 100%;height: ${getRem(.4)};text-align: center">
             <option value="">------请选择------</option>
             ${options}
         </select>
-        <ul style="padding-left: .2rem;color: rgba(0,0,0,.4);margin-top: 0.1rem">
-            <li>该脚本配合【<a href="http://boxjs.net/#/app/JD_Cookies_remark" style="color: red">京东账号 CK 检索</a>】使用</li>
-            <li>若想更新 ck，可以在检索中设置【未登录】条件</li>
-            <li>使用快速填充走正常登陆流程</li>
+        <ul style="padding-left: ${getRem(
+  .2)};color: rgba(0,0,0,.4);margin-top: ${getRem(0.1)};font-size: ${getRem(
+  0.1)}">
+            <li style="list-style-type: cjk-ideographic">该脚本配合【<a href="javascript:viod(0);" onclick="window.location.href='http://boxjs.net/#/app/JD_Cookies_remark'" style="color: #f7bb10">京东账号 CK 检索</a>】使用</li>
+            <li style="list-style-type: cjk-ideographic">上述链接跳转失败，请查看BoxJS是否订阅 <a style="color: #f7bb10" href="https://raw.githubusercontent.com/dompling/Script/master/dompling.boxjs.json">Dompling</a></li>
+            <li style="list-style-type: cjk-ideographic">页面可能会存在报错情况，多刷新几次即可</li>
+            <li style="list-style-type: cjk-ideographic">若想更新 ck，可以在检索中设置【未登录】条件</li>
         </ul>
     </div>
-    <div style="margin-top: .09rem;
-    border-radius: .1rem;
-    -webkit-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0/10%);
-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0/10%);">
+    <div style="margin-top: ${getRem(.09)};
+    border-radius: ${getRem(.1)};
+    -webkit-box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);
+box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);">
         <div class="btn-wrap" style="display: flex">
           <a href="javascript:void(0);" style="display: inline-block;
           font-family: PingFangSC-Regular;
-          font-size: .15rem;
+          font-size: ${getRem(.15)};
           color: #2e2d2d;
           text-align: center;
-          height: .45rem;
-          line-height: .45rem;
+          height: ${getRem(.45)};
+          line-height: ${getRem(.45)};
           width: 50%;
           border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="maskVisible(false)">
               取消
           </a>
-          <a href="javascript:void(0);" style="display: inline-block;
-          font-family: PingFangSC-Regular;
-          font-size: .15rem;
-          color: #2e2d2d;
-          text-align: center;
-          height: .45rem;
-          line-height: .45rem;
-          width: 50%;
-          border-left: 1px solid #eaeaea;
-          border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="fillInput()">
-              快速填充
-          </a>
+         ${isLoginPage ? `
+            <a href="javascript:void(0);" style="display: inline-block;
+              font-family: PingFangSC-Regular;
+              font-size: ${getRem(.15)};
+              color: #2e2d2d;
+              text-align: center;
+              height: ${getRem(.45)};
+              line-height: ${getRem(.45)};
+              width: 50%;
+              border-left: 1px solid #eaeaea;
+              border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="fillInput()">
+                  快速填充
+              </a>
+            ` : ''}
           <a href="javascript:void(0);"  style="display: inline-block;
             font-family: PingFangSC-Regular;
-            font-size: .15rem;
+            font-size: ${getRem(.15)};
             text-align: center;
-            height: .45rem;
-            line-height: .45rem;
+            height: ${getRem(.45)};
+            line-height: ${getRem(.45)};
             width: 50%;
             border-top: 1px solid #eaeaea;
             color: #fff;
-            background-image: -webkit-gradient(linear,left top,right top,from(#f10000),color-stop(73%,#ff2000),to(#ff4f18));
-            background-image: -webkit-linear-gradient(left,#f10000,#ff2000 73%,#ff4f18);
-            background-image: -o-linear-gradient(left,#f10000,#ff2000 73%,#ff4f18);
+            background-image: -webkit-gradient(linear,left top,right top,from(#f7bb10),to(#ff4f18));
+            background-image: -webkit-linear-gradient(left,#f7bb10,#ff4f18);
+            background-image: -o-linear-gradient(left,#f7bb10,#ff4f18);
             background-image: linear-gradient(
         90deg
-        ,#f10000,#ff2000 73%,#ff4f18);
-            border-radius: 0 0 .1rem 0;
+        ,#f7bb10,#ff4f18);
+            border-radius: 0 0 ${getRem(.1)} 0;
             " id="cus-mask-ok" onclick="login()">
-            直接登录
+                ${isLoginPage ? '直接登录' : '切换账号'}
             </a>
         </div>
     </div>
   </div>
-</div>
-`;
-const boxBtn = `
-<div style="margin:0 .15rem;display: inline-block;width: .48rem;">
-<img style="margin-bottom: .02rem;border-radius: 50%;width: .48rem;height: .48rem;-webkit-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0 / 10%);
-box-shadow: 0 -0.025rem 0.05rem 0 rgb(0 0 0/10%);" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
-<p style="color: rgba(0,0,0,.4);">BoxJS</p>
 </div>
 `;
 
@@ -160,16 +199,16 @@ const boxjsData=\`${JSON.stringify(cookiesRemark)}\`;
 const maskView = document.createElement("div");
 maskView.innerHTML=\`${maskView}\`;
 document.getElementsByTagName("body")[0].append(maskView);
-const boxlogin = document.createElement("a");
+
+const boxlogin = document.createElement("div");
 boxlogin.style.display = "inline-block";
 boxlogin.innerHTML = \`${boxBtn}\`;
 boxlogin.onclick = function(){
   maskVisible(true);
 };
-
-document.getElementsByClassName('quick-type')[0].append(boxlogin);
-
+${container};
 function maskVisible(visible){
+ copyToClip();
  const cusmsk = document.getElementById("cus-mask");
  cusmsk.style.display = visible? "block" : "none";
 }
@@ -217,6 +256,35 @@ function setCookie(cname,cvalue){
     document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.jd.com";
 }
 
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+    }
+    return "";
+}
+var cpTimer=null;
+function copyToClip(){
+ var pk = getCookie("pt_key");
+ var pp = getCookie("pt_pin");
+  if(pk){
+      const input = document.createElement('input');
+      input.type="hiden";
+      document.body.appendChild(input);
+      input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
+      input.focus();
+      input.select();
+      const cpStatus = document.execCommand('copy');
+      console.log(\`复制 ck 到剪切板:\${cpStatus}\`);
+      if(cpStatus && cpTimer ){
+        clearInterval(cpTimer)
+        cpTimer = null;
+      }
+  }
+}
+cpTimer = setInterval(copyToClip, 1000);
 `;
 console.log('========追加元素========');
 $response.body = $response.body + `\n${js}`;
