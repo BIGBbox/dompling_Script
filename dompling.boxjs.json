@@ -415,7 +415,8 @@
           "id": "cks_get_mute",
           "name": "静音获取",
           "val": false,
-          "type": "boolean"
+          "type": "boolean",
+          "desc": "更新时，不会执行通知提示"
         },
         {
           "id": "CookiesJD",
