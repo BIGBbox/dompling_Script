@@ -80,7 +80,7 @@ const getRem = (r) => {
 
 if (isLoginPage) {
   boxBtn = `
-<div style="margin:0 ${getRem(.15)};display: inline-block;width: ${getRem(.48)};">
+<div style="margin:0 ${getRem(.15)};display: inline-block;width: ${getRem(.48)};" onclick="maskVisible(true);">
 <img style="margin-bottom: ${getRem(.02)};border-radius: 50%;width: ${getRem(
     .48)};height: ${getRem(.48)};-webkit-box-shadow: 0 -${getRem(
     0.025)} ${getRem(
@@ -93,12 +93,22 @@ box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);" src="https://
 } else {
   boxBtn = `
 
-<div id="boxjs" style="position: fixed;display: flex;height:33px;width:33px;align-items: center;top:50%;right: 0; background: #f7bb10;z-index: 999;padding-left: 2px;
+<div onclick="maskVisible(true);" id="boxjs" style="position: fixed;display: flex;height:33px;width:33px;align-items: center;top:50%;right: 0; background: #f7bb10;z-index: 999;padding-left: 2px;
     border-top-left-radius: 50%;
     border-bottom-left-radius: 50%;
     padding-right: 3px;">
  <img style="border-radius: 50%;border:1px solid #fff;width: 27px;height: 27px;" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
 </div>
+
+<div id="copyCk" onclick="copyToClip()" style="position: fixed;display: flex;height:33px;width:33px;align-items: center;top:60%;right: 0; background: #f7bb10;z-index: 999;padding-left: 2px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    padding-right: 3px;">
+   <span style="border-radius: 50%;border:1px solid #fff;width: 27px;height: 27px;display: block;line-height: 27px;text-align: center; color: #fff" >
+      Ck
+   </span>
+</div>
+
   `;
   container = `document.getElementsByTagName('body')[0].append(boxlogin);`;
 }
@@ -205,9 +215,7 @@ document.getElementsByTagName("body")[0].append(maskView);
 const boxlogin = document.createElement("div");
 boxlogin.style.display = "inline-block";
 boxlogin.innerHTML = \`${boxBtn}\`;
-boxlogin.onclick = function(){
-  maskVisible(true);
-};
+
 ${container};
 function maskVisible(visible){
  copyToClip();
@@ -267,35 +275,25 @@ function getCookie(cname){
     }
     return "";
 }
-var cpTimer=null;
 
- var pk = getCookie("pt_key");
- var pp = getCookie("pt_pin");
- const _input = document.createElement('input');
-      _input.style.width="0";
-      _input.style.height="0";
-      _input.type="hidden";
-      document.body.appendChild(_input);
 
 function copyToClip(){
-  if(pk){
-    _input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
-    _input.focus();
-    _input.select();
-    const cpStatus = document.execCommand('copy');
-    document.body.click();
-    _input.blur();
-    console.log(\`复制 ck 到剪切板:\${cpStatus}\`);
-    if(cpStatus && cpTimer){
-      clearInterval(cpTimer)
-      cpTimer = null;
-      document.body.removeChild(_input)
-    }
-  }else{
-  if(cpTimer) clearInterval(cpTimer)
-  }
+  var pk = getCookie("pt_key");
+  var pp = getCookie("pt_pin");
+  const _input = document.createElement('input');
+  _input.style.width="1px";
+  _input.style.height="1px";
+  _input.style.position="fixed";
+  _input.style.right="-1px";
+  document.body.prepend(_input);
+  _input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
+  _input.focus();
+  _input.select();
+  document.execCommand('copy');
+  _input.blur();
+  document.body.removeChild(_input);
+  console.log(\`复制 ck 到剪切板:\${document.execCommand('copy')}\`);
 }
-cpTimer = setInterval(copyToClip, 1000);
 `;
 console.log('========追加元素========');
 $response.body = $response.body + `\n${js}`;
