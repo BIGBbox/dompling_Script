@@ -8,24 +8,26 @@ ScriptName: 京东账号登陆辅助
 ==================================
 
 [MITM]
-hostname = jcap.m.jd.com
+hostname = jcap.m.jd.com,*.360buyimg.com
 
 【Surge脚本配置】:
 ===================
 [Script]
 京东登陆辅助 = type=http-response,pattern=^https:\/\/jcap\.m\.jd\.com\/home\/requireCaptcha\.js,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东登陆切换 = type=http-response,pattern=^https:\/\/wq\.360buyimg\.com\/js\/common\/dest\/m\.commonFooter\.min\.js,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
 http-response ^https:\/\/jcap\.m\.jd\.com\/home\/requireCaptcha\.js tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
-
+http-response ^https:\/\/wq\.360buyimg\.com\/js\/common\/dest\/m\.commonFooter\.min\.js tag=京东登陆切换, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
 ===================
 【 QX  脚本配置 】 :
 ===================
 
 [rewrite_local]
 ^https:\/\/jcap\.m\.jd\.com\/home\/requireCaptcha\.js  url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https:\/\/wq\.360buyimg\.com\/js\/common\/dest\/m\.commonFooter\.min\.js  url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 
  */
 
