@@ -400,7 +400,8 @@
       "id": "JD_Cookies",
       "name": "京东多账号 Ck 管理",
       "keys": [
-        "CookiesJD"
+        "CookiesJD",
+        "cks_get_mute"
       ],
       "descs_html": [
         "请勿随意在输入框修改内容，建议通过脚本去获取cookie，若要修改，请按照JSON 格式修改（<a href=\"https://www.bejson.com/json/format\">可使用此JSON校验</a> ，或点击右上角按钮🔘进行校验(如有弹窗提示则为异常JSON)）。",
@@ -410,6 +411,12 @@
         "注：如与NobyDa的京东cookie重复，建议在此处删除重复的cookie"
       ],
       "settings": [
+        {
+          "id": "cks_get_mute",
+          "name": "静音获取",
+          "val": false,
+          "type": "boolean"
+        },
         {
           "id": "CookiesJD",
           "name": "CK 列表",
