@@ -28,84 +28,75 @@ http-response ^https?:\/\/.*.(jd|jingxi).com.* tag=京东登陆辅助, script-pa
  */
 
 const $ = new API('jd_ck_remark');
+let html = $response.body;
+if (!html.includes('</html>')) {
+  $.done({body: html});
+}
 
+const APIKey = 'CookiesJD';
+const CacheKey = `#${APIKey}`;
+
+const remark_key = `remark`;
+const searchKey = 'keyword';
+
+const CookiesJD = JSON.parse($.read(CacheKey) || '[]');
+const CookieJD = $.read('#CookieJD');
+const CookieJD2 = $.read('#CookieJD2');
+const ckData = CookiesJD.map((item) => item.cookie);
+if (CookieJD) ckData.unshift(CookieJD);
+if (CookieJD2) ckData.unshift(CookieJD2);
+
+const cookiesFormat = {};
+ckData.forEach((item) => {
+  let username = item.match(/pt_pin=(.+?);/)[1];
+  username = decodeURIComponent(username);
+  cookiesFormat[username] = item;
+});
+
+console.log('========监听到链接========');
+console.log('========重写开始========');
+let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
+const keyword = ($.read(searchKey) || '').split(',');
+cookiesRemark = cookiesRemark.filter((item, index) => {
+  return keyword[0]
+    ? keyword.indexOf(`${index}`) > -1 ||
+    keyword.indexOf(item.username) > -1 ||
+    keyword.indexOf(item.nickname) > -1 ||
+    keyword.indexOf(item.status) > -1
+    : !!item.mobile;
+});
+
+cookiesRemark = cookiesRemark.map(
+  (item) => ({...item, cookie: cookiesFormat[item.username]})).filter(
+  (item) => !!item.cookie);
 const url = $request.url;
+console.log(`检索到京东账号：【${cookiesRemark.length}】`);
+const isLogin = url.indexOf('/login/login') > -1;
+const getRem = (r) => {
+  return isLogin ? `${r}rem` : `${r * 5}rem`;
+};
 
-function getResponseBody() {
-  let html = $response.body;
-  try {
-    if (!html.includes('</html>')) {
-      return html;
-    }
-  } catch (e) {
-    return html;
-  }
+const d = new Date();
+d.setTime(d.getTime());
+const expires = d.toGMTString();
+const fastBtn = isLogin
+  ? `<span class="abtn" id="fill-input">快速填充</span>`
+  : '';
+const options = cookiesRemark.map(
+  (item) =>
+    '<option value="' +
+    item.mobile +
+    '">' +
+    item.username +
+    '【' +
+    item.nickname +
+    '】' +
+    '：' +
+    item.mobile +
+    '</option>',
+).join('');
 
-  const domain = url.match(/^https?:\/\/.*.(jd|jingxi).com.*/)[1];
-  const APIKey = 'CookiesJD';
-  const CacheKey = `#${APIKey}`;
-
-  const remark_key = `remark`;
-  const searchKey = 'keyword';
-
-  const CookiesJD = JSON.parse($.read(CacheKey) || '[]');
-  const CookieJD = $.read('#CookieJD');
-  const CookieJD2 = $.read('#CookieJD2');
-  const ckData = CookiesJD.map((item) => item.cookie);
-  if (CookieJD) ckData.unshift(CookieJD);
-  if (CookieJD2) ckData.unshift(CookieJD2);
-
-  const cookiesFormat = {};
-  ckData.forEach((item) => {
-    let username = item.match(/pt_pin=(.+?);/)[1];
-    username = decodeURIComponent(username);
-    cookiesFormat[username] = item;
-  });
-
-  console.log('========监听到链接========');
-  console.log('========重写开始========');
-  let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
-  const keyword = ($.read(searchKey) || '').split(',');
-  cookiesRemark = cookiesRemark.filter((item, index) => {
-    return keyword[0]
-      ? keyword.indexOf(`${index}`) > -1 ||
-      keyword.indexOf(item.username) > -1 ||
-      keyword.indexOf(item.nickname) > -1 ||
-      keyword.indexOf(item.status) > -1
-      : !!item.mobile;
-  });
-
-  cookiesRemark = cookiesRemark.map(
-    (item) => ({...item, cookie: cookiesFormat[item.username]})).filter(
-    (item) => !!item.cookie);
-
-  console.log(`检索到京东账号：【${cookiesRemark.length}】`);
-  const isLogin = url.indexOf('/login/login') > -1;
-  const getRem = (r) => {
-    return isLogin ? `${r}rem` : `${r * 5}rem`;
-  };
-
-  const d = new Date();
-  d.setTime(d.getTime());
-  const expires = d.toGMTString();
-  const fastBtn = isLogin
-    ? `<span class="abtn" id="fill-input">快速填充</span>`
-    : '';
-  const options = cookiesRemark.map(
-    (item) =>
-      '<option value="' +
-      item.mobile +
-      '">' +
-      item.username +
-      '【' +
-      item.nickname +
-      '】' +
-      '：' +
-      item.mobile +
-      '</option>',
-  ).join('');
-
-  let tools = `
+let tools = `
 <div id="cus-mask">
   <div class="cus-mask_view">
     <div class="cus-view">
@@ -144,9 +135,9 @@ function getResponseBody() {
 <div id="copyCk" class="tool_bar"><span>Ck</span></div>
 `;
 
-  html =
-    html.replace(/(<\/html>)/g, '') +
-    `
+html =
+  html.replace(/(<\/html>)/g, '') +
+  `
   <style>
     .tool_bar{
       position: fixed;
@@ -268,8 +259,7 @@ function getResponseBody() {
   </style>
   ${tools}
   <script>
-    var pk = getCookie("pt_key");
-    var pp = getCookie("pt_pin");
+
     const head=document.getElementsByTagName("head")[0];
     const meta = document.createElement("meta");
     meta.name="viewport";
@@ -299,13 +289,12 @@ function getResponseBody() {
       copyToClip();
     })
 
-    if(!pk)copyCk_btn.style.display="none";
-
     if(fill_btn){
       fill_btn.addEventListener('click',function(){
         fillInput();
       });
     }
+
 
     function maskVisible(visible){
       const cusmsk = document.getElementById("cus-mask");
@@ -349,10 +338,10 @@ function getResponseBody() {
   }
   function setCookie(cname,cvalue){
       var ed = new Date();
-      const mt = ed.getMonth()+1;
+      const mt = d.getMonth()+1;
       ed.setMonth(mt);
       var expires = "expires="+ed.toGMTString();
-      document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.${domain}.com";
+      document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.jd.com";
   }
   function getCookie(cname){
       var name = cname + "=";
@@ -364,6 +353,8 @@ function getResponseBody() {
       return "";
   }
   function copyToClip(){
+    var pk = getCookie("pt_key");
+    var pp = getCookie("pt_pin");
     const _input = document.createElement('input');
     _input.style.width="1px";
     _input.style.height="1px";
@@ -383,10 +374,8 @@ function getResponseBody() {
   </script>
 </html>
 `;
-  return html;
-}
-
-$.done({body: getResponseBody()});
+console.log(html);
+$.done({body: html});
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
