@@ -13,17 +13,17 @@ hostname = *.jd.com
 【Surge脚本配置】:
 ===================
 [Script]
-京东登陆辅助 = type=http-response,pattern=^https?:\/\/.*.(jd|jingxi).com.*,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_btnSubmit_help.js,script-update-interval=0
+京东登陆辅助 = type=http-response,pattern=^https?:\/\/.*.(jd|jingxi).com.*,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-response ^https?:\/\/.*.(jd|jingxi).com.* tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_btnSubmit_help.js,requires-body=1
+http-response ^https?:\/\/.*.(jd|jingxi).com.* tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
 ===================
 【 QX  脚本配置 】:
 ===================
 [rewrite_local]
-^https?:\/\/.*.(jd|jingxi).com.* url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_btnSubmit_help.js
+^https?:\/\/.*.(jd|jingxi).com.* url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 
  */
 
