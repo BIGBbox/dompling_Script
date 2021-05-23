@@ -70,6 +70,7 @@ cookiesRemark = cookiesRemark.map(
 const url = $request.url;
 let boxBtn = '';
 let container = '';
+let rem = '';
 
 const isLoginPage = url.indexOf('requireCaptcha') > -1;
 console.log(isLoginPage);
@@ -668,3 +669,4 @@ function API(name = 'untitled', debug = false) {
     }
   })(name, debug);
 }
+
