@@ -299,8 +299,9 @@ function copyToClip(){
 }
 `;
 console.log('========追加元素========');
-$response.body = $response.body + `\n${js}`;
-$.done({body: $response.body});
+const html  = $response.body + `\n${js}`;
+console.log(html);
+$.done({body: html});
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
@@ -669,4 +670,3 @@ function API(name = 'untitled', debug = false) {
     }
   })(name, debug);
 }
-
