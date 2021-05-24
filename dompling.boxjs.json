@@ -359,14 +359,16 @@
       "id": "JD_Cookies_remark",
       "name": "CK 检索",
       "keys": [
-        "@jd_ck_remark.remark"
+        "@jd_ck_remark.remark",
+        "@jd_ck_remark.rem"
       ],
       "descs_html": [
         "请勿随意在输入框修改内容，建议通过脚本去获取cookie，若要修改，请按照JSON 格式修改（<a href=\"https://www.bejson.com/json/format\">可使用此JSON校验</a> ，或点击右上角按钮🔘进行校验(如有弹窗提示则为异常JSON)）。",
         "脚本地址【<a href=\"https://jdsharedresourcescdn.azureedge.net/jdresource/JD_extra_cookie.js\">京东多 CK获取</a>】,并按照此脚本注释进行配置",
         "可以修改的字段，nickname,mobile",
         "示例：[{username:\"yaya\",nickname:\"I'm YaYa man\",mobile:\"1234567890\"}]",
-        "可以根据 下标、username、nickname、status 字段检索京东多账号 ck"
+        "可以根据 下标、username、nickname、status 字段检索京东多账号 ck",
+        "页面缩放：若出现样式错乱，可以调整 rem 的比例 key (表示匹配的 url 地址)，val（缩放比例-数字）[{key:'newhome.action', val:5}]"
       ],
       "settings": [
         {
@@ -377,6 +379,15 @@
           "autoGrow": false,
           "rows": 2,
           "placeholder": "下标（0）、username、nickname、status 的值"
+        },
+        {
+          "id": "@jd_ck_remark.rem",
+          "name": "页面缩放",
+          "val": "",
+          "type": "textarea",
+          "autoGrow": false,
+          "rows": 8,
+          "desc": "CK 备注列表 (JSON 格式)"
         },
         {
           "id": "@jd_ck_remark.remark",
