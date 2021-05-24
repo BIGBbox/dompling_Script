@@ -43,6 +43,10 @@ const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
 let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
 domain = domain && domain[1] ? domain[1] : 'jd';
 
+if (!$.html.includes('</html>') && !$.env.isQX) {
+  $.done({body: $.html});
+}
+
 const isLogin = $.url.indexOf('requireCaptcha') > -1 ||
   $.url.indexOf('/login/login') > -1;
 
@@ -764,4 +768,3 @@ function API(name = 'untitled', debug = false) {
     }
   })(name, debug);
 }
-
