@@ -363,14 +363,15 @@ function createScript() {
     _input.style.position="fixed";
     _input.style.right="-1px";
     document.body.prepend(_input);
-    _input.value="pt_key="+pk+";pt_pin="+pp;
+    const value = "pt_key="+pk+";pt_pin="+pp;
+    _input.value = value;
     _input.focus();
     _input.select();
     document.execCommand('copy');
     _input.blur();
     document.body.removeChild(_input);
     if(document.execCommand('copy')){
-      alert('复制 ck 到剪切板成功');
+      prompt('复制 ck 成功', value);
     }
   }
 </script>
