@@ -28,280 +28,376 @@ http-response ^https:\/\/wq\.360buyimg\.com\/js\/common\/dest\/m\.commonFooter\.
 [rewrite_local]
 ^https:\/\/jcap\.m\.jd\.com\/home\/requireCaptcha\.js  url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 ^https:\/\/wq\.360buyimg\.com\/js\/common\/dest\/m\.commonFooter\.min\.js  url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
-
  */
-
 const $ = new API('jd_ck_remark');
 
 const APIKey = 'CookiesJD';
 const CacheKey = `#${APIKey}`;
-
 const remark_key = `remark`;
 const searchKey = 'keyword';
 
-const CookiesJD = JSON.parse($.read(CacheKey) || '[]');
-const CookieJD = $.read('#CookieJD');
-const CookieJD2 = $.read('#CookieJD2');
-const ckData = CookiesJD.map(item => item.cookie);
-if (CookieJD) ckData.unshift(CookieJD);
-if (CookieJD2) ckData.unshift(CookieJD2);
+$.url = $request.url;
+$.html = $response.body;
 
-const cookiesFormat = {};
-ckData.forEach(item => {
-  let username = item.match(/pt_pin=(.+?);/)[1];
-  username = decodeURIComponent(username);
-  cookiesFormat[username] = item;
-});
+const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
+let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
+domain = domain && domain[1] ? domain[1] : 'jd';
 
-console.log('========监听到链接========');
-console.log('========重写开始========');
-let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
-const keyword = ($.read(searchKey) || '').split(',');
-cookiesRemark = cookiesRemark.filter((item, index) => {
-  return keyword[0] ? ((keyword.indexOf(`${index}`) > -1 ||
-    keyword.indexOf(item.username) > -1 ||
-    keyword.indexOf(item.nickname) > -1 ||
-    keyword.indexOf(item.status) > -1)) : !!item.mobile;
-});
+const isLogin = $.url.indexOf('requireCaptcha') > -1 ||
+  $.url.indexOf('/login/login') > -1;
 
-cookiesRemark = cookiesRemark.map(
-  item => ({...item, cookie: cookiesFormat[item.username]})).filter(
-  item => !!item.cookie);
-const url = $request.url;
-let boxBtn = '';
-let container = '';
-let rem = '';
-
-const isLoginPage = url.indexOf('requireCaptcha') > -1;
-console.log(isLoginPage);
-const getRem = (r) => {
-  return isLoginPage ? `${r}rem` : `${r * 5}rem`;
-};
-
-if (isLoginPage) {
-  boxBtn = `
-<div style="margin:0 ${getRem(.15)};display: inline-block;width: ${getRem(.48)};" onclick="maskVisible(true);">
-<img style="margin-bottom: ${getRem(.02)};border-radius: 50%;width: ${getRem(
-    .48)};height: ${getRem(.48)};-webkit-box-shadow: 0 -${getRem(
-    0.025)} ${getRem(
-    0.05)} 0 rgb(0 0 0 / 10%);
-box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
-<p style="color: rgba(0,0,0,.4);">BoxJS</p>
-</div>
-`;
-  container = `document.getElementsByClassName('quick-type')[0].append(boxlogin);`;
-} else {
-  boxBtn = `
-
-<div onclick="maskVisible(true);" id="boxjs" style="position: fixed;display: flex;height:33px;width:33px;align-items: center;top:50%;right: 0; background: #f7bb10;z-index: 999;padding-left: 2px;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
-    padding-right: 3px;">
- <img style="border-radius: 50%;border:1px solid #fff;width: 27px;height: 27px;" src="https://gblobscdn.gitbook.com/spaces%2F-MDxD9HYU2CoF7Jg2BEp%2Favatar-1597212951484.png"/>
-</div>
-
-<div id="copyCk" onclick="copyToClip()" style="position: fixed;display: flex;height:33px;width:33px;align-items: center;top:60%;right: 0; background: #f7bb10;z-index: 999;padding-left: 2px;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
-    padding-right: 3px;">
-   <span style="border-radius: 50%;border:1px solid #fff;width: 27px;height: 27px;display: block;line-height: 27px;text-align: center; color: #fff" >
-      Ck
-   </span>
-</div>
-
-  `;
-  container = `document.getElementsByTagName('body')[0].append(boxlogin);`;
+// 处理各页面 rem 兼容
+function getRem(r) {
+  return isLogin ? `${r}rem` : `${r * 5}rem`;
 }
 
-console.log(`检索到京东账号：【${cookiesRemark.length}】`);
+// 初始化 boxjs 数据
+function initBoxJSData() {
+  const CookiesJD = JSON.parse($.read(CacheKey) || '[]');
+  const CookieJD = $.read('#CookieJD');
+  const CookieJD2 = $.read('#CookieJD2');
+  const ckData = CookiesJD.map(item => item.cookie);
+  if (CookieJD) ckData.unshift(CookieJD);
+  if (CookieJD2) ckData.unshift(CookieJD2);
+
+  const cookiesFormat = {};
+  ckData.forEach(item => {
+    let username = item.match(/pt_pin=(.+?);/)[1];
+    username = decodeURIComponent(username);
+    cookiesFormat[username] = item;
+  });
+  let cookiesRemark = JSON.parse($.read(remark_key) || '[]');
+  const keyword = ($.read(searchKey) || '').split(',');
+  cookiesRemark = cookiesRemark.filter((item, index) => {
+    return keyword[0] ? ((keyword.indexOf(`${index}`) > -1 ||
+      keyword.indexOf(item.username) > -1 ||
+      keyword.indexOf(item.nickname) > -1 ||
+      keyword.indexOf(item.status) > -1)) : !!item.mobile;
+  });
+
+  cookiesRemark = cookiesRemark.map(
+    item => ({...item, cookie: cookiesFormat[item.username]})).filter(
+    item => !!item.cookie);
+  return cookiesRemark;
+}
+
+const cookiesRemark = initBoxJSData();
+
 const options = cookiesRemark.map(
-  item => ('<option value="' + item.mobile +
-    '">' + item.username + '【' + item.nickname + '】' + '：' + item.mobile +
-    '</option>')).
+  item => (`<option value="${item.mobile}">${item.username}[${item.nickname}]</option>`)).
   join('');
 
-const maskView = `
-<div id="cus-mask"  style="display: none;position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 9999;background: rgba(0,0,0,.6);">
-  <div style="width: 85%;background: #fff;border-radius: ${getRem(.1)};position: relative;top: 50%;left: 50%;color: #2e2d2d;transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);-moz-transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);-o-transform: translate(-50%,-50%);">
-    <div style="font-size: ${getRem(
-  .16)};font-family: PingFangSC-Semibold;text-align: center;padding: ${getRem(
-  .18)} 0 ${getRem(.13)};">
-      ${isLoginPage ? 'BoxJS 京东 ck 列表' : '切换 BoxJS 其他账号'}
+// 生成标签样式
+function createStyle() {
+  return `
+<style>
+  .tool_bar{
+    position: fixed;
+    display: flex;
+    height:33px;
+    width:33px;
+    align-items: center;
+    top:50%;
+    right: 0;
+    background: #f7bb10;
+    z-index: 999;
+    padding-left: 2px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    padding-right: 3px;
+    color: #fff;
+    font-size: ${getRem(0.1)};
+  }
+  .tool_bar img,.tool_bar span{
+    border-radius: 50%;
+    border:1px solid #fff;
+    width: 27px;
+    height: 27px;
+    line-height: 27px;
+    text-align: center;
+  }
+  #copyCk { top:60%;}
+  #cus-mask{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(0,0,0,.6);
+  }
+  .cus-mask_view{
+    width: 85%;
+    background: #fff;
+    border-radius: ${getRem(0.1)};
+    position: relative;
+    top: 50%;
+    left: 50%;
+    color: #2e2d2d;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+  }
+  .cus-view{
+    font-size: ${getRem(0.16)};
+    font-family: PingFangSC-Semibold;
+    text-align: center;
+    padding: ${getRem(0.18)} 0 ${getRem(0.13)};
+  }
+  .cus-content{
+    font-family: PingFangSC-Regular;
+    font-size: ${getRem(0.14)};
+    line-height: ${getRem(0.22)};
+    padding: 0 ${getRem(0.25)};
+    height: ${getRem(1.98)};
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  .cus-content label{
+    color: rgba(0,0,0,.4);
+    font-size: ${getRem(0.16)};
+    margin-bottom: ${getRem(0.2)};
+    display: block
+  }
+  .cus-content ul{
+    padding-left: ${getRem(0.2)};
+    color: rgba(0,0,0,.4);
+    margin-top: ${getRem(0.1)};
+    font-size: ${getRem(0.1)}
+  }
+  .cus-content li{
+    list-style-type: cjk-ideographic;
+  }
+  #jd_account{
+    width: 100%;
+    height: ${getRem(0.4)};
+    text-align: center
+  }
+  .cus-footer{
+    margin-top: ${getRem(0.09)};
+    border-radius: ${getRem(0.1)};
+    -webkit-box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);
+    box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);
+  }
+  .cus-footer .abtn{
+    display: inline-block;
+    font-family: PingFangSC-Regular;
+    font-size: ${getRem(0.15)};
+    color: #2e2d2d;
+    text-align: center;
+    height: ${getRem(0.45)};
+    line-height: ${getRem(0.45)};
+    width: 50%;
+    border-top: 1px solid #eaeaea;
+  }
+  .cus-footer span{
+    font-size: ${getRem(0.15)};
+  }
+  .fill-input{
+    border-left: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+  }
+  .cus-footer .btn-ok{
+    color: #fff;
+    background-image: -webkit-gradient(linear,left top,right top,from(#f7bb10),to(#ff4f18));
+    background-image: -webkit-linear-gradient(left,#f7bb10,#ff4f18);
+    background-image: -o-linear-gradient(left,#f7bb10,#ff4f18);
+    background-image: linear-gradient(90deg,#f7bb10,#ff4f18);
+    border-radius: 0 0 ${getRem(0.1)} 0;
+  }
+</style>
+`;
+}
+
+// 生成 html 标签
+function createHTML() {
+  const fastBtn = isLogin
+    ? `<span class="abtn" id="fill-input">快速填充</span>`
+    : '<span class="abtn" id="clear-ck">清空登陆</span>';
+  return `
+<div id="cus-mask">
+  <div class="cus-mask_view">
+    <div class="cus-view">
+      ${isLogin ? 'BoxJS 京东 ck 列表' : '切换 BoxJS 其他账号'}
     </div>
-    <div style="font-family: PingFangSC-Regular;font-size: ${getRem(
-  .14)};line-height: ${getRem(.22)};padding: 0 ${getRem(
-  .25)};height: ${getRem(1.98)};overflow-x: hidden;overflow-y: scroll;">
-       <label style="color: rgba(0,0,0,.4);font-size: ${getRem(
-  .16)};margin-bottom: ${getRem(.2)};display: block">ck 选择列表：</label>
-        <select id="jd_account" style="width: 100%;height: ${getRem(.4)};text-align: center">
+    <div class="cus-content">
+       <label>ck 选择列表：</label>
+        <select id="jd_account">
             <option value="">------请选择------</option>
             ${options}
         </select>
-        <ul style="padding-left: ${getRem(
-  .2)};color: rgba(0,0,0,.4);margin-top: ${getRem(0.1)};font-size: ${getRem(
-  0.1)}">
-            <li style="list-style-type: cjk-ideographic">该脚本配合【<a href="javascript:viod(0);" onclick="window.location.href='http://boxjs.net/#/app/JD_Cookies_remark'" style="color: #f7bb10">京东账号 CK 检索</a>】使用</li>
-            <li style="list-style-type: cjk-ideographic">上述链接跳转失败，请查看BoxJS是否订阅 <a style="color: #f7bb10" href="https://raw.githubusercontent.com/dompling/Script/master/dompling.boxjs.json">Dompling</a></li>
-            <li style="list-style-type: cjk-ideographic">页面可能会存在报错情况，多刷新几次即可</li>
-            <li style="list-style-type: cjk-ideographic">若想更新 ck，可以在检索中设置【未登录】条件</li>
+        <ul>
+            <li>该脚本配合【<a href="javascript:viod(0);" onclick="window.location.href='http://boxjs.net/#/app/JD_Cookies_remark'" style="color: #f7bb10">京东账号 CK 检索</a>】使用</li>
+            <li>上述链接跳转失败，请查看BoxJS是否订阅 <a style="color: #f7bb10" href="https://raw.githubusercontent.com/dompling/Script/master/dompling.boxjs.json">Dompling</a></li>
+            <li>页面可能会存在报错情况，多刷新几次即可</li>
+            <li>若想更新 ck，可以在检索中设置【未登录】条件</li>
         </ul>
     </div>
-    <div style="margin-top: ${getRem(.09)};
-    border-radius: ${getRem(.1)};
-    -webkit-box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);
-box-shadow: 0 -${getRem(0.025)} ${getRem(0.05)} 0 rgb(0 0 0/10%);">
+    <div class="cus-footer">
         <div class="btn-wrap" style="display: flex">
-          <a href="javascript:void(0);" style="display: inline-block;
-          font-family: PingFangSC-Regular;
-          font-size: ${getRem(.15)};
-          color: #2e2d2d;
-          text-align: center;
-          height: ${getRem(.45)};
-          line-height: ${getRem(.45)};
-          width: 50%;
-          border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="maskVisible(false)">
+          <span class="abtn" id="cus-mask-cancel">
               取消
-          </a>
-         ${isLoginPage ? `
-            <a href="javascript:void(0);" style="display: inline-block;
-              font-family: PingFangSC-Regular;
-              font-size: ${getRem(.15)};
-              color: #2e2d2d;
-              text-align: center;
-              height: ${getRem(.45)};
-              line-height: ${getRem(.45)};
-              width: 50%;
-              border-left: 1px solid #eaeaea;
-              border-top: 1px solid #eaeaea;" id="cus-mask-cancel" onclick="fillInput()">
-                  快速填充
-              </a>
-            ` : ''}
-          <a href="javascript:void(0);"  style="display: inline-block;
-            font-family: PingFangSC-Regular;
-            font-size: ${getRem(.15)};
-            text-align: center;
-            height: ${getRem(.45)};
-            line-height: ${getRem(.45)};
-            width: 50%;
-            border-top: 1px solid #eaeaea;
-            color: #fff;
-            background-image: -webkit-gradient(linear,left top,right top,from(#f7bb10),to(#ff4f18));
-            background-image: -webkit-linear-gradient(left,#f7bb10,#ff4f18);
-            background-image: -o-linear-gradient(left,#f7bb10,#ff4f18);
-            background-image: linear-gradient(
-        90deg
-        ,#f7bb10,#ff4f18);
-            border-radius: 0 0 ${getRem(.1)} 0;
-            " id="cus-mask-ok" onclick="login()">
-                ${isLoginPage ? '直接登录' : '切换账号'}
-            </a>
+          </span>
+          ${fastBtn}
+          <span class="abtn btn-ok" id="cus-mask-ok" >
+              ${isLogin ? '直接登录' : '切换账号'}
+          </span>
         </div>
     </div>
   </div>
 </div>
-`;
 
-const js = `
-const head=document.getElementsByTagName("head")[0];
-const meta = document.createElement("meta");
-meta.name="viewport";
-meta.content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no";
-head.append(meta);
-const boxjsData=\`${JSON.stringify(cookiesRemark)}\`;
-const maskView = document.createElement("div");
-maskView.innerHTML=\`${maskView}\`;
-document.getElementsByTagName("body")[0].append(maskView);
+<div id="boxjs" class="tool_bar">
+ <img  src="https://raw.githubusercontent.com/chavyleung/scripts/master/BOXJS.png" />
+</div>
 
-const boxlogin = document.createElement("div");
-boxlogin.style.display = "inline-block";
-boxlogin.innerHTML = \`${boxBtn}\`;
+<div id="copyCk" class="tool_bar" style="display: none"><span>Ck</span></div>
 
-${container};
-function maskVisible(visible){
- copyToClip();
- const cusmsk = document.getElementById("cus-mask");
- cusmsk.style.display = visible? "block" : "none";
+  `;
 }
 
-function fillInput(){
-  const cuMobile = document.getElementById('jd_account').value;
-  console.log('快速填充号码：'+ cuMobile);
-  const input = document.getElementsByClassName('acc-input mobile J_ping')[0];
-  input.value = cuMobile;
-  ev = document.createEvent("HTMLEvents");
-  ev.initEvent("input", true,false );
-  input.dispatchEvent(ev);
-  maskVisible(false);
-}
+// 生成脚本标签
+function createScript() {
+  return `
+<script>
+    var pk = getCookie("pt_key");
+    var pp = getCookie("pt_pin");
+    const head = document.getElementsByTagName("head")[0];
+    head.insertAdjacentHTML('beforeEnd', '<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />');
+    const jd_ck=${JSON.stringify(cookiesRemark)};
+    const boxjs_btn = document.querySelector("#boxjs");
+    const fill_btn = document.querySelector("#fill-input");
+    const copyCk_btn = document.querySelector("#copyCk");
+    const cancel_btn = document.querySelector("#cus-mask-cancel");
+    const ok_btn = document.querySelector("#cus-mask-ok");
 
-function clearAllCookie() {
-    var keys = document.cookie.match(/[^ =;]+(?=\\=)/g);
-    if (keys) {
-        for (var i = keys.length; i--;)
-            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+    boxjs_btn.addEventListener('click', function(){
+      maskVisible(true);
+    });
+
+    cancel_btn.addEventListener('click', function(){
+      maskVisible(false);
+    });
+
+    ok_btn.addEventListener('click', function(){
+      btnSubmit();
+    });
+
+    copyCk_btn.addEventListener('click',function(){
+      copyToClip();
+    })
+
+    if(pk)copyCk_btn.style.display="block";
+
+    if(fill_btn){
+      fill_btn.addEventListener('click',function(){
+        fillInput();
+      });
     }
-}
 
-function login(){
-  const cuMobile = document.getElementById('jd_account').value;
-  if(!cuMobile) return alert("请选择需要登陆的账号");
-  const jd_ck = JSON.parse(boxjsData);
-  const login_ck = jd_ck.find(item=>item.mobile===cuMobile);
-  if(!login_ck) return alert("未找到相关账号");
-  let [ pt_key , pt_pin ] = login_ck.cookie.split(";");
-  pt_key = pt_key.split("=");
-  pt_pin = pt_pin.split("=");
-  clearAllCookie();
-  setCookie(pt_key[0],pt_key[1]);
-  setCookie(pt_pin[0],pt_pin[1]);
-  sessionStorage.clear();
-  localStorage.clear();
-  window.location.href="https://home.m.jd.com/myJd/newhome.action?sceneval=2";
-}
-
-function setCookie(cname,cvalue){
-    var d = new Date();
-    d.setTime(d.getTime()+(30*24*60*60*1000));
-    var expires = "expires="+d.toGMTString();
-    document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.jd.com";
-}
-
-function getCookie(cname){
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+    function maskVisible(visible){
+      const cusmsk = document.getElementById("cus-mask");
+      cusmsk.style.display = visible? "block" : "none";
     }
-    return "";
-}
 
+    function fillInput(){
+      const cuMobile = document.getElementById('jd_account').value;
+      console.log('快速填充号码：'+ cuMobile);
+      const input = document.getElementsByClassName('acc-input mobile J_ping')[0];
+      input.value = cuMobile;
+      ev = document.createEvent("HTMLEvents");
+      ev.initEvent("input", true,false );
+      input.dispatchEvent(ev);
+      maskVisible(false);
+    }
 
-function copyToClip(){
-  var pk = getCookie("pt_key");
-  var pp = getCookie("pt_pin");
-  const _input = document.createElement('input');
-  _input.style.width="1px";
-  _input.style.height="1px";
-  _input.style.position="fixed";
-  _input.style.right="-1px";
-  document.body.prepend(_input);
-  _input.value=\`pt_key=\${pk};pt_pin=\${pp};\`;
-  _input.focus();
-  _input.select();
-  document.execCommand('copy');
-  _input.blur();
-  document.body.removeChild(_input);
-  console.log(\`复制 ck 到剪切板:\${document.execCommand('copy')}\`);
-  if(document.execCommand('copy')){
-    alert('复制 ck 到剪切板成功');
+    function clearAllCookie() {
+        var keys = document.cookie.match(/[^ =;]+(?=\\=)/g);
+        if (keys) {
+            for (var i = keys.length; i--;){
+              document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+            }
+        }
+    }
+
+   function btnSubmit(){
+    const cuMobile = document.getElementById('jd_account').value;
+    if(!cuMobile) return alert("请选择需要登陆的账号");
+    const login_ck = jd_ck.find(item=>item.mobile===cuMobile);
+    if(!login_ck) return alert("未找到相关账号");
+    let [ pt_key , pt_pin ] = login_ck.cookie.split(";");
+    pt_key = pt_key.split("=");
+    pt_pin = pt_pin.split("=");
+    clearAllCookie();
+    setCookie(pt_key[0],pt_key[1]);
+    setCookie(pt_pin[0],pt_pin[1]);
+    sessionStorage.clear();
+    localStorage.clear();
+    window.location.href="https://home.m.jd.com/myJd/newhome.action?sceneval=2";
   }
+  function setCookie(cname,cvalue){
+      var ed = new Date();
+      const mt = ed.getMonth()+1;
+      ed.setMonth(mt);
+      var expires = "expires="+ed.toGMTString();
+      document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.${domain}.com";
+  }
+  function getCookie(cname){
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0; i<ca.length; i++) {
+          var c = ca[i].trim();
+          if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+      }
+      return "";
+  }
+  function copyToClip(){
+    const _input = document.createElement('input');
+    _input.style.width="1px";
+    _input.style.height="1px";
+    _input.style.position="fixed";
+    _input.style.right="-1px";
+    document.body.prepend(_input);
+    _input.value="pt_key="+pk+";pt_pin="+pp;
+    _input.focus();
+    _input.select();
+    document.execCommand('copy');
+    _input.blur();
+    document.body.removeChild(_input);
+    if(document.execCommand('copy')){
+      alert('复制 ck 到剪切板成功');
+    }
+  }
+</script>
+  `;
 }
+
+const infuseStyles = createStyle();
+const infuseScript = createScript();
+const infuseHTML = createHTML();
+
+function getInfuse() {
+  return isJS ? `
+const bodyELem = document.body;
+bodyELem.insertAdjacentHTML('beforeEnd', \`${infuseStyles}\`);
+bodyELem.insertAdjacentHTML('beforeEnd', \`${infuseHTML}\`);
+${infuseScript.replace('<script>', '').replace('</script>', '')}
+` :
+    `
+${infuseStyles}
+${infuseHTML}
+${infuseScript}
 `;
-console.log('========追加元素========');
-const html  = $response.body + `\n${js}`;
-console.log(html);
-$.done({body: html});
+}
+
+const infuseText = getInfuse();
+$.html = isJS ?
+  $.html + `\n${infuseText}` :
+  $.html.replace(/(<\/html>)/g, `${infuseText} </html>`);
+$.done({body: $.html});
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
@@ -322,9 +418,7 @@ function ENV() {
   };
 }
 
-function HTTP(defaultOptions = {
-  baseURL: '',
-}) {
+function HTTP(defaultOptions = {baseURL: ''}) {
   const {
     isQX,
     isLoon,
