@@ -39,7 +39,7 @@ const remKey = 'rem';
 
 $.url = $request.url;
 $.html = $response.body;
-let remData = [{key: 'home.jd.com', val: '5'}];
+let remData = [{key: 'home.m.jd.com', val: '5'}];
 try {
   remData = JSON.parse($.read(remKey) || JSON.stringify(remData));
   $.write(JSON.stringify(remData, null, `\t`), remKey);
@@ -57,6 +57,7 @@ if (!$.html.includes || !$.html.includes('</html>')) {
 }
 
 const isLogin = $.url.indexOf('/login/login') > -1;
+console.log($.url);
 const remValue = remData.find(item => $.url.indexOf(item.key) > -1) || {};
 
 // 处理各页面 rem 兼容
