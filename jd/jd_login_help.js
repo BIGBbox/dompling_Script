@@ -116,6 +116,7 @@ function createStyle() {
     height: 27px;
     line-height: 27px;
     text-align: center;
+    display: block;
   }
   #copyCk { top:60%;}
   #cus-mask{
@@ -291,7 +292,7 @@ function createScript() {
       copyToClip();
     })
 
-    if(pk)copyCk_btn.style.display="block";
+    if(pk)copyCk_btn.style.display="flex";
 
     if(fill_btn){
       fill_btn.addEventListener('click',function(){
