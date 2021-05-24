@@ -357,7 +357,7 @@
     },
     {
       "id": "JD_Cookies_remark",
-      "name": "CK 检索",
+      "name": "登陆助手",
       "keys": [
         "@jd_ck_remark.remark",
         "@jd_ck_remark.rem"
