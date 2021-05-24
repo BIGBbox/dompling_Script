@@ -35,24 +35,33 @@ const APIKey = 'CookiesJD';
 const CacheKey = `#${APIKey}`;
 const remark_key = `remark`;
 const searchKey = 'keyword';
+const remKey = 'rem';
 
 $.url = $request.url;
 $.html = $response.body;
+let remData = [{key: '/newhome.action', val: '5'}];
+try {
+  remData = JSON.parse($.read(remKey) || JSON.stringify(remData));
+  $.write(JSON.stringify(remData, null, `\t`), remKey);
+} catch (e) {
+  console.log('页面缩放比例格式存在问题');
+  $.write(JSON.stringify(remData, null, `\t`), remKey);
+}
 
 const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
 let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
 domain = domain && domain[1] ? domain[1] : 'jd';
 
-if (!$.html.includes('</html>')) {
+if (!$.html.includes || !$.html.includes('</html>')) {
   $.done({body: $.html});
 }
 
-const isLogin = $.url.indexOf('requireCaptcha') > -1 ||
-  $.url.indexOf('/login/login') > -1;
+const isLogin = $.url.indexOf('/login/login') > -1;
+const remValue = remData.find(item => $.url.indexOf(item.key) > -1) || {};
 
 // 处理各页面 rem 兼容
 function getRem(r) {
-  return isLogin ? `${r}rem` : `${r * 5}rem`;
+  return `${r * parseInt(remValue.val || '1')}rem`;
 }
 
 // 初始化 boxjs 数据
@@ -412,6 +421,7 @@ ${infuseHTML}
 ${infuseScript}
 `;
 }
+
 const infuseText = getInfuse();
 $.html = isJS ?
   $.html + `\n${infuseText}` :
