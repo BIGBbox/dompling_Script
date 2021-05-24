@@ -198,7 +198,7 @@ function createStyle() {
   .cus-footer span{
     font-size: ${getRem(0.15)};
   }
-  #fill-input{
+  #fill-input,#clear-ck{
     border-left: 1px solid #eaeaea;
     border-top: 1px solid #eaeaea;
   }
@@ -275,6 +275,7 @@ function createScript() {
     const copyCk_btn = document.querySelector("#copyCk");
     const cancel_btn = document.querySelector("#cus-mask-cancel");
     const ok_btn = document.querySelector("#cus-mask-ok");
+    const clear_btn = document.querySelector("#clear-ck");
 
     boxjs_btn.addEventListener('click', function(){
       maskVisible(true);
@@ -288,11 +289,22 @@ function createScript() {
       btnSubmit();
     });
 
+
     copyCk_btn.addEventListener('click',function(){
       copyToClip();
     })
 
     if(pk)copyCk_btn.style.display="flex";
+
+    if(clear_btn){
+      clear_btn.addEventListener('click',function(){
+         sessionStorage.clear();
+         localStorage.clear();
+         setCookie('pt_key',"");
+         setCookie("pt_pin","");
+         window.location.reload();
+      })
+    }
 
     if(fill_btn){
       fill_btn.addEventListener('click',function(){
@@ -318,9 +330,11 @@ function createScript() {
 
     function clearAllCookie() {
         var keys = document.cookie.match(/[^ =;]+(?=\\=)/g);
+
         if (keys) {
             for (var i = keys.length; i--;){
-              document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+              console.log( keys[i] + '=;expires=' + new Date(0).toUTCString());
+              document.cookie = keys[i] + '=;expires=' + new Date(0).toUTCString()
             }
         }
     }
