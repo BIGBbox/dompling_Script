@@ -43,7 +43,7 @@ const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
 let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
 domain = domain && domain[1] ? domain[1] : 'jd';
 
-if (!$.html.includes('</html>') && !$.env.isQX) {
+if (!$.html.includes('</html>')) {
   $.done({body: $.html});
 }
 
