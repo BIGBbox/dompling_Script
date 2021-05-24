@@ -74,12 +74,23 @@ $.http = new HTTP({
       try {
         content = JSON.parse(content);
         if (!item.key) {
+          const datas = {};
           for (const contentKey in content) {
-            const cItem = content[contentKey];
-            const val = typeof cItem === 'object'
-              ? JSON.stringify(cItem)
-              : cItem;
-            saveBoxJSData({key: contentKey, val});
+            const dataItem = content[contentKey];
+            if (/^@/.test(contentKey)) {
+              const [, objkey, path] = /^@(.*?)\.(.*?)$/.exec(contentKey);
+              if (!datas[objkey]) datas[objkey] = {};
+              datas[objkey][path] = dataItem;
+            } else {
+              datas[contentKey] = dataItem;
+            }
+          }
+          for (const key in datas) {
+            saveBoxJSData({
+              key,
+              val: typeof datas[key] === 'string' ? datas[key] : JSON.stringify(
+                datas[key]),
+            });
           }
         } else {
           saveBoxJSData({key: item.key, val: JSON.stringify(content)});
