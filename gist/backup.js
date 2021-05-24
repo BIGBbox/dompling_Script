@@ -45,7 +45,7 @@ $.msg = '';
 $.http = new HTTP({
   baseURL: `https://api.github.com`,
   headers: {
-    Authorization:`token ${$.token}`,
+    Authorization: `token ${$.token}`,
     Accept: 'application/vnd.github.v3+json',
     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
   },
@@ -299,15 +299,35 @@ function getAppDatas(app) {
   const nulls = [null, undefined, 'null', 'undefined'];
   if (app.keys && Array.isArray(app.keys)) {
     app.keys.forEach((key) => {
-      const val = $.read(`#${key}`);
-      datas[key] = nulls.includes(val) ? null : val;
+      if (/^@/.test(key)) {
+        const [, objkey, path] = /^@(.*?)\.(.*?)$/.exec(key);
+        try {
+          const val = JSON.parse($.read(`#${objkey}`));
+          datas[key] = nulls.includes(val) ? null : val[path];
+        } catch (e) {
+          datas[key] = null;
+        }
+      } else {
+        const val = $.read(`#${key}`);
+        datas[key] = nulls.includes(val) ? null : val;
+      }
     });
   }
   if (app.settings && Array.isArray(app.settings)) {
     app.settings.forEach((setting) => {
       const key = setting.id;
-      const val = $.read(`#${key}`);
-      datas[key] = nulls.includes(val) ? null : val;
+      if (/^@/.test(key)) {
+        const [, objkey, path] = /^@(.*?)\.(.*?)$/.exec(key);
+        try {
+          const val = JSON.parse($.read(`#${objkey}`));
+          datas[key] = nulls.includes(val) ? null : val[path];
+        } catch (e) {
+          datas[key] = null;
+        }
+      } else {
+        const val = $.read(`#${key}`);
+        datas[key] = nulls.includes(val) ? null : val;
+      }
     });
   }
   return datas;
