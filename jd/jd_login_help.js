@@ -401,6 +401,7 @@ const infuseText = getInfuse();
 $.html = isJS ?
   $.html + `\n${infuseText}` :
   $.html.replace(/(<\/html>)/g, `${infuseText} </html>`);
+console.log($.html);
 $.done({body: $.html});
 
 function ENV() {
