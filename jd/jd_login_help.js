@@ -196,7 +196,7 @@ function createStyle() {
   .cus-footer span{
     font-size: ${getRem(0.15)};
   }
-  .fill-input{
+  #fill-input{
     border-left: 1px solid #eaeaea;
     border-top: 1px solid #eaeaea;
   }
@@ -764,3 +764,4 @@ function API(name = 'untitled', debug = false) {
     }
   })(name, debug);
 }
+
