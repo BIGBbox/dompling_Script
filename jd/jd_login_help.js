@@ -39,7 +39,7 @@ const remKey = 'rem';
 
 $.url = $request.url;
 $.html = $response.body;
-let remData = [{key: '/newhome.action', val: '5'}];
+let remData = [{key: 'home.jd.com', val: '5'}];
 try {
   remData = JSON.parse($.read(remKey) || JSON.stringify(remData));
   $.write(JSON.stringify(remData, null, `\t`), remKey);
