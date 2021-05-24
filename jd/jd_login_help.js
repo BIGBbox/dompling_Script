@@ -8,22 +8,25 @@ ScriptName: 京东账号登陆辅助
 ==================================
 
 [MITM]
-hostname = *.jd.com
+hostname = plogin.m.jd.com,home.m.jd.com
 
 【Surge脚本配置】:
 ===================
 [Script]
-京东登陆辅助 = type=http-response,pattern=^https?:\/\/.*.(jd|jingxi).com.*,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东登陆辅助 = type=http-response,pattern=^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东登陆辅助 = type=http-response,pattern=^https?:\/\/plogin\.m\.jd\.com\/login\/login,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-response ^https?:\/\/.*.(jd|jingxi).com.* tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+http-response ^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+http-response ^https?:\/\/plogin\.m\.jd\.com\/login\/login tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
 ===================
 【 QX  脚本配置 】:
 ===================
 [rewrite_local]
-^https?:\/\/.*.(jd|jingxi).com.* url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https?:\/\/plogin\.m\.jd\.com\/login\/login url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 
  */
 const $ = new API('jd_ck_remark');
@@ -409,13 +412,10 @@ ${infuseHTML}
 ${infuseScript}
 `;
 }
-
-console.log(`重写内容`);
 const infuseText = getInfuse();
 $.html = isJS ?
   $.html + `\n${infuseText}` :
   $.html.replace(/(<\/html>)/g, `${infuseText} </html>`);
-console.log($.html);
 $.done({body: $.html});
 
 function ENV() {
