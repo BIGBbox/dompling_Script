@@ -386,8 +386,8 @@
           "val": "",
           "type": "textarea",
           "autoGrow": false,
-          "rows": 8,
-          "desc": "CK 备注列表 (JSON 格式)"
+          "rows": 4,
+          "desc": "页面缩放列表 (JSON 格式)"
         },
         {
           "id": "@jd_ck_remark.remark",
