@@ -352,7 +352,7 @@ function createScript() {
     setCookie(pt_pin[0],pt_pin[1]);
     sessionStorage.clear();
     localStorage.clear();
-    window.location.href="https://home.m.jd.com";
+    window.location.href="https://home.m.jd.com/userinfom/QueryUserInfoM";
   }
   function setCookie(cname,cvalue){
       var ed = new Date();
