@@ -53,9 +53,13 @@ const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
 let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
 domain = domain && domain[1] ? domain[1] : 'jd';
 
-if (!$.html.includes || !$.html.includes('</html>')) $.done({body: $.html});
+try {
+  if (!$.html.includes || !$.html.includes('</html>')) $.done({body: $.html});
+} catch (e) {
+  $.done();
+}
 if ($.url.indexOf('jingxi.com')) domain = 'jingxi';
-
+console.log(domain);
 const isLogin = $.url.indexOf('/login/login') > -1;
 const remValue = remData.find(item => $.url.indexOf(item.key) !== -1) || {};
 
@@ -361,16 +365,29 @@ function createScript() {
     clearAllCookie();
     setCookie(pt_key[0],pt_key[1]);
     setCookie(pt_pin[0],pt_pin[1]);
-    sessionStorage.clear();
-    localStorage.clear();
-    window.location.reload();
+    const url = decodeURIComponent(getQueryVariable("returnurl"));
+    if(url){
+        window.location.href = url;
+    }else{
+        window.location.href = "https://home.m.jd.com/myJd/newhome.action";
+    }
   }
   function setCookie(cname,cvalue){
       var ed = new Date();
       const mt = ed.getMonth()+1;
       ed.setMonth(mt);
       var expires = "expires="+ed.toGMTString();
-      document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.${domain}.com";
+      document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.jingxi.com";
+      document.cookie = cname+"="+cvalue+"; "+expires+"; path=/; domain=.jd.com";
+  }
+  function getQueryVariable(variable){
+     var query = window.location.search.substring(1);
+     var vars = query.split("&");
+     for (var i=0;i<vars.length;i++) {
+             var pair = vars[i].split("=");
+             if(pair[0] == variable){return pair[1];}
+     }
+     return(false);
   }
   function getCookie(cname){
       var name = cname + "=";
@@ -422,9 +439,13 @@ ${infuseScript}
 }
 
 const infuseText = getInfuse();
-$.html = isJS ?
-  $.html + `\n${infuseText}` :
-  $.html.replace(/(<\/html>)/, `${infuseText} </html>`);
+try {
+  $.html = isJS ?
+    $.html + `\n${infuseText}` :
+    $.html.replace(/(<\/html>)/, `${infuseText} </html>`);
+} catch (e) {
+  console.log(e);
+}
 $.done({body: $.html});
 
 function ENV() {
