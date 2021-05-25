@@ -8,7 +8,7 @@ gist 备份 = type=cron,cronexp=0 10 * * *,script-path=https://raw.githubusercon
 财富岛提现 = type=cron,cronexp=0 0 0 * * *,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_tx.js,script-update-interval=0
 青龙同步 = type=cron,cronexp=20 7 * * *,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/ql_cookie_sync.js,script-update-interval=0
 小米运动 = type=cron,cronexp=0 9 * * *,script-path=https://raw.githubusercontent.com/githubdulong/Script/master/xmSports.js,script-update-interval=0
-获取京东Cookie = type=http-request,pattern=^https:\/\/me-api\.jd\.com\/user_new\/info\/GetJDUserInfoUnion,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js,script-update-interval=0
+
 # > 中青看点极速版
 中青看点极速版 = type=cron,cronexp=5 */10 1-22 * * *,wake-system=1,script-path=https://raw.githubusercontent.com/Sunert/Script/master/Task/youth.js
 中青自动阅读 = type=cron,cronexp=10 18 1-15/3 * * *,wake-system=1,timeout=10800,script-path=https://raw.githubusercontent.com/songyangzz/QuantumultX/master/YOUTH_READ.js
