@@ -370,10 +370,10 @@ function createScript() {
     function toast(message,time= 2000){
        tip_view.style.display = "block";
        tip_view.innerHTML = message;
-       setTimeout(() => {
-          tip_view.style.display = "none";
+       setTimeout(function() {
+         tip_view.style.display = "none";
           tip_view.innerHTML = "";
-       },time)
+       },parseInt(time || "2000"));
     }
 
     function maskVisible(visible){
