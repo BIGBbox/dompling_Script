@@ -107,7 +107,6 @@ function GetCookie() {
       $.notify('写入京东Cookie失败', '', '请检查匹配URL或配置内脚本类型 ‼️');
     }
   } catch (eor) {
-    $.write('', CacheKey);
     $.notify('写入京东Cookie失败', '', '已尝试清空历史Cookie, 请重试 ⚠️');
     console.log(
       `\n写入京东Cookie出现错误 ‼️\n${JSON.stringify(
