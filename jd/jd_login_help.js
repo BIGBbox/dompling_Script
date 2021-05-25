@@ -53,9 +53,8 @@ const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
 let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
 domain = domain && domain[1] ? domain[1] : 'jd';
 
-if (!$.html.includes || !$.html.includes('</html>')) {
-  $.done({body: $.html});
-}
+if (!$.html.includes || !$.html.includes('</html>')) $.done({body: $.html});
+if ($.url.indexOf('jingxi.com')) domain = 'jingxi';
 
 const isLogin = $.url.indexOf('/login/login') > -1;
 const remValue = remData.find(item => $.url.indexOf(item.key) !== -1) || {};
