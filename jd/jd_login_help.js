@@ -274,7 +274,7 @@ function createHTML() {
     ? `<span class="abtn" id="fill-input">快速填充</span>`
     : '<span class="abtn" id="clear-ck">清空登陆</span>';
   return `
-<div id="cus-mask">
+<div id="cus-mask" style="display: none">
   <div class="cus-mask_view">
     <div class="cus-view">
       ${isLogin ? 'BoxJS 京东 ck 列表' : '切换 BoxJS 其他账号'}
