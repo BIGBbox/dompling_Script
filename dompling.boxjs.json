@@ -381,15 +381,6 @@
           "placeholder": "下标（0）、username、nickname、status 的值"
         },
         {
-          "id": "@jd_ck_remark.rem",
-          "name": "页面缩放",
-          "val": "",
-          "type": "textarea",
-          "autoGrow": false,
-          "rows": 4,
-          "desc": "页面缩放列表 (JSON 格式)"
-        },
-        {
           "id": "@jd_ck_remark.remark",
           "name": "CK 备注列表",
           "val": "",
