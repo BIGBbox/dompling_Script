@@ -50,22 +50,17 @@ try {
 }
 
 const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
-let domain = $.url.match(/^https?:\/\/.*.(jd|jingxi).com.*/);
-domain = domain && domain[1] ? domain[1] : 'jd';
-
 try {
   if (!$.html.includes || !$.html.includes('</html>')) $.done({body: $.html});
 } catch (e) {
   $.done();
 }
-if ($.url.indexOf('jingxi.com')) domain = 'jingxi';
-console.log(domain);
 const isLogin = $.url.indexOf('/login/login') > -1;
 const remValue = remData.find(item => $.url.indexOf(item.key) !== -1) || {};
 
 // 处理各页面 rem 兼容
 function getRem(r) {
-  return `${r * parseInt(remValue.val || '1')}rem`;
+  return `${r * 100}px`;
 }
 
 // 初始化 boxjs 数据
@@ -248,10 +243,9 @@ function createHTML() {
             ${options}
         </select>
         <ul>
+            <li>请查看BoxJS是否订阅 <a style="color: #f7bb10" href="https://raw.githubusercontent.com/dompling/Script/master/dompling.boxjs.json">Dompling</a></li>
             <li>该脚本配合【<a href="javascript:viod(0);" onclick="window.location.href='http://boxjs.net/#/app/JD_Cookies_remark'" style="color: #f7bb10">京东账号 CK 检索</a>】使用</li>
-            <li>上述链接跳转失败，请查看BoxJS是否订阅 <a style="color: #f7bb10" href="https://raw.githubusercontent.com/dompling/Script/master/dompling.boxjs.json">Dompling</a></li>
-            <li>页面可能会存在报错情况，多刷新几次即可</li>
-            <li>若想更新 ck，可以在检索中设置【未登录】条件</li>
+            <li>若想更新 ck，可以在检索中设置【未登录】条件，然后使用页面的快速填充功能</li>
         </ul>
     </div>
     <div class="cus-footer">
