@@ -13,17 +13,20 @@ hostname = plogin.m.jd.com,home.m.jd.com
 【Surge脚本配置】:
 ===================
 [Script]
-京东登陆辅助 = type=http-response,pattern=^https?:\/\/.*.(jd|jingxi).com.*,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东登陆页面辅助 = type=http-response,pattern=^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东个人中心登陆辅助 = type=http-response,pattern=^https?:\/\/plogin\.m\.jd\.com\/login\/login,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-response ^https?:\/\/.*.(jd|jingxi).com.* tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+http-response ^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+http-response ^https?:\/\/plogin\.m\.jd\.com\/login\/login tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
 ===================
 【 QX  脚本配置 】:
 ===================
 [rewrite_local]
-^https?:\/\/.*.(jd|jingxi).com.* url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https?:\/\/plogin\.m\.jd\.com\/login\/login url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 
  */
 const $ = new API('jd_ck_remark');
@@ -33,10 +36,11 @@ const CacheKey = `#${APIKey}`;
 const remark_key = `remark`;
 const searchKey = 'keyword';
 const remKey = 'rem';
-
+const redirectUrl = 'url';
+$.redirectUrl = $.read(redirectUrl) || '';
 $.url = $request.url;
 $.html = $response.body;
-let remData = [{key: 'home.m.jd.com/', val: '5'}];
+let remData = [{key: 'https://home.m.jd.com', val: '5'}];
 try {
   remData = JSON.parse($.read(remKey) || JSON.stringify(remData));
   $.write(JSON.stringify(remData, null, `\t`), remKey);
@@ -54,7 +58,7 @@ if (!$.html.includes || !$.html.includes('</html>')) {
 }
 
 const isLogin = $.url.indexOf('/login/login') > -1;
-const remValue = remData.find(item => $.url.indexOf(item.key) > -1) || {};
+const remValue = remData.find(item => $.url.indexOf(item.key) !== -1) || {};
 
 // 处理各页面 rem 兼容
 function getRem(r) {
@@ -274,6 +278,7 @@ function createHTML() {
 function createScript() {
   return `
 <script>
+    var redirectUrl = \`${redirectUrl}\`;
     var pk = getCookie("pt_key");
     var pp = getCookie("pt_pin");
     const head = document.getElementsByTagName("head")[0];
@@ -339,7 +344,6 @@ function createScript() {
 
     function clearAllCookie() {
         var keys = document.cookie.match(/[^ =;]+(?=\\=)/g);
-
         if (keys) {
             for (var i = keys.length; i--;){
               console.log( keys[i] + '=;expires=' + new Date(0).toUTCString());
@@ -361,7 +365,7 @@ function createScript() {
     setCookie(pt_pin[0],pt_pin[1]);
     sessionStorage.clear();
     localStorage.clear();
-    window.location.href="https://home.m.jd.com/userinfom/QueryUserInfoM";
+    window.location.reload();
   }
   function setCookie(cname,cvalue){
       var ed = new Date();
