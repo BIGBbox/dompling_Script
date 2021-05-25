@@ -367,8 +367,7 @@
         "脚本地址【<a href=\"https://jdsharedresourcescdn.azureedge.net/jdresource/JD_extra_cookie.js\">京东多 CK获取</a>】,并按照此脚本注释进行配置",
         "可以修改的字段，nickname,mobile",
         "示例：[{username:\"yaya\",nickname:\"I'm YaYa man\",mobile:\"1234567890\"}]",
-        "可以根据 下标、username、nickname、status 字段检索京东多账号 ck",
-        "页面缩放：若出现样式错乱，可以调整 rem 的比例 key (表示匹配的 url 地址)，val（缩放比例-数字）[{key:'newhome.action', val:5}]"
+        "可以根据 下标、username、nickname、status 字段检索京东多账号 ck"
       ],
       "settings": [
         {
