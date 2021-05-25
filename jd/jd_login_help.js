@@ -345,7 +345,6 @@ function createScript() {
         var keys = document.cookie.match(/[^ =;]+(?=\\=)/g);
         if (keys) {
             for (var i = keys.length; i--;){
-              console.log( keys[i] + '=;expires=' + new Date(0).toUTCString());
               document.cookie = keys[i] + '=;expires=' + new Date(0).toUTCString()
             }
         }
