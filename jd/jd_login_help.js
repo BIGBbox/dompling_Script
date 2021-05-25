@@ -447,16 +447,13 @@ function createScript() {
     _input.style.position="fixed";
     _input.style.right="-1px";
     document.body.prepend(_input);
-    const value = "pt_key="+pk+";pt_pin="+pp;
-    _input.value = value;
+    _input.value = "pt_key="+pk+";pt_pin="+pp;
     _input.focus();
     _input.select();
     document.execCommand('copy');
     _input.blur();
     document.body.removeChild(_input);
-    if(document.execCommand('copy')){
-       toast('复制成功');
-    }
+    toast('复制成功');
   }
 </script>
   `;
