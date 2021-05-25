@@ -1,6 +1,7 @@
 /*
 
 Author: 2Ya
+version: v1.0.0
 Github: https://github.com/domping
 ScriptName: 京东账号登陆辅助
 ==================================
@@ -221,6 +222,29 @@ function createStyle() {
     background-image: linear-gradient(90deg,#f7bb10,#ff4f18);
     border-radius: 0 0 ${getRem(0.1)} 0;
   }
+  #cus-tip{
+    position: fixed;
+    z-index: 999;
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    min-width: ${getRem(1)};
+    min-height:${getRem(0.35)} ;
+    max-width: 80%;
+    max-height: 50%;
+    overflow-y: scroll;
+    top:50%;
+    left: 50%;
+    display: none;
+    text-align: center;
+    padding: ${getRem(0.1)};
+    box-sizing: border-box;
+    border-radius: ${getRem(0.1)};
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+  }
 </style>
 `;
 }
@@ -261,6 +285,7 @@ function createHTML() {
     </div>
   </div>
 </div>
+<div id="cus-tip"></div>
 
 <div id="boxjs" class="tool_bar">
  <img  src="https://raw.githubusercontent.com/chavyleung/scripts/master/BOXJS.png" />
@@ -287,6 +312,7 @@ function createScript() {
     const cancel_btn = document.querySelector("#cus-mask-cancel");
     const ok_btn = document.querySelector("#cus-mask-ok");
     const clear_btn = document.querySelector("#clear-ck");
+    const tip_view = document.querySelector("#cus-tip");
 
     boxjs_btn.addEventListener('click', function(){
       maskVisible(true);
@@ -305,7 +331,7 @@ function createScript() {
       copyToClip();
     })
 
-    if(pk)copyCk_btn.style.display="none";
+    if(pk === "" || !pk)copyCk_btn.style.display="none";
 
     if(clear_btn){
       clear_btn.addEventListener('click',function(){
@@ -321,6 +347,15 @@ function createScript() {
       fill_btn.addEventListener('click',function(){
         fillInput();
       });
+    }
+
+    function toast(message,time= 2000){
+       tip_view.style.display = "block";
+       tip_view.innerHTML = message;
+       setTimeout(() => {
+          tip_view.style.display = "none";
+          tip_view.innerHTML = "";
+       },time)
     }
 
     function maskVisible(visible){
@@ -407,7 +442,7 @@ function createScript() {
     _input.blur();
     document.body.removeChild(_input);
     if(document.execCommand('copy')){
-      prompt('复制 ck 成功', value);
+       toast('复制成功');
     }
   }
 </script>
