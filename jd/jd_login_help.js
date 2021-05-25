@@ -29,6 +29,36 @@ http-response ^https?:\/\/plogin\.m\.jd\.com\/login\/login tag=京东登陆辅�
 ^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 ^https?:\/\/plogin\.m\.jd\.com\/login\/login url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
 
+ *//*
+
+Author: 2Ya
+Github: https://github.com/domping
+ScriptName: 京东账号登陆辅助
+==================================
+该脚本需要搭配 【京东账号 CK 检索】 使用
+==================================
+
+[MITM]
+hostname = plogin.m.jd.com,home.m.jd.com
+
+【Surge脚本配置】:
+===================
+[Script]
+京东登陆页面辅助 = type=http-response,pattern=^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东个人中心登陆辅助 = type=http-response,pattern=^https?:\/\/plogin\.m\.jd\.com\/login\/login,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+===================
+【Loon脚本配置】:
+===================
+[Script]
+http-response ^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+http-response ^https?:\/\/plogin\.m\.jd\.com\/login\/login tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+===================
+【 QX  脚本配置 】:
+===================
+[rewrite_local]
+^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https?:\/\/plogin\.m\.jd\.com\/login\/login url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+
  */
 const $ = new API('jd_ck_remark');
 
@@ -238,6 +268,7 @@ function createStyle() {
     text-align: center;
     padding: ${getRem(0.1)};
     box-sizing: border-box;
+    font-size: ${getRem(0.1)};
     border-radius: ${getRem(0.1)};
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
