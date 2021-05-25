@@ -266,7 +266,7 @@ function createHTML() {
  <img  src="https://raw.githubusercontent.com/chavyleung/scripts/master/BOXJS.png" />
 </div>
 
-<div id="copyCk" class="tool_bar" style="display: none"><span>Ck</span></div>
+<div id="copyCk" class="tool_bar"><span>Ck</span></div>
 
   `;
 }
@@ -305,7 +305,7 @@ function createScript() {
       copyToClip();
     })
 
-    if(pk)copyCk_btn.style.display="flex";
+    if(pk)copyCk_btn.style.display="none";
 
     if(clear_btn){
       clear_btn.addEventListener('click',function(){
