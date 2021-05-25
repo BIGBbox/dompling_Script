@@ -27,9 +27,8 @@ $.log(`账号：${account.username}`);
   token = loginRes.token;
   headers.Authorization = `Bearer ${token}`;
   const cookiesRes = await getCookies();
-  for (const item of cookiesRes.data) {
-    await delCookie(item._id);
-  }
+  const ids = cookiesRes.data.map(item => item._id);
+  await delCookie(ids);
   $.log('清空 cookie');
   const cookies = jd_cookies.map(item => item.cookie);
   if (jd_cookie1) cookies.push(jd_cookie1);
@@ -71,8 +70,8 @@ function addCookies(cookies) {
   return $.http.post(opt).then((response) => JSON.parse(response.body));
 }
 
-function delCookie(id) {
-  const opt = {url: getURL(`cookies/${id}`), headers};
+function delCookie(ids) {
+  const opt = {url: getURL(`cookies`), headers, body: JSON.stringify(ids)};
   return $.http.delete(opt).then((response) => JSON.parse(response.body));
 }
 
