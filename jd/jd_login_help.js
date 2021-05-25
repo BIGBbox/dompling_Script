@@ -1,7 +1,7 @@
 /*
 
 Author: 2Ya
-version: v1.0.1
+version: v1.0.2
 Github: https://github.com/domping
 ScriptName: 京东账号登陆辅助
 ==================================
@@ -253,7 +253,6 @@ function createStyle() {
     overflow-y: scroll;
     top:50%;
     left: 50%;
-    display: none;
     text-align: center;
     padding: ${getRem(0.1)};
     box-sizing: border-box;
@@ -305,7 +304,7 @@ function createHTML() {
     </div>
   </div>
 </div>
-<div id="cus-tip"></div>
+<div id="cus-tip" style="display: none;"></div>
 
 <div id="boxjs" class="tool_bar">
  <img  src="https://raw.githubusercontent.com/chavyleung/scripts/master/BOXJS.png" />
@@ -413,12 +412,7 @@ function createScript() {
     clearAllCookie();
     setCookie(pt_key[0],pt_key[1]);
     setCookie(pt_pin[0],pt_pin[1]);
-    const url = decodeURIComponent(getQueryVariable("returnurl"));
-    if(url){
-        window.location.href = url;
-    }else{
-        window.location.href = "https://home.m.jd.com/myJd/newhome.action";
-    }
+    window.location.reload();
   }
   function setCookie(cname,cvalue){
       var ed = new Date();
