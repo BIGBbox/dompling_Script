@@ -1,7 +1,7 @@
 /*
 
 Author: 2Ya
-version: v1.0.0
+version: v1.0.1
 Github: https://github.com/domping
 ScriptName: 京东账号登陆辅助
 ==================================
@@ -66,19 +66,8 @@ const APIKey = 'CookiesJD';
 const CacheKey = `#${APIKey}`;
 const remark_key = `remark`;
 const searchKey = 'keyword';
-const remKey = 'rem';
-const redirectUrl = 'url';
-$.redirectUrl = $.read(redirectUrl) || '';
 $.url = $request.url;
 $.html = $response.body;
-let remData = [{key: 'https://home.m.jd.com', val: '5'}];
-try {
-  remData = JSON.parse($.read(remKey) || JSON.stringify(remData));
-  $.write(JSON.stringify(remData, null, `\t`), remKey);
-} catch (e) {
-  console.log('页面缩放比例格式存在问题');
-  $.write(JSON.stringify(remData, null, `\t`), remKey);
-}
 
 const isJS = $.url.match(/^https:\/\/.*\.com\/.*(\.js)/);
 try {
@@ -87,7 +76,7 @@ try {
   $.done();
 }
 const isLogin = $.url.indexOf('/login/login') > -1;
-const remValue = remData.find(item => $.url.indexOf(item.key) !== -1) || {};
+$.headers = $response.headers;
 
 // 处理各页面 rem 兼容
 function getRem(r) {
@@ -331,7 +320,6 @@ function createHTML() {
 function createScript() {
   return `
 <script>
-    var redirectUrl = \`${redirectUrl}\`;
     var pk = getCookie("pt_key");
     var pp = getCookie("pt_pin");
     const head = document.getElementsByTagName("head")[0];
@@ -506,7 +494,10 @@ try {
 } catch (e) {
   console.log(e);
 }
-$.done({body: $.html});
+
+$.headers = {...$.headers, 'Cache-Control': 'no-cache'};
+
+$.done({body: $.html, headers: $.headers});
 
 function ENV() {
   const isQX = typeof $task !== 'undefined';
