@@ -14,17 +14,17 @@ hostname = *.jd.com
 【Surge脚本配置】:
 ===================
 [Script]
-京东登陆页面辅助 = type=http-response,pattern=^https:\/\/((?!(api|mapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
+京东登陆页面辅助 = type=http-response,pattern=^https:\/\/((?!(api|mapi|lbsapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|blackhole|homepage\-gw|un|bh|orbit)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,script-update-interval=0
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-response ^https:\/\/((?!(api|mapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$ tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
+http-response ^https:\/\/((?!(api|mapi|lbsapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|blackhole|homepage\-gw|un|bh|orbit)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$ tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js,requires-body=1
 ===================
 【 QX  脚本配置 】:
 ===================
 [rewrite_local]
-^https:\/\/((?!(api|mapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$ url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
+^https:\/\/((?!(api|mapi|lbsapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|blackhole|homepage\-gw|un|bh|orbit)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$ url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help.js
  */
 const $ = new API('jd_ck_remark');
 
