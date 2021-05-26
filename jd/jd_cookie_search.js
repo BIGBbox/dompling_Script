@@ -73,7 +73,7 @@ cookiesRemark.forEach(item => {
     console.log(`----------------未登录账号【${notLogin.length}】----------------`);
     console.log(JSON.stringify(notLogin, null, `\t`));
     $.msg = `未登录账号：\n ${notLogin.map(
-      item => `账号【${item.index}】:${item.username || item.nickname}`).join(
+      item => `账号【${item.index}】:${item.nickname || item.username}`).join(
       '\n')}`;
   }
   $.write(JSON.stringify(ckFormat, null, `\t`), remark_key);
