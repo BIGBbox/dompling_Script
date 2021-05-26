@@ -43,6 +43,7 @@ cookiesRemark.forEach(item => {
 (async () => {
   const ckFormat = [];
   const notLogin = [];
+  let ckIndex = 0;
   for (const cookie of ckData) {
     let username = cookie.match(/pt_pin=(.+?);/)[1];
     username = decodeURIComponent(username);
@@ -51,19 +52,20 @@ cookiesRemark.forEach(item => {
     const response = await isLogin(cookie);
     const status = response.resultCode === 0 ? '正常' : '未登录';
 
-    console.log(`检查结束：账号 ${username}【${status}】`);
+    console.log(`检查结束：账号【${ckIndex}】 ${username}【${status}】`);
     console.log('===================================');
+
     const item = {
+      index: ckIndex,
       username,
       nickname: '',
       mobile: '',
       ...ckRemarkFormat[username],
       status,
     };
-    if (status === '未登录') {
-      account.push(status);
-    }
+    if (status === '未登录') notLogin.push(item);
     ckFormat.push(item);
+    ckIndex++;
   }
   if (notLogin.length) {
     console.log(`----------------未登录账号【${notLogin.length}】----------------`);
