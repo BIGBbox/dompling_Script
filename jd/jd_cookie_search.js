@@ -42,6 +42,7 @@ cookiesRemark.forEach(item => {
 
 (async () => {
   const ckFormat = [];
+  const notLogin = [];
   for (const cookie of ckData) {
     let username = cookie.match(/pt_pin=(.+?);/)[1];
     username = decodeURIComponent(username);
@@ -49,6 +50,7 @@ cookiesRemark.forEach(item => {
     console.log(`检查开始：账号 ${username} 【登陆状态】`);
     const response = await isLogin(cookie);
     const status = response.resultCode === 0 ? '正常' : '未登录';
+
     console.log(`检查结束：账号 ${username}【${status}】`);
     console.log('===================================');
     const item = {
@@ -58,13 +60,21 @@ cookiesRemark.forEach(item => {
       ...ckRemarkFormat[username],
       status,
     };
+    if (status === '未登录') {
+      account.push(status);
+    }
     ckFormat.push(item);
   }
-
+  if (notLogin.length) {
+    console.log(`----------------未登录账号【${notLogin.length}】----------------`);
+    console.log(JSON.stringify(notLogin, null, `\t`));
+  }
   $.write(JSON.stringify(ckFormat, null, `\t`), remark_key);
   $.msg = '初始化备注结束，boxjs 中修改备注';
   console.log($.msg);
-  console.log(`检测到${keyword.length}个搜索条件：${keyword.join(',')}`);
+
+  console.log(`检测到${keyword.length - 1}个搜索条件：${keyword.join(',')}`);
+
   if (keyword && keyword[0]) {
     console.log('开始搜索中');
     const searchValue = ckFormat.filter(
