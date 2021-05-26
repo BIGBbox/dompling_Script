@@ -67,14 +67,16 @@ cookiesRemark.forEach(item => {
     ckFormat.push(item);
     ckIndex++;
   }
+  $.msg = '初始化备注结束，boxjs 中修改备注';
+  console.log($.msg);
   if (notLogin.length) {
     console.log(`----------------未登录账号【${notLogin.length}】----------------`);
     console.log(JSON.stringify(notLogin, null, `\t`));
+    $.msg = `未登录账号：\n ${notLogin.map(
+      item => `账号【${item.index}】:${item.username || item.nickname}`).join(
+      '\n')}`;
   }
   $.write(JSON.stringify(ckFormat, null, `\t`), remark_key);
-  $.msg = '初始化备注结束，boxjs 中修改备注';
-  console.log($.msg);
-
   console.log(`检测到${keyword.length - 1}个搜索条件：${keyword.join(',')}`);
 
   if (keyword && keyword[0]) {
