@@ -89,22 +89,26 @@ const options = cookiesRemark.map(
 function createStyle() {
   return `
 <style>
-  .tool_bar{
+  .tool_bars{
     position: fixed;
+    top:50%;
+    right: 0;
+    z-index: 999;
+    transform: translateY(-50%);
+  }
+  .tool_bar{
     display: flex;
     height:33px;
     width:33px;
     align-items: center;
-    top:50%;
-    right: 0;
     background: #f7bb10;
-    z-index: 999;
     padding-left: 2px;
     border-top-left-radius: 50%;
     border-bottom-left-radius: 50%;
     padding-right: 3px;
     color: #fff;
     font-size: ${getRem(0.1)};
+    margin-bottom: ${getRem(.1)};
   }
   .tool_bar img,.tool_bar span{
     border-radius: 50%;
@@ -114,9 +118,8 @@ function createStyle() {
     line-height: 27px;
     text-align: center;
     display: block;
-    font-size: ${getRem(0.05)};
+    font-size: ${getRem(.05)};
   }
-  #copyCk { top:60%;}
   #cus-mask{
     display: none;
     position: fixed;
@@ -273,11 +276,12 @@ function createHTML() {
 </div>
 <div id="cus-tip" style="display: none;"></div>
 
-<div id="boxjs" class="tool_bar">
- <img  src="https://raw.githubusercontent.com/chavyleung/scripts/master/BOXJS.png" />
+<div class="tool_bars">
+  <div id="boxjs" class="tool_bar">
+   <img src="https://raw.githubusercontent.com/chavyleung/scripts/master/BOXJS.png" />
+  </div>
+  <div id="copyCk" class="tool_bar"><span>Ck</span></div>
 </div>
-
-<div id="copyCk" class="tool_bar"><span>Ck</span></div>
 
   `;
 }
