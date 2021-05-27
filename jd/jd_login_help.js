@@ -114,6 +114,7 @@ function createStyle() {
     line-height: 27px;
     text-align: center;
     display: block;
+    font-size: ${getRem(0.05)};
   }
   #copyCk { top:60%;}
   #cus-mask{
