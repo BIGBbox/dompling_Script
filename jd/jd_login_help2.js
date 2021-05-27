@@ -375,6 +375,11 @@ function createScript() {
     const tip_view = document.querySelector("#cus-tip");
     const avatarView = document.querySelectorAll(".cus-avatar");
 
+   const avatarItem = jd_ck.find(item=> item.username === pp);
+   if(avatarItem && avatarItem.avatar){
+     boxjs_btn.innerHTML = "<img src='"+ avatarItem.avatar +"' />";
+   }
+
     avatarView.forEach(item=>{
       item.onclick = function (){
         avatarView.forEach(item=>{
