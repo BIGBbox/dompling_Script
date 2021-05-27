@@ -115,7 +115,7 @@ function createStyle() {
     line-height: 27px;
     text-align: center;
     display: block;
-    font-size: ${getRem(.05)};
+    font-size: ${getRem(.1)};
   }
   #cus-mask{
     position: fixed;
