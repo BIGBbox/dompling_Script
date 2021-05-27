@@ -50,7 +50,13 @@ cookiesRemark.forEach(item => {
     console.log('===================================');
     console.log(`检查开始：账号 ${username} 【登陆状态】`);
     const response = await isLogin(cookie);
-    const status = response.resultCode === 0 ? '正常' : '未登录';
+    const status = response.retcode === '0' ? '正常' : '未登录';
+
+    let avatar = '', nickname = '';
+    if (response.retcode === '0') {
+      avatar = response.data.userInfo.baseInfo.headImageUrl;
+      nickname = response.data.userInfo.baseInfo.nickname;
+    }
 
     console.log(`检查结束：账号【${ckIndex}】 ${username}【${status}】`);
     console.log('===================================');
@@ -58,8 +64,9 @@ cookiesRemark.forEach(item => {
     const item = {
       index: ckIndex,
       username,
-      nickname: '',
+      nickname,
       mobile: '',
+      avatar,
       ...ckRemarkFormat[username],
       status,
     };
@@ -112,13 +119,19 @@ cookiesRemark.forEach(item => {
 
 async function isLogin(Cookie) {
   const opt = {
-    url: 'https://ms.jr.jd.com/gw/generic/uc/h5/m/mySubsidyBalance',
+    url: 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2&sceneval=2&g_login_type=1&g_ty=ls',
     headers: {
       cookie: Cookie,
-      Referer: 'https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&',
+      Referer: 'https://home.m.jd.com/',
     },
   };
-  return $.http.post(opt).then((response) => (JSON.parse(response.body)));
+  return $.http.get(opt).then((response) => {
+    try {
+      return JSON.parse(response.body);
+    } catch (e) {
+      return {};
+    }
+  });
 }
 
 function ENV() {
