@@ -447,7 +447,8 @@ function createScript() {
     }
 
     function fillInput(){
-      const cuMobile = document.getElementById('jd_account').value;
+      const sbBtn= document.getElementById('jd_account');
+      const cuMobile = sbBtn.getAttribute('data-value');
       console.log('快速填充号码：'+ cuMobile);
       const input = document.getElementsByClassName('acc-input mobile J_ping')[0];
       input.value = cuMobile;
