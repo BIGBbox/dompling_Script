@@ -5,7 +5,6 @@
 const $ = new API('ql', true);
 const title = '🐉 通知提示';
 const ipAddress = $.read('ip') || '';
-
 const baseURL = `http://${ipAddress}`;
 let token = '';
 const headers = {
@@ -23,7 +22,6 @@ $.log(`账号：${account.username}`);
 (async () => {
   const loginRes = await login();
   if (loginRes.code === 400) return $.notify(title, '', loginRes.msg);
-  $.log(JSON.stringify(loginRes));
   token = loginRes.token;
   headers.Authorization = `Bearer ${token}`;
   const cookiesRes = await getCookies();
@@ -40,6 +38,11 @@ $.log(`账号：${account.username}`);
   });
   $.log(cookiesName);
   const cookieText = cookiesName.join(`;`);
+  const newCookiesRes = await getCookies();
+  const disIds = newCookiesRes.data.filter(item => {
+    return item.nickname === '-';
+  }).map(item => item._id);
+  await disabledCookie(disIds);
   return $.notify(title, '', `已同步账号： ${cookieText}`);
 })().catch((e) => {
   $.log(JSON.stringify(e));
@@ -75,6 +78,17 @@ function delCookie(ids) {
   return $.http.delete(opt).then((response) => JSON.parse(response.body));
 }
 
+function disabledCookie(ids) {
+  const opt = {
+    url: getURL(`cookies/disable`),
+    headers,
+    body: JSON.stringify(ids),
+  };
+  $.http.put(opt).then((response) => {
+    return JSON.parse(response.body);
+  });
+}
+
 function ENV() {
   const isQX = typeof $task !== 'undefined';
   const isLoon = typeof $loon !== 'undefined';
@@ -92,6 +106,7 @@ function HTTP(defaultOptions = {baseURL: ''}) {
   const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
   function send(method, options) {
+
     options = typeof options === 'string' ? {url: options} : options;
     const baseURL = defaultOptions.baseURL;
     if (baseURL && !URL_REGEX.test(options.url || '')) {
