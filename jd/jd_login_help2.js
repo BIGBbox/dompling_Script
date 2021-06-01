@@ -7,24 +7,28 @@ ScriptName: 京东账号登陆辅助
 ==================================
 该脚本需要搭配 【京东账号 CK 检索】 使用
 ==================================
-
 [MITM]
-hostname = *.jd.com
+hostname = plogin.m.jd.com,home.m.jd.com
 
 【Surge脚本配置】:
 ===================
 [Script]
-京东登陆页面辅助 = type=http-response,pattern=^https:\/\/((?!(api|mapi|lbsapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|blackhole|homepage\-gw|un|bh|orbit)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js,script-update-interval=0
+京东登陆页面辅助 = type=http-response,pattern=^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js,script-update-interval=0
+京东个人中心登陆辅助 = type=http-response,pattern=^https?:\/\/plogin\.m\.jd\.com\/login\/login,requires-body=1,max-size=0,timeout=1000,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js,script-update-interval=0
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-response ^https:\/\/((?!(api|mapi|lbsapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|blackhole|homepage\-gw|un|bh|orbit)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$ tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js,requires-body=1
+http-response ^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js,requires-body=1
+http-response ^https?:\/\/plogin\.m\.jd\.com\/login\/login tag=京东登陆辅助, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js,requires-body=1
 ===================
 【 QX  脚本配置 】:
 ===================
 [rewrite_local]
-^https:\/\/((?!(api|mapi|lbsapi|im\-x|hermes|uranus|saturn|ccf|ccflbs|ccfjma|perf|msg|lite\-msg|firevent|lbsgw|ex|policy|mars|blackhole|homepage\-gw|un|bh|orbit)\.).*\.?jd\.com\/?((?!\.(js|json|jpg|gif|png|webp|dpg)).)*)*$ url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js
+^https?:\/\/home\.m\.jd\.com\/userinfom\/QueryUserInfoM url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js
+^https?:\/\/plogin\.m\.jd\.com\/login\/login url script-response-body https://raw.githubusercontent.com/dompling/Script/master/jd/jd_login_help2.js
+
+
  */
 const $ = new API('jd_ck_remark');
 
