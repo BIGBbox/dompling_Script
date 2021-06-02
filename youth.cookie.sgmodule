@@ -6,8 +6,7 @@
 # > 中青看点极速版
 中青看点极速版 = type=cron,cronexp=5 */10 1-22 * * *,wake-system=1,script-path=https://raw.githubusercontent.com/Sunert/Script/master/Task/youth.js
 中青自动阅读 = type=cron,cronexp=10 18 1-15/3 * * *,wake-system=1,timeout=10800,script-path=https://raw.githubusercontent.com/songyangzz/QuantumultX/master/YOUTH_READ.js
-中青浏览赚 = type=cron,cronexp="30 10 0,1,2 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Sunert/Script/master/Task/youth_gain.js
-
+中青看看赚 = type=cron,cronexp="30 6 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/ztxtop/x/main/youth_banner.js
 
 #中青cookie获取
 #中青cookie获取 = type=http-request,pattern= https:\/\/kd\.youth\.cn\/WebApi\/NewTaskIos\/getTaskList,script-path=https://raw.githubusercontent.com/lovezbfu/sn0415/Sunert/Task/youth.js, requires-body=true
