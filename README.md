@@ -1,9 +1,2 @@
-# Script
-
-QuanX
-
-# 学习写一些小的东西，本地脚本
-
-## 特别感谢
-
-1. [Peng-YM](https://github.com/Peng-YM) 大佬提供的 OpenApi
+[用于学习,如有冒犯,这里先道歉了,侵权立删
+# [原作者仓库地址](https://github.com/dompling/Script)
