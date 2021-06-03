@@ -178,11 +178,6 @@ function createStyle() {
   .cus-content li{
     list-style-type: cjk-ideographic;
   }
-  #jd_account{
-    width: 100%;
-    height: ${getRem(0.4)};
-    text-align: center
-  }
   .cus-footer{
     margin-top: ${getRem(0.09)};
     border-radius: ${getRem(0.1)};
@@ -244,12 +239,18 @@ function createStyle() {
     height: ${getRem(1.98)};
     overflow-x: hidden;
     overflow-y: scroll;
-    padding-top: ${getRem(0.1)};
+    padding: ${getRem(0.1)};
+    box-sizing: border-box;
   }
   .cus-avatar{
      padding: ${getRem(.1)};
      display: flex;
      align-items: center;
+     border: 1px solid #eee;
+     border-radius: 10px;
+     box-sizing: border-box;
+     position: relative;
+     margin-bottom: ${getRem(0.1)};
   }
   .avatar_img{
     width: ${getRem(0.45)};
@@ -269,6 +270,24 @@ function createStyle() {
   }
   .cususer_info{
     margin-left: ${getRem(0.1)};
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+  }
+  .cus-icon{
+    display: block;
+    width: ${getRem(0.3)};
+    height: ${getRem(0.3)};
+    border-radius: 50%;
+    border: 1px solid #13c2c2;
+    color: #13c2c2;
+    position: absolute;
+    font-size: ${getRem(0.05)};
+    right: ${getRem(0.1)};
+    top: 50%;
+    margin-top: -${getRem(0.15)};
+    text-align: center;
+    line-height: ${getRem(0.3)};
   }
   .cususer_info p {
     font-weight: bold;
@@ -284,11 +303,12 @@ function createStyle() {
     justify-content: center;
     align-items: center;
   }
-  .cus-active , .cus-active span{
-    color: red;
-  }
-  .cus-active .avatar_img{
+
+  .cus-active,.cus-err{
     border-color: red;
+  }
+  .cus-err {
+    color: red;
   }
 </style>
 `;
@@ -296,13 +316,16 @@ function createStyle() {
 
 const accounts = cookiesRemark.map(
   item => {
+    const status = item.status === '正常';
     return (`
 <div class="cus-avatar" data-value="${item.mobile}">
   <div class="avatar_img" style="background-image: url(${item.avatar ||
     '//img11.360buyimg.com/jdphoto/s120x120_jfs/t21160/90/706848746/2813/d1060df5/5b163ef9N4a3d7aa6.png'});color: #fff"></div>
   <div class="cususer_info">
-     <p>${item.nickname}<span>【${item.username}】</span></p>
+     <p>${item.nickname} </p>
+     <span>${item.username}</span>
   </div>
+  <span class="cus-icon ${status ? '' : 'cus-err'}">${status ? '正常' : '过期'}</span>
 </div>`);
   }).
   join('');
