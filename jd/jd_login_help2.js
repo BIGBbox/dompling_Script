@@ -294,32 +294,12 @@ function createStyle() {
 `;
 }
 
-const colors = [
-  '#fa541c',
-  '#f5222d',
-  '#fa8c16',
-  '#faad14',
-  '#fadb14',
-  '#a0d911',
-  '#52c41a',
-  '#13c2c2',
-  '#eb2f96',
-];
-
-var getRandomColor = function() {
-  return colors[Math.floor(Math.random() * 8 + 1)];
-};
-
 const accounts = cookiesRemark.map(
   item => {
-    const bgColor = item.avatar
-      ? ''
-      : `background-image: linear-gradient(to bottom, ${getRandomColor()}, ${getRandomColor()});`;
     return (`
 <div class="cus-avatar" data-value="${item.mobile}">
-  <div class="avatar_img" style="background-image: url(${item.avatar});${bgColor};color: #fff">
-    ${item.avatar ? '' : item.nickname.substring(0, 3)}
-  </div>
+  <div class="avatar_img" style="background-image: url(${item.avatar ||
+    '//img11.360buyimg.com/jdphoto/s120x120_jfs/t21160/90/706848746/2813/d1060df5/5b163ef9N4a3d7aa6.png'});color: #fff"></div>
   <div class="cususer_info">
      <p>${item.nickname}<span>【${item.username}】</span></p>
   </div>
