@@ -243,18 +243,18 @@ function createStyle() {
     box-sizing: border-box;
   }
   .cus-avatar{
-     padding: ${getRem(.1)};
+     padding: ${getRem(.05)};
      display: flex;
      align-items: center;
      border: 1px solid #eee;
-     border-radius: 10px;
+     border-radius: 15px;
      box-sizing: border-box;
      position: relative;
      margin-bottom: ${getRem(0.1)};
   }
   .avatar_img{
-    width: ${getRem(0.45)};
-    height: ${getRem(0.45)};
+    width: ${getRem(0.35)};
+    height: ${getRem(0.35)};
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -267,6 +267,7 @@ function createStyle() {
     background-size: contain;
     box-sizing: border-box;
     font-weight: bold;
+    margin-left: ${getRem(0.05)};
   }
   .cususer_info{
     margin-left: ${getRem(0.1)};
@@ -276,25 +277,30 @@ function createStyle() {
   }
   .cus-icon{
     display: block;
-    width: ${getRem(0.3)};
-    height: ${getRem(0.3)};
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    border: 1px solid #13c2c2;
-    color: #13c2c2;
+    border: 1px solid #52c41a;
     position: absolute;
     font-size: ${getRem(0.05)};
-    right: ${getRem(0.1)};
+    right: ${getRem(0.15)};
     top: 50%;
-    margin-top: -${getRem(0.15)};
+    transform: translateY(-50%);
     text-align: center;
     line-height: ${getRem(0.3)};
+    box-shadow: 0 0 4px #52c41a;
+    animation: flash 2s linear infinite;
   }
   .cususer_info p {
     font-weight: bold;
+    font-size: 8px;
+    line-height: 1.8;
   }
   .cususer_info span{
     font-weight: unset;
     color: #666;
+    font-size: 6px;
+    line-height: 1.8;
   }
   .not_content{
     text-align: center;
@@ -306,9 +312,24 @@ function createStyle() {
 
   .cus-active,.cus-err{
     border-color: red;
+    animation: flashred 2s linear infinite;
+    box-shadow: 0 0 4px red;
   }
-  .cus-err {
-    color: red;
+
+  @keyframes flashred{
+    0%{ box-shadow: 0 0 4px red}
+    25%{ box-shadow: 0 0 6px red}
+    50%{ box-shadow: 0 0 10px red}
+    75%{ box-shadow: 0 0 6px red}
+    100%{ box-shadow: 0 0 4px red}
+  }
+
+  @keyframes flash{
+    0%{ box-shadow: 0 0 4px #52c41a}
+    25%{ box-shadow: 0 0 6px #52c41a}
+    50%{ box-shadow: 0 0 10px #52c41a}
+    75%{ box-shadow: 0 0 6px #52c41a}
+    100%{ box-shadow: 0 0 4px #52c41a}
   }
 </style>
 `;
@@ -325,7 +346,7 @@ const accounts = cookiesRemark.map(
      <p>${item.nickname} </p>
      <span>${item.username}</span>
   </div>
-  <span class="cus-icon ${status ? '' : 'cus-err'}">${status ? '正常' : '过期'}</span>
+  <span class="cus-icon ${status ? '' : 'cus-err'}"></span>
 </div>`);
   }).
   join('');
